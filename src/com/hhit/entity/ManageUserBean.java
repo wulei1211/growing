@@ -23,6 +23,27 @@ public class ManageUserBean extends BaseBean {
     private String memo;
     private String headImg;
 
+    private Integer articleCount;
+
+
+    private Integer shouCangCount;
+
+    public Integer getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
+    }
+
+    public Integer getShouCangCount() {
+        return shouCangCount;
+    }
+
+    public void setShouCangCount(Integer shouCangCount) {
+        this.shouCangCount = shouCangCount;
+    }
+
     public ManageUserBean(){}
     public ManageUserBean(String id, String userName, String password, String realName, String userType, String gender, String phone, String email, String deleteFlag, String qq, String weiXin, String weiBo, String memo, String headImg) {
         this.id = id;

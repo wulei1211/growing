@@ -24,4 +24,9 @@ public class ManageUserServiceImpl implements ManageUserService {
     public ManageUserBean getUserByUserName(String userName, Integer deleteFlag) {
         return manageUserDaoMapper.getUserByUserName(userName,deleteFlag);
     }
+
+    @Override
+    public ManageUserBean findUserBeanById(String userId) {
+        return manageUserDaoMapper.findUserBeanById(userId);
+    }
 }

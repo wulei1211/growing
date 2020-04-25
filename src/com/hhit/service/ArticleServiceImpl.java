@@ -40,4 +40,9 @@ public class ArticleServiceImpl implements  ArticleService {
     public Article findArticleById(String articleId) {
         return articleDaoMapper.findArticleById(articleId);
     }
+
+//    @Override
+//    public int findAllShouCangCount(String userId) {
+//        return articleDaoMapper.findAllShouCangCount(userId);
+//    }
 }

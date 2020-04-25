@@ -20,6 +20,7 @@ public class Article extends BaseBean {
     private Integer pingLunCount;
     private Integer articleLove;
 
+
     public Article(){}
 
     public String getId() {

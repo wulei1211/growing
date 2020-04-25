@@ -59,4 +59,7 @@
     <select id="findArticleById" resultMap="ArticleBean">
         select *from article where id = #{articleId}
     </select>
+    
+
+    
 </mapper>

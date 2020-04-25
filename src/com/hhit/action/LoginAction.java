@@ -2,6 +2,7 @@ package com.hhit.action;
 
 import com.hhit.common.Constant;
 import com.hhit.entity.ManageUserBean;
+import com.hhit.service.ArticleService;
 import com.hhit.service.ManageUserService;
 import com.hhit.util.CommonUtil;
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +30,10 @@ public class LoginAction {
 
     @Resource(name = "manageUserService")
     private ManageUserService manageUserService;
+
+    @Resource(name = "articleService")
+    private ArticleService articleService;
+
 
     @RequestMapping("tologin")
     @ResponseBody
@@ -60,6 +65,13 @@ public class LoginAction {
 
             return "NO_EXIST";
         }
+    }
+
+    @RequestMapping("userArticleMsg")
+    @ResponseBody
+    public ManageUserBean getUserArticleMsg(String userId){
+        ManageUserBean userBean = manageUserService.findUserBeanById(userId);
+        return userBean;
     }
 
 }

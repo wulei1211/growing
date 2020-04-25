@@ -11,4 +11,10 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ManageUserDaoMapper {
     public ManageUserBean getUserByUserName(@Param("userName") String userName, @Param("deleteFlag") Integer deleteFlag);
+
+    public int getShouCangCount(@Param("userId") String userId);
+
+    public int getArticleCount(@Param("userId") String userId);
+
+    public ManageUserBean findUserBeanById(@Param("userId") String userId);
 }

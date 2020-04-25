@@ -11,4 +11,6 @@ import com.hhit.entity.ManageUserBean;
 
 public interface ManageUserService {
     public ManageUserBean getUserByUserName(String userName,Integer deleteFlag);
+
+    public ManageUserBean findUserBeanById(String userId);
 }

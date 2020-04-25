@@ -18,4 +18,6 @@ public interface ArticleService {
     public int findAllArticleCount(String articleTitle,String userId);
 
     public Article findArticleById(String articleId);
+
+//    public int findAllShouCangCount(String userId);
 }
