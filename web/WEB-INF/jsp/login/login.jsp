@@ -52,17 +52,12 @@ function login(){
 		url:"${path}/login/tologin.action",
 		success:function(data){
 			
-			if(data == "OK"){
-				window.location.href = "${path}/index/toIndexPage.action";
-			}else if(data == "PASSWORD_ERROR"){
-
+			if(data == "PASSWORD_ERROR"){
 				layer.alert('密码错误', {icon: 2});
 			}else if(data == "NO_EXIST"){
-
 				layer.alert('用户不存在！', {icon: 2});
 			}else{
-
-				layer.alert('登陆失败！', {icon: 2});
+                window.location.href = "${path}/index/toIndexPage.action";
 			}
 			
 	    }

@@ -50,7 +50,7 @@ public class LoginAction {
                 session.setAttribute("userBean", userBean);
                 log.debug(userName+" 登陆成功");
 
-                return "OK";
+                return userBean.getId();
 
             } else {
 
