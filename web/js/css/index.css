@@ -1,0 +1,46 @@
+*{margin: 0;padding: 0;}
+.tou{background-color: #009688;box-shadow: 2px 2px 5px #e0e0e0;width: 100%;}
+.fixed{position:fixed;top: 0;}
+.lvxian .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after{display: none;}
+.sousuoicon{position: absolute;right: 1.25rem;top: -0.5rem; cursor: pointer;}
+.one{position: absolute;right: 8.75rem;top: 0.03125rem;}
+.two{position: absolute;top: 0.03125rem;width: 110px;right: 3.125rem;}
+.zuo{background-color: white;box-shadow: 0px 0px 5px #e0e0e0;}
+.content{margin-top: 0.625rem;}
+.neirong{width: 100%;border-bottom: 0.03125rem solid #E0E0E0;}
+.neirong_suo{border: 0rem solid white;margin-left: 25px;margin-right: 25px;height: 100%;padding-top: 0.75rem;;}
+.title{font-size: 1rem;font-weight: bold;color: #1A1A1A;}
+.title:hover{cursor: pointer;color: #17519E;}
+.middle{margin-top: 0.5rem;color: #1A1A64;cursor: default;overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;text-overflow: ellipsis;-webkit-line-clamp: 2;line-clamp: 2;}
+.anniu{margin-top: 0.625rem;color: #8590A6;margin-bottom: 0.875rem;}
+.pinlun{margin-left: 1.125rem;cursor: pointer;}
+.pinlun_shuzi{color: #8590A6;margin-left: 0.1875rem;margin-right: 0.125rem;cursor: pointer;}
+.tubiao{font-size: 1.875rem;color: #009688;}
+.shuzi{font-weight: bold;color: #1A1A1A;font-size: 1rem;}
+.wenzhang{position: absolute;top: 50%;left: 48%;transform: translate(-50%, -50%);padding: 1em;}
+#editor{width: 30rem;height: 20rem;}
+.detail_title{font-weight: bold;font-size: 1.25rem;text-align: center;padding-top: 1.875rem;padding-bottom: 1rem;}
+.detail_time{float: left;color: #999;}
+.detail_biaoji{float: right;color: #999;font-size: 0.6875rem;}
+.clear{clear: both;}
+.biao{padding: 0rem 1.25rem 3.125rem 1.25rem;}
+
+.detail_pinglun{border-top: 0.03125rem solid #efefef;margin: 0rem 1.25rem 1.25rem 1.25rem;padding: 1rem 0rem 0.1rem 0rem;position: relative;}
+.pinglun_touxiang{width: 1.7rem;height: 1.7rem;border-radius: 50%;text-align: center;}
+.pinglun_tou{border-top: 0.03125rem solid #efefef;padding: 0.5rem 0rem 0.5rem 0rem;position: relative;}
+.pinglun_tou_hui{padding: 0.5rem 0rem 0.5rem 1rem;position: relative;border-left: 0.0625rem solid #EFEFEF;}
+.pinlun_hover:hover .pinglun_xian .huifu{display: inline;}
+.pinglun_tou_hui:hover .pinglun_xian_hui .huifu{display: inline;}
+.pinglun_content{margin-left: 2.3rem;width: 33.75rem;}
+.pinglun_content_hui{margin-left: 2.3rem;width: 30rem;}
+.pinglun_time{color: #999;font-size: 0.6rem;text-align: center;}
+.pinglun_xian{color: #5893C2;position: absolute;top: 1.375rem;right: 1.75rem;cursor: pointer;}
+.pinglun_xian_hui{color: #5893C2;position: absolute;top: 0.625rem;right: 1.75rem;cursor: pointer;}
+.pinglun_fabiao{width: 32.5rem;float: right;position: absolute;top: 1.1rem;left: 3.125rem;}
+.fabiao{position: absolute;right: 0.625rem;top:1.1rem;}
+.qquxiao{position: absolute;right: 0.625rem;top:3.5rem;display: none}
+.quxiao{display:none}
+.huifu{display: none;}
+.shouqi{display: none;}
+.chakan{display: inline;}
+.ping_huifu{padding-left: 0.3125rem;margin-left: 1.875rem;}

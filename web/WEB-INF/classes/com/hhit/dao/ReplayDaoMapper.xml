@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.ReplayDaoMapper">
+    <resultMap id="ReplayBean" type="com.hhit.entity.Replay">
+        <id property="id" column="id"/>
+        <result property="pingLunId" column="pinglun_id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="replayContent" column="replay_content"/>
+        <result property="toPlayer" column="to_replayer"/>
+        <result property="time" column="time"/>
+        <result property="replayer" column="replayer"/>
+        <result property="beiName" column="bei_name"/>
+        <result property="huiName" column="hui_name"/>
+        <result property="huiTou" column="hui_tou"/>
+    </resultMap>
+
+    <select id="getAllReplayOfPingLun" resultMap="ReplayBean">
+        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
+        INNER JOIN nh_manage_user u on r.replayer = u.id
+        INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
+        where r.pinglun_id = #{pId}
+    </select>
+
+    <insert id="addReplay" parameterType="com.hhit.entity.Replay">
+        insert into replay(id,pinglun_id,article_id,replay_content,replayer,to_replayer,time)
+          values (#{id},#{pingLunId},#{articleId},#{replayContent},#{replayer},#{toPlayer},#{time})
+    </insert>
+
+</mapper>

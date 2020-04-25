@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.PingLunDaoMapper">
+    <resultMap id="PingLunBean" type="com.hhit.entity.PingLun">
+        <id property="id" column="id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="pingLunContent" column="pinglun_content" />
+        <result property="headImg" column="head_img" />
+        <result property="realName" column="real_name" />
+        <result property="time" column="time" />
+        <association property="replayCount" column="id" select="getPingLunReplayCount" />
+    </resultMap>
+
+    <select id="findAllPingLunByArticleId" resultMap="PingLunBean">
+        SELECT p.*,u.head_img,u.real_name from pinglun p INNER JOIN nh_manage_user u
+        ON p.user_id = u.id where p.article_id = #{articleId}
+        <if test="page != null">
+            limit #{page},10
+        </if>
+    </select>
+    
+    <select id="findAllPingLunOfArticleCount" resultType="int">
+        select count(0) from pinglun where article_id = #{articleId}
+    </select>
+
+    <select id="getPingLunReplayCount" resultType="int">
+        select  count(0) from replay where pinglun_id = #{pingLunId}
+    </select>
+
+    <insert id="addPingLun" parameterType="com.hhit.entity.PingLun">
+        insert into pinglun(id,article_id,user_id,pinglun_content,time) values (#{id},#{articleId},#{userId},#{pingLunContent},#{time})
+    </insert>
+    
+
+</mapper>

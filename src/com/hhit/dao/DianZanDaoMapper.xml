@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.DianZanDaoMapper">
+    <resultMap id="DianZanBean" type="com.hhit.entity.DianZan">
+        <id property="id" column="id"/>
+        <result column="article_id" property="articleId"/>
+        <result column="user_id" property="userId"/>
+        <result column="time" property="time"/>
+        <result column="dian_type" property="dianType"/>
+    </resultMap>
+    
+    <select id="findDianZanArticle" parameterType="String" resultMap="DianZanBean">
+        select *from dianzan where user_id = #{userId}
+    </select>
+
+    <insert id="dianzan" parameterType="com.hhit.entity.DianZan">
+        insert into dianzan(id,article_id,user_id,time,dian_type) values (#{id},#{articleId},#{userId},#{time},#{dianType})
+    </insert>
+
+    <delete id="quXiaoZan">
+        delete from dianzan where article_id = #{articleId} and user_id = #{userId}
+        <if test="dianType == 1">
+            and dian_type = "1"
+        </if>
+        <if test="dianType == 2">
+            and dian_type = "2"
+        </if>
+
+
+    </delete>
+</mapper>

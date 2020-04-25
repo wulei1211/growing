@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.ManageUserDaoMapper">
+    <resultMap id="ManageUserBean" type="com.hhit.entity.ManageUserBean">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="realName" column="real_name"/>
+        <result property="userType" column="user_type" />
+        <result property="gender" column="gender" />
+        <result property="phone" column="phone" />
+        <result property="email" column="email" />
+        <result property="deleteFlag" column="delete_flag" />
+        <result property="qq" column="qq" />
+        <result property="weiXin" column="weixin" />
+        <result property="memo" column="memo" />
+        <result property="headImg" column="head_img" />
+    </resultMap>
+
+
+
+    <select id="getUserByUserName" resultMap="ManageUserBean">
+        select *from nh_manage_user where delete_flag = #{deleteFlag} and user_name = #{userName}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.ArticleDaoMapper">
+    <resultMap id="ArticleBean" type="com.hhit.entity.Article">
+        <id property="id" column="id"/>
+        <result property="articleType" column="article_type"/>
+        <result property="articleTitle" column="article_title"/>
+        <result property="articleContent" column="article_content"/>
+        <result property="articleCount" column="article_count"/>
+        <result property="master" column="master"/>
+        <result property="createTime" column="create_time"/>
+        <result property="editTime" column="edit_time"/>
+        <!--<result property="articleLove" column="article_love"/>-->
+        <association property="pingLunCount" column="id" select="getArticlePinglunCount" />
+        <association property="articleLove" column="id" select="getArticleLoveCount" />
+    </resultMap>
+    
+    <insert id="articleAdd" parameterType="com.hhit.entity.Article">
+        insert into article(id,article_type,article_title,article_content,article_count,master,create_time,edit_time)
+            VALUES(#{id},#{articleType},#{articleTitle},#{articleContent},#{articleCount},#{master},#{createTime},#{editTime})
+    </insert>
+
+    <select id="findAllArticle" resultMap="ArticleBean">
+        select *from article
+        <where>
+            1=1
+            <if test="articleTitle != null and articleTitle != ''">
+                and article_title like CONCAT('%',#{articleTitle},'%')
+            </if>
+        </where>
+        ORDER BY create_time desc
+        <if test="page != null">
+            limit #{page},10
+        </if>
+    </select>
+
+    <select id="getArticlePinglunCount" parameterType="String" resultType="int" >
+        SELECT COUNT(0) FROM pinglun WHERE article_id = #{articleId}
+    </select>
+
+    <select id="getArticleLoveCount" parameterType="String" resultType="int" >
+        SELECT COUNT(0) FROM dianzan WHERE article_id = #{articleId} and dian_type = "1"
+    </select>
+
+    <select id="findAllArticleCount" resultType="int">
+        select count(0) from article
+        <where>
+            1=1
+            <if test="articleTitle != null and articleTitle != ''">
+                and article_title like CONCAT('%',#{articleTitle},'%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and master = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findArticleById" resultMap="ArticleBean">
+        select *from article where id = #{articleId}
+    </select>
+</mapper>

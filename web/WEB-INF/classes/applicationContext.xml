@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!--<bean id="loginService" class="com.hhit.service.LoginService"></bean>-->
+    <!--启动注解-->
+    <context:annotation-config />
+
+    <context:component-scan base-package="com.hhit.service"></context:component-scan>
+    <context:component-scan base-package="com.hhit.dao"></context:component-scan>
+    <context:component-scan base-package="com.hhit.interceptor"></context:component-scan>
+
+    <!--加载数据库配置文件 properties-->
+    <context:property-placeholder location="classpath:database.properties" />
+
+    <!--配置数据源-->
+    <bean id="dataSource-mysql" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close" >
+        <property name="driverClassName" value="${jdbc.driverClass}" />
+        <property name="url" value="${jdbc.jdbcUrl}" />
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />
+
+        <property name="minIdle" value="${jdbc.miniPoolSize}" />
+        <property name="maxActive" value="${jdbc.maxPoolSize}"/>
+        <property name="initialSize" value="${jdbc.initialPoolSize}"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT 'x'" />
+        <!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，
+              如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+         -->
+        <property name="testWhileIdle" value="true" />
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+        <property name="testOnBorrow" value="false" />
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+        <property name="testOnReturn" value="false" />
+        <!-- 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。 -->
+        <property name="poolPreparedStatements" value="false" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat" />
+        <!-- 打开合并sql功能,慢sql记录 5秒  -->
+        <property name="connectionProperties"
+                  value="druid.stat.mergeSql=true,
+	    		   druid.stat.slowSqlMillis=5000" />
+    </bean>
+
+
+
+    <!--得到sqlsessionFactory-->
+    <bean id="sqlSessionFactory-mysql" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource-mysql" />
+        <property name="configLocation" value="classpath:mybatisConfig-mysql.xml" />
+        <property name="typeAliasesPackage" value="com.hhit.entity"></property>
+    </bean>
+
+
+    <!--得到所有dao层反射生成的实现类-->
+    <!--扫描 basePackage下的所有接口 根据相应的xml文件动态生成实现类 并且放到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory-mysql" />
+        <!--起别名-->
+        <property name="basePackage" value="com.hhit.dao" />
+    </bean>
+
+
+    <!--启动spring事务管理-->
+    <bean id="transactionManager-mysql" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource-mysql" />
+    </bean>
+
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager-mysql"/>
+
+     <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!--<context:component-scan base-package="com.hhit.interceptor">-->
+        <!--<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />-->
+    <!--</context:component-scan>-->
+
+</beans>
