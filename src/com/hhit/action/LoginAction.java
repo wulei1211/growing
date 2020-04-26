@@ -69,8 +69,8 @@ public class LoginAction {
 
     @RequestMapping("userArticleMsg")
     @ResponseBody
-    public ManageUserBean getUserArticleMsg(String userId){
-        ManageUserBean userBean = manageUserService.findUserBeanById(userId);
+    public ManageUserBean getUserArticleMsg(String manageUserId){
+        ManageUserBean userBean = manageUserService.findUserBeanById(manageUserId);
         return userBean;
     }
 
