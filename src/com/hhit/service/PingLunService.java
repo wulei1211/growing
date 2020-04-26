@@ -1,6 +1,7 @@
 package com.hhit.service;
 
 import com.hhit.entity.PingLun;
+import com.hhit.entity.PingLunDian;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface PingLunService {
     public int findAllPingLunOfArticleCount(String articleId);
 
     public void addPingLun(PingLun pin);
+
+    public void addPingLunDian(PingLunDian pingDian);
+
+    public void deletePingLunDian(PingLunDian pingDian);
 }

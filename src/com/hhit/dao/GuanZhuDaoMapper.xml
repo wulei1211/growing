@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.GuanZhuDaoMapper">
+    <resultMap id="GuanZhuBean" type="com.hhit.entity.GuanZhu">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="beiGuan" column="bei_guan" />
+        <result property="time" column="time" />
+    </resultMap>
+
+    <insert id = "addGuanZhu" parameterType="com.hhit.entity.GuanZhu">
+        insert into guanzhu(id,user_id,bei_guan,time) values (#{id},#{userId},#{beiGuan},#{time})
+    </insert>
+
+    <delete id="deleteGuanZhu" parameterType="com.hhit.entity.GuanZhu">
+        delete from  guanzhu where user_id = #{userId} and bei_guan = #{beiGuan}
+    </delete>
+
+</mapper>

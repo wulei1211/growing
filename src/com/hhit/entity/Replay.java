@@ -19,6 +19,16 @@ public class Replay extends BaseBean{
     private String huiTou;
     private String beiName;
 
+    private Integer replayDianCount;
+
+    public Integer getReplayDianCount() {
+        return replayDianCount;
+    }
+
+    public void setReplayDianCount(Integer replayDianCount) {
+        this.replayDianCount = replayDianCount;
+    }
+
     public String getHuiName() {
         return huiName;
     }

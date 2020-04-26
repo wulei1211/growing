@@ -29,4 +29,9 @@ public class ManageUserServiceImpl implements ManageUserService {
     public ManageUserBean findUserBeanById(String userId) {
         return manageUserDaoMapper.findUserBeanById(userId);
     }
+
+    @Override
+    public ManageUserBean findArticleUserByArticleId(String articleId) {
+        return manageUserDaoMapper.findArticleUserByArticleId(articleId);
+    }
 }

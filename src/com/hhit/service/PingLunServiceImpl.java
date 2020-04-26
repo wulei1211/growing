@@ -2,6 +2,7 @@ package com.hhit.service;
 
 import com.hhit.dao.PingLunDaoMapper;
 import com.hhit.entity.PingLun;
+import com.hhit.entity.PingLunDian;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +35,17 @@ public class PingLunServiceImpl implements PingLunService {
     @Transactional
     public void addPingLun(PingLun pin) {
         pingLunDaoMapper.addPingLun(pin);
+    }
+
+    @Override
+    @Transactional
+    public void addPingLunDian(PingLunDian pingDian) {
+        pingLunDaoMapper.addPingLunDian(pingDian);
+    }
+
+    @Override
+    @Transactional
+    public void deletePingLunDian(PingLunDian pingDian) {
+        pingLunDaoMapper.deletePingLunDian(pingDian);
     }
 }

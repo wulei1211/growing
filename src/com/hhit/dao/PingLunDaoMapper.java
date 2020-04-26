@@ -1,6 +1,7 @@
 package com.hhit.dao;
 
 import com.hhit.entity.PingLun;
+import com.hhit.entity.PingLunDian;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,4 +20,10 @@ public interface PingLunDaoMapper {
     public int getPingLunReplayCount(@Param("pingLunId")String pingLunId);
 
     public void addPingLun(PingLun pin);
+
+    public int getPingLunDianCount(@Param("pinId") String pinId);
+
+    public void addPingLunDian(PingLunDian pingDian);
+
+    public void deletePingLunDian(PingLunDian pingDian);
 }

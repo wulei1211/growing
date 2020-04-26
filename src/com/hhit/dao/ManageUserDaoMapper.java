@@ -16,5 +16,9 @@ public interface ManageUserDaoMapper {
 
     public int getArticleCount(@Param("userId") String userId);
 
+    public int getGuanZhuCount(@Param("beiGuanId") String beiGuanId);
+
     public ManageUserBean findUserBeanById(@Param("userId") String userId);
+
+    public ManageUserBean findArticleUserByArticleId(@Param("articleId") String articleId);
 }

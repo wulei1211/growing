@@ -13,4 +13,6 @@ public interface ManageUserService {
     public ManageUserBean getUserByUserName(String userName,Integer deleteFlag);
 
     public ManageUserBean findUserBeanById(String userId);
+
+    public ManageUserBean findArticleUserByArticleId(String articleId);
 }

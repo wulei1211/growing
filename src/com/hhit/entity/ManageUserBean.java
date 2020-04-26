@@ -27,6 +27,15 @@ public class ManageUserBean extends BaseBean {
 
 
     private Integer shouCangCount;
+    private Integer guanZhuCount;
+
+    public Integer getGuanZhuCount() {
+        return guanZhuCount;
+    }
+
+    public void setGuanZhuCount(Integer guanZhuCount) {
+        this.guanZhuCount = guanZhuCount;
+    }
 
     public Integer getArticleCount() {
         return articleCount;

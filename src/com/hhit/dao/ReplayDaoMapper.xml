@@ -13,6 +13,7 @@
         <result property="beiName" column="bei_name"/>
         <result property="huiName" column="hui_name"/>
         <result property="huiTou" column="hui_tou"/>
+        <association property="replayDianCount" column="id" select="getReplayDianCount" />
     </resultMap>
 
     <select id="getAllReplayOfPingLun" resultMap="ReplayBean">
@@ -26,5 +27,9 @@
         insert into replay(id,pinglun_id,article_id,replay_content,replayer,to_replayer,time)
           values (#{id},#{pingLunId},#{articleId},#{replayContent},#{replayer},#{toPlayer},#{time})
     </insert>
+
+    <select id="getReplayDianCount" resultType="int">
+        select count(0) from pinglun_dian where pinglun_id = #{replayId} and dian_type = "2"
+    </select>
 
 </mapper>

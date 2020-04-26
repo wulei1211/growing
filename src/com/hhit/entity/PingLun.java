@@ -17,7 +17,17 @@ public class PingLun {
     private String headImg;
     private String realName;
 
+    private Integer pingLunDianCount;
+
     private Integer replayCount;
+
+    public Integer getPingLunDianCount() {
+        return pingLunDianCount;
+    }
+
+    public void setPingLunDianCount(Integer pingLunDianCount) {
+        this.pingLunDianCount = pingLunDianCount;
+    }
 
     public Integer getReplayCount() {
         return replayCount;

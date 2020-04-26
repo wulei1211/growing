@@ -15,4 +15,6 @@ public interface ReplayDaoMapper {
     public List<Replay> getAllReplayOfPingLun(@Param("pId") String pId);
 
     public void addReplay(Replay replay);
+
+    public int getReplayDianCount(@Param("replayId") String replayId);
 }
