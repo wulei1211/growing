@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -126,7 +127,7 @@
                     });
                 });
 
-                $("#touXiang").attr({"src":"${touXiang}"});
+
 
                 $(document).on("click",".title",function(){
                     var id = $(this).parent("div").find(".dianzan div").text();
@@ -216,10 +217,6 @@
                                 }
 								str +=	'</div>'
 							}
-
-
-
-
                             str += ' 	</div></div>'
                             lis.push(str);
                         });
@@ -303,7 +300,12 @@
 			<div class="grid-demo zuo">
 				<div class = "yonghu" style="border: 1px solid white;width: 100%;">
 					<div style = "text-align: center;margin-top: 2.5rem;">
-						<img src="${path}/js/images/343.jpeg" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" id = "touXiang" />
+						<c:if test="${!empty touXiang}">
+							<img src="${touXiang}" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" id = "touXiang" />
+						</c:if>
+						<c:if test = "${empty touXiang}">
+							<img src="${path}/js/images/343.jpeg" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" id = "touXiang" />
+						</c:if>
 					</div>
 					<div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">${realName}</div>
 					<div style = "margin-top: 1.125rem;text-align: center;font-size: 0.625rem;color: #999;">

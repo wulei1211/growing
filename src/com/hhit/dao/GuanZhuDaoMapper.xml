@@ -18,4 +18,8 @@
         delete from  guanzhu where user_id = #{userId} and bei_guan = #{beiGuan}
     </delete>
 
+    <select id="findBooleanBeiGuan" resultType="int">
+        select count(0) from guanzhu where  user_id = #{dengUserId} and bei_guan = #{artUserId}
+    </select>
+
 </mapper>

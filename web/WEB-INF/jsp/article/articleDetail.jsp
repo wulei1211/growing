@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: wulei
@@ -20,7 +21,16 @@
     <script type="text/javascript" src="${path}/js/layui/layui.js"></script>
     <script type="text/javascript">
 
+        var pingList = '${pingList}';
+        var reList = '${reList}';
+
         $(function () {
+
+            if("${user.id}" == "${artUser.id}"){
+                $("#anniu_button").css({"display":"none"});
+            }
+
+
             layui.use(["layer","element","flow"],function(){
                 var layer = layui.layer;
                 var element = layui.element;
@@ -51,10 +61,18 @@
                                     str += '  <span class = "shouqi"">收起评论</span>&nbsp;&nbsp;&nbsp;&nbsp;';
                                 }
                                 str += '<div style = "display: none">'+item.id+'</div>'
-                                str += '     <i class="layui-icon layui-icon-praise" style="color: #999;margin-top: 0.625rem;">';
-                                str += '    <span style="font-size: 0.7rem;">12</span>';
-                                str += '   </i></span>';
 
+                                var pingIndex = pingList.indexOf(item.id);
+                                if(pingIndex!=-1){
+                                    str += '     <i class="layui-icon layui-icon-praise dianzan ping_dian" xuan = "ok" style="margin-top: 0.625rem;color: red">';
+                                    str += '    <span style="font-size: 0.7rem;">'+item.pingLunDianCount+'</span></i>';
+                                }else{
+                                    str += '     <i class="layui-icon layui-icon-praise dianzan ping_dian" style="margin-top: 0.625rem;">';
+                                    str += '    <span style="font-size: 0.7rem;">'+item.pingLunDianCount+'</span></i>';
+                                }
+
+
+                                str +=     '</span>';
                                 str += '    </div></div>';
                                 lis.push(str);
                             });
@@ -92,9 +110,16 @@
                                 str += '   </span>';
                                 str += '  <span class="pinglun_xian_hui">';
                                 str += '     <span class="huifu hui">回复&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style = "display:none">'+data[i].replayer+'</span>';
-                                str += ' <i class="layui-icon layui-icon-praise" style="color: #999;margin-top: 0.625rem;">';
-                                str += '    <span style="font-size: 0.7rem;">12</span>';
-                                str += '     </i></span><div class="pinglun_content_hui">';
+
+                                var pingIndex = reList.indexOf(data[i].id);
+                                if(pingIndex!=-1){
+                                    str += ' <i class="layui-icon layui-icon-praise dianzan" xuan_hui = "ok" style="color: red;margin-top: 0.625rem;">';
+                                    str += '    <span style="font-size: 0.7rem;">'+data[i].replayDianCount+'</span><div style = "display: none;">'+data[i].id+'</div></i>';
+                                }else{
+                                    str += ' <i class="layui-icon layui-icon-praise dianzan" style="margin-top: 0.625rem;">';
+                                    str += '    <span style="font-size: 0.7rem;">'+data[i].replayDianCount+'</span><div style = "display: none;">'+data[i].id+'</div></i>';
+                                }
+                                str +=     '</span><div class="pinglun_content_hui">';
                                 str += data[i].replayContent;
                                 str += '  <span class = "pinglun_time">&nbsp;&nbsp;'+data[i].time+'</span>';
                                 str += '  </div></div>';
@@ -108,6 +133,57 @@
                     _this.text("收起评论");
                     _this.removeClass("chakan");
                     _this.addClass("shouqilai");
+                });
+
+                $(document).on("click",".dianzan",function(){
+                    var pingLunId = "";
+                    var dianType = "";
+                    var type = "";
+                    if($(this).hasClass("ping_dian")){
+                        //评论的点赞
+                        if(typeof($(this).attr("xuan")) != "undefined"){
+                            $(this).css({"color":""})
+                            $(this).removeAttr("xuan");
+                            var index = jiaXiHuan($(this).find("span").text(),"2");
+                            $(this).find("span").text(index);
+                            type = "2";//减1
+                        }else{
+                            $(this).css({"color":"red"})
+                            $(this).attr({"xuan":"ok"});
+                            var index = jiaXiHuan($(this).find("span").text(),"1");
+                            $(this).find("span").text(index);
+                            type = "1";//加1
+                        }
+                        pingLunId = $(this).parent("span").find("div").text();
+                        dianType = "1";
+                    }else{
+                        //回复的点赞
+                        if(typeof($(this).attr("xuan_hui")) != "undefined"){
+                            $(this).css({"color":""})
+                            $(this).removeAttr("xuan_hui");
+                            var index = jiaXiHuan($(this).find("span").text(),"2");
+                            $(this).find("span").text(index);
+                            type = "2";//减1
+                        }else{
+                            $(this).css({"color":"red"})
+                            $(this).attr({"xuan_hui":"ok"});
+                            var index = jiaXiHuan($(this).find("span").text(),"1");
+                            $(this).find("span").text(index);
+                            type = "1";//加1
+                        }
+                        pingLunId = $(this).find("div").text();
+                        dianType = "2";
+                    }
+                    $.ajax({
+                        type:"POST",
+                        async: false,  //默认true,异步
+                        dataType:"json",
+                        data:{"pingLunId":pingLunId,"dianType":dianType,"type":type},
+                        url:"${path}/artical/changePingLunZan.action",
+                        success:function(data){
+
+                        }
+                    });
                 });
 
                 var _huifu = null;
@@ -219,6 +295,45 @@
                 });
 
 
+
+                $("#guanzhu").click(function(){
+                    var index = 0;
+                    var type = "";
+                    if($(this).hasClass("layui-btn-primary")){
+                        //减1
+                        $(this).removeClass("layui-btn-primary");
+                        $(this).find("i").addClass("layui-icon-addition");
+                        $(this).find("i").removeClass("layui-icon-ok")
+                        $(this).find("span:eq(0)").text("关注");
+                        $(this).find("span:eq(1)").text("他");
+                        index = jiaXiHuan($(".guanzhuzhe").text(),"2");
+                        type = 2;
+                    }else{
+                        //加1
+                        $(this).addClass("layui-btn-primary");
+                        $(this).find("i").removeClass("layui-icon-addition");
+                        $(this).find("i").addClass("layui-icon-ok");
+                        $(this).find("span:eq(0)").text("已关注");
+                        $(this).find("span:eq(1)").text("");
+                        index = jiaXiHuan($(".guanzhuzhe").text(),"1");
+                        type = 1;
+                    }
+                    $(".guanzhuzhe").text(index);
+                    $.ajax({
+                        type:"POST",
+                        async: false,  //默认true,异步
+                        dataType:"text",
+                        data:{"type":type,"beiGuan":"${artUser.id}"},
+                        url:"${path}/artical/changeGuanZhu.action",
+                        success:function(data){
+
+                        }
+                    })
+
+
+                })
+
+
                 // $(document).on("focus","#ping",function(){
                 //     $(this).css({"box-shadow":"0px 0px 8px #009688"})
                 //     $(this).css({"height":"5rem"});
@@ -236,6 +351,15 @@
                 // })
 
             });
+
+            function jiaXiHuan(shuzi,type){
+                var temp = parseInt(shuzi);
+                if(type == '1'){
+                    return temp+1;
+                }else{
+                    return temp-1;
+                }
+            }
         })
     </script>
 </head>
@@ -369,22 +493,32 @@
         <div class="layui-col-md3 ">
             <!-- 右边 -->
             <div class="grid-demo zuo">
+
+
                 <div class = "yonghu" style="border: 1px solid white;width: 100%;">
                     <div style = "text-align: center;margin-top: 2.5rem;">
-                        <img src="res/343.jpeg" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" />
+                        <img src="${artUser.headImg}" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" />
                     </div>
-                    <div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">万人敬仰</div>
-                    <div style = "margin-top: 1.125rem;text-align: center;font-size: 0.625rem;color: #999;">
-                        生命不是要超越别人,而是要超越自己。</div>
-                    <div style = "font-size: 0.625rem;color: #999;;height: 3.125rem;border-top: 1px solid #E0E0E0;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;line-height: 3.125rem;">
-                        社交：&nbsp;&nbsp;&nbsp;&nbsp;
-                        <i class="layui-icon layui-icon-login-qq tubiao"></i> &nbsp;&nbsp;
-                        <i class="layui-icon layui-icon-login-wechat tubiao"></i> &nbsp;&nbsp;
-                        <i class="layui-icon layui-icon-login-weibo tubiao"></i>
+                    <div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">
+                        <span>${artUser.realName}</span>
+                        <c:if test="${booleanGuan==0}">
+                            <span id="anniu_button">
+                            &nbsp;&nbsp;
+									<button type="button" id= "guanzhu" class="layui-btn layui-btn-sm layui-btn-radius"><i class="layui-icon layui-icon-addition"></i>  <span>关注</span><span>他</span></button>
+								</span>
+                        </c:if>
+                        <c:if test="${booleanGuan>0}">
+                            <span id="anniu_button">
+                            &nbsp;&nbsp;
+									<button type="button" id= "guanzhu" class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius"><i class="layui-icon layui-icon-ok"></i>  <span>已关注</span><span></span></button>
+								</span>
+                        </c:if>
                     </div>
+                    <div style = " padding-bottom: 1rem;margin-top: 1.125rem;text-align: center;font-size: 0.625rem;color: #999;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;">
+                        ${artUser.memo}</div>
                     <div style = "padding: 1.25rem 3rem 1.25rem 3rem;height: 3.125rem;">
-                        <div style = "height: 100%;float: left;color: #999;text-align: center;">文章</br></br><span class="shuzi">2131</span></div>
-                        <div style = "height: 100%;float: right;color: #999;">关注者</br></br><span class="shuzi">123</span></div>
+                        <div style = "height: 100%;float: left;color: #999;text-align: center;"><span>文章</span></br></br><span class="shuzi">${artUser.articleCount}</span></div>
+                        <div style = "height: 100%;float: right;color: #999;text-align: center;"><span>关注者</span></br></br><span class="shuzi guanzhuzhe">${artUser.guanZhuCount}</span></div>
                     </div>
                 </div>
 

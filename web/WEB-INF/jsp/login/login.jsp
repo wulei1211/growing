@@ -59,7 +59,6 @@ function login(){
 			}else{
                 window.location.href = "${path}/index/toIndexPage.action";
 			}
-			
 	    }
 	});
 }

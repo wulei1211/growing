@@ -87,6 +87,7 @@ public class ArticalAction {
         HttpSession session = request.getSession();
         ManageUserBean dengUser = (ManageUserBean) session.getAttribute("userBean");//当前登录的用户
         ManageUserBean artUser = manageUserService.findArticleUserByArticleId(articleId);// 文章的用户信息
+        int count = guanZhuService.findBooleanBeiGuan(dengUser.getId(),artUser.getId());
         List<PingLunDian> list = pingLunDianService.findBooleanPingLunDian(dengUser.getId());
         List<String> pingList = new ArrayList<>();
         List<String> reList = new ArrayList<>();
@@ -98,6 +99,7 @@ public class ArticalAction {
             }
         }
         request.setAttribute("user",dengUser);
+        request.setAttribute("booleanGuan",count);
         request.setAttribute("artUser",artUser);
         request.setAttribute("pingList",pingList);
         request.setAttribute("reList",reList);

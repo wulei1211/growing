@@ -23,11 +23,11 @@ public class ManageUserBean extends BaseBean {
     private String memo;
     private String headImg;
 
-    private Integer articleCount;
+    private Integer articleCount;//文章数量
 
 
-    private Integer shouCangCount;
-    private Integer guanZhuCount;
+    private Integer shouCangCount;//收藏数量
+    private Integer guanZhuCount;// 关注数量
 
     public Integer getGuanZhuCount() {
         return guanZhuCount;

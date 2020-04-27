@@ -26,4 +26,10 @@ public class GuanZhuServiceImpl implements GuanZhuService {
     public void deleteGuanZhu(GuanZhu guanZhu) {
         guanZhuDaoMapper.deleteGuanZhu(guanZhu);
     }
+
+    @Override
+    public int findBooleanBeiGuan(String dengUserId, String artUserId) {
+        return guanZhuDaoMapper.findBooleanBeiGuan(dengUserId,artUserId);
+    }
+
 }

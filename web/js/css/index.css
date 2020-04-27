@@ -26,7 +26,7 @@
 .biao{padding: 0rem 1.25rem 3.125rem 1.25rem;}
 
 .detail_pinglun{border-top: 0.03125rem solid #efefef;margin: 0rem 1.25rem 1.25rem 1.25rem;padding: 1rem 0rem 0.1rem 0rem;position: relative;}
-.pinglun_touxiang{width: 1.7rem;height: 1.7rem;border-radius: 50%;text-align: center;}
+.pinglun_touxiang{width: 1.7rem;height: 1.7rem;border-radius: 50%;text-alyonghuign: center;}
 .pinglun_tou{border-top: 0.03125rem solid #efefef;padding: 0.5rem 0rem 0.5rem 0rem;position: relative;}
 .pinglun_tou_hui{padding: 0.5rem 0rem 0.5rem 1rem;position: relative;border-left: 0.0625rem solid #EFEFEF;}
 .pinlun_hover:hover .pinglun_xian .huifu{display: inline;}
@@ -40,6 +40,7 @@
 .fabiao{position: absolute;right: 0.625rem;top:1.1rem;}
 .qquxiao{position: absolute;right: 0.625rem;top:3.5rem;display: none}
 .quxiao{display:none}
+.dianzan{color: #999;}
 .huifu{display: none;}
 .shouqi{display: none;}
 .chakan{display: inline;}
