@@ -22,4 +22,8 @@
         select count(0) from guanzhu where  user_id = #{dengUserId} and bei_guan = #{artUserId}
     </select>
 
+    <select id="checkBooleanGuan" resultType="int">
+        select count(0) from  guanzhu where user_id = #{userId} and bei_guan = #{master}
+    </select>
+
 </mapper>

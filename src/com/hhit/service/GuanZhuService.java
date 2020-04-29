@@ -14,4 +14,6 @@ public interface GuanZhuService {
     public void deleteGuanZhu(GuanZhu guanZhu);
 
     public int findBooleanBeiGuan(String dengUserId, String artUserId);
+
+    public int checkBooleanGuan(String userId, String master);
 }

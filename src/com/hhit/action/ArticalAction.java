@@ -256,13 +256,12 @@ public class ArticalAction {
     public JSONObject articleDetailReact(String articleId,HttpServletRequest request){
         Article article = articleService.findArticleById(articleId);
         ManageUserBean dengUser = (ManageUserBean) request.getSession().getAttribute("userBean");//登录的用户
-        JSONObject json = new JSONObject();
+        int count = guanZhuService.checkBooleanGuan(dengUser.getId(),article.getMaster());
         boolean flag = true;
-        flag = dengUser.getId()==article.getMaster()?true:false;
+        JSONObject json = new JSONObject();
+        flag = count>0?true:false;
         json.put("articleMsg",article);
         json.put("booleanGuan",flag);
         return json;
     }
-
-
 }

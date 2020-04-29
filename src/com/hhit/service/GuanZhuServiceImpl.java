@@ -32,4 +32,9 @@ public class GuanZhuServiceImpl implements GuanZhuService {
         return guanZhuDaoMapper.findBooleanBeiGuan(dengUserId,artUserId);
     }
 
+    @Override
+    public int checkBooleanGuan(String userId, String master) {
+        return guanZhuDaoMapper.checkBooleanGuan(userId,master);
+    }
+
 }

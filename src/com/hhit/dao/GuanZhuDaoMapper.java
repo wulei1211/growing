@@ -15,4 +15,6 @@ public interface GuanZhuDaoMapper {
     public void deleteGuanZhu(GuanZhu guanZhu);
 
     public int findBooleanBeiGuan(@Param("dengUserId") String dengUserId, @Param("artUserId") String artUserId);
+
+    public int checkBooleanGuan(@Param("userId") String userId, @Param("master") String master);
 }
