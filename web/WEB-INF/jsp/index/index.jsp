@@ -13,22 +13,37 @@
 <link rel="stylesheet" href="${path}/js/css/index.css">
 <script type="text/javascript" src="${path}/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="${path}/js/layui/layui.js"></script>
+<script type='text/javascript' src='${path }/dwr/engine.js'></script>
+<script type='text/javascript' src='${path }/dwr/util.js'></script>
+<script type="text/javascript" src="${path }/dwr/interface/MessagePush.js"></script>
+<script type="text/javascript" src="${path }/js/naranja.js"></script>
+<link rel="stylesheet" href="${path }/js/css/naranja.min.css">
 	<script>
 		var layer = null;
         var flow = null;
         var dianzan = '${dianzans}';
         var shoucang = '${shoucangs}';
         $(function(){
-            layui.use(['element','layer','flow'], function(){
+
+            //dwr
+            dwr.engine.setActiveReverseAjax(true);
+            dwr.engine.setNotifyServerOnPageUnload(true);
+            onPageLoad();
+
+
+
+
+            layui.use(['element','layer','flow','form'], function(){
                 var element = layui.element;
                 layer = layui.layer;
+                var form = layui.form;
 
-                jiazai("");
+                jiazai("","","");
 
                 $("#sousuo").click(function(){
                     var titleName = $("#shuru").val();
                     $("#demo").html("");
-                    jiazai(titleName);
+                    jiazai(titleName,"","");
 				});
 
                 $("#shuru").focus(function(){
@@ -56,7 +71,7 @@
                     var aid = "";
                     if($(this).hasClass("layui-btn-primary")){
                         index.css({"color":"red"});
-                        zi.text("取消");
+                        // zi.text("取消");
                         $(this).removeClass("layui-btn-primary");
                         index.removeClass("layui-icon-heart");
                         index.addClass("layui-icon-heart-fill");
@@ -66,7 +81,7 @@
 
                     }else{
                         index.css({"color":""});
-                        zi.text("喜欢");
+                        // zi.text("喜欢");
                         $(this).addClass("layui-btn-primary");
                         index.addClass("layui-icon-heart");
                         index.removeClass("layui-icon-heart-fill");
@@ -135,8 +150,92 @@
                         "${path}/artical/articleDetail.action?articleId="+id
 					);
 				});
+                
+                $("#guan").click(function () {
+                    $("#demo").text("");
+                    jiazai("","${user.id}","");
+                });
+
+				$(".type").click(function(){
+				    $("#demo").text("");
+                    jiazai("","",$(this).parent("dd").attr("ids"));
+				});
+
+				$("#xiugai_mi").click(function(){
+                    layer.open({
+                        type: 1,
+                        title: "修改密码",
+                        area: ['420px', '300px'], //宽高
+                        content: $("#editPassword_dialog")
+                    });
+                });
+
+				$("#tuichu").click(function(){
+                    // session.invalidate()
+                    layer.confirm('确定退出吗?', function(index){
+                        window.location.href = "${path}/index/clearSession.action";
+                    });
+				})
+
+				$("#geren").click(function(){
+                    window.open(
+                        "${path}/artical/toPerson.action?userId="+"${user.id}"
+                    );
+				});
+
+
+                form.verify({
+                    pass: function(value, item){ //value：表单的值、item：表单的DOM对象
+                        var str = "";
+                        $.ajax({
+                            type:"POST",
+                            async: false,  //默认true,异步
+                            dataType:"text",
+                            data:{"pass":value},
+                            url:"${path}/index/checkPass.action",
+                            success:function(data){
+                                str = data;
+                            }
+                        });
+                        if(str == "no"){
+
+                            return "旧密码不正确";
+                        }
+                    }
+                });
+
+                form.on('submit(go)', function(data){
+
+                    $.ajax({
+                        type:"POST",
+                        async: false,  //默认true,异步
+                        dataType:"text",
+                        data:{"newPass":$("#newPass").val()},
+                        url:"${path}/index/changePassword.action",
+                        success:function(data){
+                            layer.closeAll();
+                            layer.msg("修改成功！");
+                        }
+                    });
+
+                    // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                    // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                    // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                });
+                //
+                // $("#saveBtu").click(function(){
+                //
+                // });
+                $("#closeBtu").click(function(){
+                    layer.closeAll();
+                });
 
             });
+
+
+
+
 
         });
 
@@ -150,7 +249,7 @@
 		}
 
 
-        function jiazai(titleName){
+        function jiazai(titleName,guanzhu,articleType){
             //流加载显示文章列表
             // var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
             flow = layui.flow;
@@ -159,7 +258,8 @@
                 ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
                     var lis = [];
                     //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                    $.get('${path}/artical/allArticle.action?articleTitle='+titleName+'&page='+page, function(res){
+                    $.get('${path}/artical/allArticle.action?articleTitle='+titleName+'&page='+page+'&guanzhu='+guanzhu+'&articleType='+articleType,
+						function(res){
                         //假设你的列表返回在data集合中
                         layui.each(res.data, function(index, item){
                             var str = '';
@@ -171,13 +271,13 @@
 							if(dianIndex != -1){
                                 str += '   <div class="anniu"><button type="button" class="layui-btn dianzan" >'
                                 str += '   <div style = "display: none;">'+item.id+'</div>'
-                                str += '      <i class="layui-icon layui-icon-heart-fill" style = "color: red"></i>  <span class = "zi">取消</span> <span class = "xihuan_shuzi">'+item.articleLove+'</span></button>'
+                                str += '      <i class="layui-icon layui-icon-heart-fill" style = "color: red"></i>  <span class = "zi"></span> <span class = "xihuan_shuzi">'+item.articleLove+'</span></button>'
                                 str += '   <span class="pinlun"><i class="layui-icon" style = "color: #999;">&#xe611;</i>'
                                 str += '  <span class="pinlun_shuzi">'+item.pingLunCount+'</span>条评论</span>'
-                                str += '      <span class="pinlun">'
-                                str += '     <i class="layui-icon layui-icon-release" style = "color: #999;"></i>'
-                                str += '     <span class = "pinlun_shuzi">转发</span>'
-                                str += '     </span>'
+                                // str += '      <span class="pinlun">'
+                                // str += '     <i class="layui-icon layui-icon-release" style = "color: #999;"></i>'
+                                // str += '     <span class = "pinlun_shuzi">转发</span>'
+                                // str += '     </span>'
 
 
 								var shouIndex = shoucang.indexOf(item.id);
@@ -196,13 +296,13 @@
 							}else{
                                 str += '   <div class="anniu"><button type="button" class="layui-btn layui-btn-primary dianzan" >'
                                 str += '   <div style = "display: none;">'+item.id+'</div>'
-                                str += '      <i class="layui-icon layui-icon-heart"></i>  <span class = "zi">喜欢</span> <span class = "xihuan_shuzi">'+item.articleLove+'</span></button>'
+                                str += '      <i class="layui-icon layui-icon-heart"></i>  <span class = "zi"></span> <span class = "xihuan_shuzi">'+item.articleLove+'</span></button>'
                                 str += '   <span class="pinlun"><i class="layui-icon" style = "color: #999;">&#xe611;</i>'
                                 str += '  <span class="pinlun_shuzi">'+item.pingLunCount+'</span>条评论</span>'
-                                str += '      <span class="pinlun">'
-                                str += '     <i class="layui-icon layui-icon-release" style = "color: #999;"></i>'
-                                str += '     <span class = "pinlun_shuzi">转发</span>'
-                                str += '     </span>'
+                                // str += '      <span class="pinlun">'
+                                // str += '     <i class="layui-icon layui-icon-release" style = "color: #999;"></i>'
+                                // str += '     <span class = "pinlun_shuzi">转发</span>'
+                                // str += '     </span>'
                                 var shouIndex = shoucang.indexOf(item.id);
                                 if(shouIndex != -1){
                                     str += '       <span class="pinlun shoucang">'
@@ -229,6 +329,10 @@
             });
 		}
 
+        function showMessage(data){narn('log',data);}
+        function narn (type,data) {naranja()[type]({title: '新消息提示',text: data,timeout: 'keep',buttons: [{text: '已读',click: function (e) {naranja().success({title: '通知',text: '通知已读'})}},{text: '取消',click: function (e) {e.closeNotification();}}]})}
+        function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
+
         function test(){
                 window.location.reload();
             // layer.msg("发布成功！");
@@ -243,14 +347,17 @@
 		<div class="layui-container">
 			<ul class="layui-nav layui-bg-green" lay-filter="">
 				<li class="layui-nav-item layui-this"><a href="">首页</a></li>
-				<li class="layui-nav-item"><a href="">关注</a></li>
+				<li class="layui-nav-item"><a href="javascript:;" id="guan">关注</a></li>
 				<%--<li class="layui-nav-item"><a href="">回答</a></li>--%>
 				<li class="layui-nav-item">
-					<a href="javascript:;">我的</a>
+					<a href="javascript:;">分类</a>
 					<dl class="layui-nav-child"> <!-- 二级菜单 -->
-						<dd><a href="">我的点赞</a></dd>
-						<dd><a href="">我的评论</a></dd>
-						<dd><a href="">我的转发</a></dd>
+
+						<c:forEach items="${artTypeList}" var="i">
+							<dd ids = "${i.id}"><a href="javascript:;" class = "type">${i.typeName}</a></dd>
+						</c:forEach>
+
+
 					</dl>
 				</li>
 				<li class="layui-nav-item lvxian">
@@ -271,14 +378,13 @@
 					</li></div>
 				<div class = "two">
 					<li class="layui-nav-item layui-layout-right">
-						<a href="">个人中心</a>
+						<a href="javascript:;" id="geren">个人中心</a>
 					</li></div>
 				<li class="layui-nav-item layui-layout-right">
 					<a href="javascript:;">选项</a>
 					<dl class="layui-nav-child">
-						<dd><a href="javascript:;">修改信息</a></dd>
-						<dd><a href="javascript:;">安全管理</a></dd>
-						<dd><a href="javascript:;">退了</a></dd>
+						<dd><a href="javascript:;" id="xiugai_mi">修改密码</a></dd>
+						<dd><a href="javascript:;" id="tuichu">退出系统</a></dd>
 					</dl>
 				</li>
 			</ul>
@@ -318,7 +424,7 @@
 					</div>
 					<div style = "padding: 1.25rem 3rem 1.25rem 3rem;height: 3.125rem;">
 						<div style = "height: 100%;float: left;color: #999;text-align: center;">文章</br></br><span class="shuzi">${artCount}</span></div>
-						<div style = "height: 100%;float: right;color: #999;">关注者</br></br><span class="shuzi">123</span></div>
+						<div style = "height: 100%;float: right;color: #999;text-align: center">关注者</br></br><span class="shuzi">${user.guanZhuCount}</span></div>
 					</div>
 				</div>
 
@@ -329,6 +435,40 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<!-- 修改密码 -->
+<div id="editPassword_dialog" style="display:none;margin-top: 20px;">
+	<form id="editPassword_form" style="margin:5px;" class = "layui-form" action="${path}/index/changePassword.action" lay-filter="" >
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">旧密码：</label>
+				<div class="layui-input-inline">
+					<input type="password" id="old_pass" name="oldPass" lay-verify="pass" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">新密码：</label>
+				<div class="layui-input-inline">
+					<input type="password" id="newPass" name="newPass" lay-verify="required" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">确认密码：</label>
+				<div class="layui-input-inline">
+					<input type="password" id="re_new_pass" name="re_new_pass" lay-verify="required" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div align="center" style="margin:10px 10px 5px 0px;">
+			<button type="button" id="saveBtu" class="layui-btn" lay-submit="" lay-filter="go">保存</button>
+			<button type="button" id="closeBtu" class="layui-btn layui-btn-warm">取消</button>
+		</div>
+	</form>
 </div>
 
 </body>

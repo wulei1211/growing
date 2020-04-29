@@ -13,11 +13,15 @@ import java.util.List;
 public interface ArticleService {
     public void articleAdd(Article article);
 
-    public List<Article> findAllArticle(String articleTitle,Integer page);
+    public List<Article> findAllArticle(String articleTitle,String guanzhu,String articleType,String master,String shouCang,Integer page);
 
-    public int findAllArticleCount(String articleTitle,String userId);
+    public int findAllArticleCount(String articleTitle,String guanzhu,String articleType,String master,String shouCang,String userId);
 
     public Article findArticleById(String articleId);
+
+    public void addLiuLanCount(int articleCount,String articleId);
+
+    public void deleteArticleById(String articleId);
 
 //    public int findAllShouCangCount(String userId);
 }

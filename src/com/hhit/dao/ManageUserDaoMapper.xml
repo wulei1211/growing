@@ -46,4 +46,8 @@
         select u.* from nh_manage_user u  inner join article a on a.master = u.id where a.id = #{articleId}
     </select>
 
+    <update id="changePassword">
+        update nh_manage_user set password = #{newPass} where id = #{userId}
+    </update>
+
 </mapper>

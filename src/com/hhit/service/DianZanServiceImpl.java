@@ -38,4 +38,9 @@ public class DianZanServiceImpl implements DianZanService {
     public void quXiaoZan(String articleId, String userId,String dianType) {
         dianZanDaoMapper.quXiaoZan(articleId,userId,dianType);
     }
+
+    @Override
+    public List<DianZan> findShouCangArticleIds(String id) {
+        return dianZanDaoMapper.findShouCangArticleIds(id);
+    }
 }

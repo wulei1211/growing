@@ -27,6 +27,9 @@
             and dian_type = "2"
         </if>
 
-
     </delete>
+
+    <select id="findShouCangArticleIds" resultMap="DianZanBean">
+        select  *from dianzan where user_id = #{id} and dian_type = "2"
+    </select>
 </mapper>

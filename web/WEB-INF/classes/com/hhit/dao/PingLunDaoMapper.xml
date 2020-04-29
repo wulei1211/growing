@@ -11,6 +11,8 @@
         <result property="realName" column="real_name" />
         <result property="time" column="time" />
         <association property="replayCount" column="id" select="getPingLunReplayCount" />
+        <association property="pingLunDianCount" column="id" select="getPingLunDianCount" />
+        <association property="repLayList" column="id" select="com.hhit.dao.ReplayDaoMapper.getAllReplayOfPingLun" />
     </resultMap>
 
     <select id="findAllPingLunByArticleId" resultMap="PingLunBean">
@@ -32,6 +34,33 @@
     <insert id="addPingLun" parameterType="com.hhit.entity.PingLun">
         insert into pinglun(id,article_id,user_id,pinglun_content,time) values (#{id},#{articleId},#{userId},#{pingLunContent},#{time})
     </insert>
+
+    <select id="getPingLunDianCount" resultType="int">
+        select count(0) from pinglun_dian where pinglun_id = #{pinId} and dian_type = "1"
+    </select>
+
+    <insert id="addPingLunDian" parameterType="com.hhit.entity.PingLunDian">
+        insert into  pinglun_dian(id,pinglun_id,user_id,dian_type) values (#{id},#{pingLunId},#{userId},#{dianType})
+    </insert>
+
+    <delete id="deletePingLunDian" parameterType="com.hhit.entity.PingLunDian">
+        delete from pinglun_dian where pinglun_id = #{pingLunId} and dian_type = #{dianType} and user_id = #{userId}
+    </delete>
     
+    <delete id="deleteArticlesPingLun">
+        delete from pinglun where article_id = #{articleId}
+    </delete>
+
+    <select id="findAllPingLunByUserId" resultMap="PingLunBean">
+        select *from pinglun where  user_id = #{userId}
+        <if test="page != null">
+            limit #{page},10
+        </if>
+    </select>
+
+    <!--<select id="getReplayList" resultType="com.hhit.entity.Replay">-->
+        <!--select * from replay-->
+        <!--where pinglun_id = #{pingId}-->
+    <!--</select>-->
 
 </mapper>

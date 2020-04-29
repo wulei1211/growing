@@ -14,6 +14,7 @@
         <!--<result property="articleLove" column="article_love"/>-->
         <association property="pingLunCount" column="id" select="getArticlePinglunCount" />
         <association property="articleLove" column="id" select="getArticleLoveCount" />
+        <association property="shouCangCount" column="id" select="getShouCangCount" />
     </resultMap>
     
     <insert id="articleAdd" parameterType="com.hhit.entity.Article">
@@ -28,6 +29,18 @@
             <if test="articleTitle != null and articleTitle != ''">
                 and article_title like CONCAT('%',#{articleTitle},'%')
             </if>
+            <if test="articleType != null and articleType != ''">
+                and article_type = #{articleType}
+            </if>
+            <if test="master != null and master != ''">
+                and master = #{master}
+            </if>
+            <if test="guanzhu != null and guanzhu != ''">
+                and `master` in (SELECT u.id from nh_manage_user u INNER JOIN guanzhu g ON u.id = g.bei_guan WHERE g.user_id = #{guanzhu})
+            </if>
+            <if test="shouCang != null and shouCang != ''">
+                and id in (select article_id from dianzan where user_id = #{shouCang} and dian_type = "2")
+            </if>
         </where>
         ORDER BY create_time desc
         <if test="page != null">
@@ -37,6 +50,10 @@
 
     <select id="getArticlePinglunCount" parameterType="String" resultType="int" >
         SELECT COUNT(0) FROM pinglun WHERE article_id = #{articleId}
+    </select>
+
+    <select id="getShouCangCount" parameterType="String" resultType="int" >
+        SELECT COUNT(0) FROM dianzan WHERE article_id = #{articleId} and dian_type = "2"
     </select>
 
     <select id="getArticleLoveCount" parameterType="String" resultType="int" >
@@ -50,6 +67,18 @@
             <if test="articleTitle != null and articleTitle != ''">
                 and article_title like CONCAT('%',#{articleTitle},'%')
             </if>
+            <if test="articleType != null and articleType != ''">
+                and article_type = #{articleType}
+            </if>
+            <if test="guanzhu != null and guanzhu != ''">
+                and `master` in (SELECT u.id from nh_manage_user u INNER JOIN guanzhu g ON u.id = g.bei_guan WHERE g.user_id = #{guanzhu})
+            </if>
+            <if test="shouCang != null and shouCang != ''">
+                and id in (select article_id from dianzan where user_id = #{shouCang} and dian_type = "2")
+            </if>
+            <if test="master != null and master != ''">
+                and master = #{master}
+            </if>
             <if test="userId != null and userId != ''">
                 and master = #{userId}
             </if>
@@ -59,7 +88,13 @@
     <select id="findArticleById" resultMap="ArticleBean">
         select *from article where id = #{articleId}
     </select>
-    
 
+    <update id="addLiuLanCount">
+        update article set article_count = #{articleCount} where id = #{articleId}
+    </update>
+
+    <delete id="deleteArticleById">
+        delete from article where id = #{articleId}
+    </delete>
     
 </mapper>

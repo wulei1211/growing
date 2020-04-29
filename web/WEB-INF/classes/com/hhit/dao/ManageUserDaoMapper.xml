@@ -16,6 +16,9 @@
         <result property="weiXin" column="weixin" />
         <result property="memo" column="memo" />
         <result property="headImg" column="head_img" />
+        <association property="shouCangCount" column="id" select="getShouCangCount" />
+        <association property="articleCount" column="id" select="getArticleCount" />
+        <association property="guanZhuCount" column="id" select="getGuanZhuCount" />
     </resultMap>
 
 
@@ -24,5 +27,27 @@
         select *from nh_manage_user where delete_flag = #{deleteFlag} and user_name = #{userName}
     </select>
 
+    <select id="getShouCangCount" parameterType="String" resultType="int" >
+        SELECT COUNT(0) FROM dianzan WHERE user_id = #{userId} and dian_type = "2"
+    </select>
+    <select id="getArticleCount" parameterType="String" resultType="int" >
+        SELECT COUNT(0) FROM article WHERE master = #{userId}
+    </select>
+
+    <select id="findUserBeanById" resultMap="ManageUserBean">
+        select *from nh_manage_user where id = #{userId}
+    </select>
+
+    <select id="getGuanZhuCount" resultType="int">
+        select count(0) from guanzhu where bei_guan = #{beiGuanId}
+    </select>
+
+    <select id="findArticleUserByArticleId" resultMap="ManageUserBean">
+        select u.* from nh_manage_user u  inner join article a on a.master = u.id where a.id = #{articleId}
+    </select>
+
+    <update id="changePassword">
+        update nh_manage_user set password = #{newPass} where id = #{userId}
+    </update>
 
 </mapper>

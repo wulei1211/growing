@@ -15,4 +15,6 @@ public interface ManageUserService {
     public ManageUserBean findUserBeanById(String userId);
 
     public ManageUserBean findArticleUserByArticleId(String articleId);
+
+    public void changePassword(String userId,String newPass);
 }

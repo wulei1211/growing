@@ -78,5 +78,14 @@
         <bean class="com.hhit.interceptor.SystemInterceptor" />
     </mvc:interceptors>-->
 
+    <!--     接口跨域配置-->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+                     allow-credentials="true" />
+    </mvc:cors>
+
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>

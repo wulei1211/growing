@@ -16,4 +16,6 @@ public interface DianZanService {
     public void dianzan(DianZan dian);
 
     public void quXiaoZan(String articleId, String userId,String dianType);
+
+    public List<DianZan> findShouCangArticleIds(String id);
 }

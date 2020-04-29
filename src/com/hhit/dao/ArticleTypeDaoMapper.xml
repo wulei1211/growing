@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.ArticleTypeDaoMapper">
+    <resultMap id="ArticleTypeBean" type="com.hhit.entity.ArticleType">
+        <id property="id" column="id"/>
+        <result property="typeName" column="type_name"/>
+    </resultMap>
+
+    <select id="findAllArticleType" resultMap="ArticleTypeBean">
+        SELECT *from article_type
+    </select>
+</mapper>

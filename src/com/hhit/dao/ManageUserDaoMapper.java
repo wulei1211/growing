@@ -21,4 +21,6 @@ public interface ManageUserDaoMapper {
     public ManageUserBean findUserBeanById(@Param("userId") String userId);
 
     public ManageUserBean findArticleUserByArticleId(@Param("articleId") String articleId);
+
+    public void changePassword(@Param("userId")String userId,@Param("newPass") String newPass);
 }

@@ -30,4 +30,10 @@ public class ReplayServiceImpl implements ReplayService {
     public void addReplay(Replay replay) {
         replayDaoMapper.addReplay(replay);
     }
+
+    @Override
+    @Transactional
+    public void deleteArticlesReplay(String articleId) {
+        replayDaoMapper.deleteArticlesReplay(articleId);
+    }
 }

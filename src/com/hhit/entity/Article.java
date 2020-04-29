@@ -19,7 +19,15 @@ public class Article extends BaseBean {
 
     private Integer pingLunCount;
     private Integer articleLove;
+    private Integer shouCangCount;
 
+    public Integer getShouCangCount() {
+        return shouCangCount;
+    }
+
+    public void setShouCangCount(Integer shouCangCount) {
+        this.shouCangCount = shouCangCount;
+    }
 
     public Article(){}
 

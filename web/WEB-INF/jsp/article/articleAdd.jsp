@@ -20,7 +20,9 @@
     <link rel="stylesheet" href="${path}/js/css/index.css">
     <script type="text/javascript">
         var editor;
+        var articleMsg = ${articleMsg}
         $(function(){
+
             var E = window.wangEditor
             editor = new E('#editor');
 
@@ -72,6 +74,10 @@
             }
             editor.create();
 
+            editor.txt.html(articleMsg.articleContent);
+            $("#title").val(articleMsg.articleTitle);
+
+
             layui.use(['layer'],function(){
 
                 var layer = layui.layer;
@@ -120,7 +126,8 @@
                                 type:"POST",
                                 async: false,  //默认true,异步
                                 dataType:"text",
-                                data:data,
+                                data:JSON.stringify(data),
+                                contentType: 'application/json; charset=UTF-8',
                                 url:"${path}/artical/articleAdd.action",
                                 success:function(data){
                                     if(data == "success"){

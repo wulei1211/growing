@@ -224,11 +224,17 @@
                             pinlunid = _huifu.parent("span").parent("div").parent("div").prev().find("div:eq(0)").text();
                             //对回复的回复
                         }
+                        var data = {};
+                        data.replayContent = $("#ping").val();
+                        data.toPlayer = toUser;
+                        data.pingLunId = pinlunid;
+                        data.articleId = "${articleId}";
                         $.ajax({
                             type:"POST",
                             async: false,  //默认true,异步
                             dataType:"text",
-                            data:{"replayContent":$("#ping").val(),"toPlayer":toUser,"pingLunId":pinlunid,"articleId":"${articleId}"},
+                            contentType: 'application/json; charset=UTF-8',
+                            data:JSON.stringify(data),
                             url:"${path}/artical/addReplay.action",
                             success:function(data){
                                 if(data == "success"){
@@ -257,7 +263,7 @@
                                     type:"POST",
                                     async: false,  //默认true,异步
                                     dataType:"text",
-                                    data:{"articleId":"${articleId}","pingLunContent":pinlun},
+                                    data:{"articleId":"${articleId}","pingLunContent":pinlun,"articleMasterId":"${artUser.id}"},
                                     url:"${path}/artical/addPingLun.action",
                                     success:function(data){
                                         if(data == "success"){
@@ -331,7 +337,13 @@
                     })
 
 
-                })
+                });
+
+                $("#jinGeRen").click(function(){
+                    window.open(
+                        "${path}/artical/toPerson.action?userId="+"${artUser.id}"
+                    );
+                });
 
 
                 // $(document).on("focus","#ping",function(){
@@ -379,17 +391,17 @@
                         <dd><a href="">我的转发</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item lvxian">
-                    <div class="layui-input-block" style = "width:320px;position: relative;">
-                        <input type="text" name="title" placeholder="请输入关键词" class="layui-input" id = "shuru">
-                        <div class = "sousuoicon"><i class="layui-icon" style="font-size: 22px; color: #999;">&#xe615;</i></div>
-                    </div>
-                </li>
+                <%--<li class="layui-nav-item lvxian">--%>
+                    <%--<div class="layui-input-block" style = "width:320px;position: relative;">--%>
+                        <%--<input type="text" name="title" placeholder="请输入关键词" class="layui-input" id = "shuru">--%>
+                        <%--<div class = "sousuoicon"><i class="layui-icon" style="font-size: 22px; color: #999;">&#xe615;</i></div>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
 
-                <li class="layui-nav-item ">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="layui-btn layui-btn-warm" id = "tiwen">发帖</button>
-                </li>
+                <%--<li class="layui-nav-item ">--%>
+                    <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                    <%--<button type="button" class="layui-btn layui-btn-warm" id = "tiwen">发帖</button>--%>
+                <%--</li>--%>
                 <div class = "one">
                     <li class="layui-nav-item layui-layout-right">
                         <a href=""><i class="layui-icon" style="font-size: 20px;">&#xe667;</i><span class="layui-badge">9</span></a>
@@ -425,9 +437,9 @@
                     </div>
                     <div class="detail_biaoji">
 
-                        <i class="layui-icon layui-icon-username detail_biaoji">浏览<span>101</span></i>
-                        <i class="layui-icon layui-icon-star detail_biaoji">收藏<span>101</span></i>
-                        <i class="layui-icon layui-icon-heart detail_biaoji">点赞<span>101</span></i>
+                        <i class="layui-icon layui-icon-username detail_biaoji">浏览<span>${article.articleCount}</span></i>
+                        <i class="layui-icon layui-icon-star detail_biaoji">收藏<span>${article.shouCangCount}</span></i>
+                        <i class="layui-icon layui-icon-heart detail_biaoji">点赞<span>${article.articleLove}</span></i>
                     </div>
                     <div class = "clear"></div>
                 </div>
@@ -499,8 +511,8 @@
                     <div style = "text-align: center;margin-top: 2.5rem;">
                         <img src="${artUser.headImg}" style = "width: 3.75rem;height: 3.75rem;border: 0.1875rem solid #009688;border-radius: 50%;" />
                     </div>
-                    <div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">
-                        <span>${artUser.realName}</span>
+                    <div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;cursor: pointer">
+                        <span id = "jinGeRen">${artUser.realName}</span>
                         <c:if test="${booleanGuan==0}">
                             <span id="anniu_button">
                             &nbsp;&nbsp;

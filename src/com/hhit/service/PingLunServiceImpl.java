@@ -48,4 +48,15 @@ public class PingLunServiceImpl implements PingLunService {
     public void deletePingLunDian(PingLunDian pingDian) {
         pingLunDaoMapper.deletePingLunDian(pingDian);
     }
+
+    @Override
+    @Transactional
+    public void deleteArticlesPingLun(String articleId) {
+        pingLunDaoMapper.deleteArticlesPingLun(articleId);
+    }
+
+    @Override
+    public List<PingLun> findAllPingLunByUserId(String userId,Integer page) {
+        return pingLunDaoMapper.findAllPingLunByUserId(userId,page);
+    }
 }

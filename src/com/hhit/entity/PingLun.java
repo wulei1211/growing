@@ -1,5 +1,7 @@
 package com.hhit.entity;
 
+import java.util.List;
+
 /**
  * @Author: wulei
  * @Description:
@@ -20,6 +22,16 @@ public class PingLun {
     private Integer pingLunDianCount;
 
     private Integer replayCount;
+
+    private List<Replay> repLayList;
+
+    public List<Replay> getRepLayList() {
+        return repLayList;
+    }
+
+    public void setRepLayList(List<Replay> repLayList) {
+        this.repLayList = repLayList;
+    }
 
     public Integer getPingLunDianCount() {
         return pingLunDianCount;

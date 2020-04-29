@@ -20,8 +20,15 @@
         select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
         INNER JOIN nh_manage_user u on r.replayer = u.id
         INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
-        where r.pinglun_id = #{pId}
+        where r.pinglun_id = #{pId} ORDER BY r.time desc
     </select>
+
+    <!--<select id="getAllReplayOfPingLunPlus" resultMap="ReplayBean">-->
+        <!--select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r-->
+        <!--INNER JOIN nh_manage_user u on r.replayer = u.id-->
+        <!--INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer-->
+        <!--where r.pinglun_id = #{pId} and r.to_replayer = #{} ORDER BY r.time desc-->
+    <!--</select>-->
 
     <insert id="addReplay" parameterType="com.hhit.entity.Replay">
         insert into replay(id,pinglun_id,article_id,replay_content,replayer,to_replayer,time)
@@ -31,5 +38,9 @@
     <select id="getReplayDianCount" resultType="int">
         select count(0) from pinglun_dian where pinglun_id = #{replayId} and dian_type = "2"
     </select>
+
+    <delete id="deleteArticlesReplay">
+        delete  from  replay where  article_id = #{articleId}
+    </delete>
 
 </mapper>

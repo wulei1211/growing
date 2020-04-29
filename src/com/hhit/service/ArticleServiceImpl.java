@@ -27,18 +27,30 @@ public class ArticleServiceImpl implements  ArticleService {
     }
 
     @Override
-    public List<Article> findAllArticle(String articleTitle,Integer page) {
-        return articleDaoMapper.findAllArticle(articleTitle,page);
+    public List<Article> findAllArticle(String articleTitle,String guanzhu,String articleType,String master,String shouCang,Integer page) {
+        return articleDaoMapper.findAllArticle(articleTitle,guanzhu,articleType,master,shouCang,page);
     }
 
     @Override
-    public int findAllArticleCount(String articleTitle,String userId) {
-        return articleDaoMapper.findAllArticleCount(articleTitle,userId);
+    public int findAllArticleCount(String articleTitle,String guanzhu,String articleType,String master,String shouCang,String userId) {
+        return articleDaoMapper.findAllArticleCount(articleTitle,guanzhu,articleType,master,shouCang,userId);
     }
 
     @Override
     public Article findArticleById(String articleId) {
         return articleDaoMapper.findArticleById(articleId);
+    }
+
+    @Override
+    @Transactional
+    public void addLiuLanCount(int articleCount,String articleId) {
+        articleDaoMapper.addLiuLanCount(articleCount,articleId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteArticleById(String articleId) {
+        articleDaoMapper.deleteArticleById(articleId);
     }
 
 //    @Override

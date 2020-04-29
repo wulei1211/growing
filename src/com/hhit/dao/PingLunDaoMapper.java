@@ -26,4 +26,10 @@ public interface PingLunDaoMapper {
     public void addPingLunDian(PingLunDian pingDian);
 
     public void deletePingLunDian(PingLunDian pingDian);
+
+    public void deleteArticlesPingLun(@Param("articleId") String articleId);
+
+    public List<PingLun> findAllPingLunByUserId(@Param("userId") String userId,@Param("page") Integer page);
+
+//    public List<Replay> getReplayList(@Param("pingId") String pingId);
 }

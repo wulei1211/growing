@@ -87,8 +87,5 @@
                      allow-credentials="true" />
     </mvc:cors>
 
-
-
-
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>

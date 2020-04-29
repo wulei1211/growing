@@ -21,4 +21,8 @@ public interface PingLunService {
     public void addPingLunDian(PingLunDian pingDian);
 
     public void deletePingLunDian(PingLunDian pingDian);
+
+    public void deleteArticlesPingLun(String articleId);
+
+    public List<PingLun> findAllPingLunByUserId(String userId,Integer page);
 }

@@ -34,4 +34,10 @@ public class ManageUserServiceImpl implements ManageUserService {
     public ManageUserBean findArticleUserByArticleId(String articleId) {
         return manageUserDaoMapper.findArticleUserByArticleId(articleId);
     }
+
+    @Override
+    @Transactional
+    public void changePassword(String userId,String newPass) {
+        manageUserDaoMapper.changePassword(userId,newPass);
+    }
 }
