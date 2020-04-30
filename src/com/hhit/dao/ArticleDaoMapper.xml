@@ -15,8 +15,14 @@
         <association property="pingLunCount" column="id" select="getArticlePinglunCount" />
         <association property="articleLove" column="id" select="getArticleLoveCount" />
         <association property="shouCangCount" column="id" select="getShouCangCount" />
+        <association property="userMsg" column="master" select="com.hhit.dao.ManageUserDaoMapper.findUserBeanById" />
     </resultMap>
-    
+
+    <update id="updateArticleById" parameterType="com.hhit.entity.Article">
+        update article set article_type = #{articleType},article_title = #{articleTitle},article_content = #{articleContent},edit_time = #{editTime}
+        where id = #{id}
+    </update>
+
     <insert id="articleAdd" parameterType="com.hhit.entity.Article">
         insert into article(id,article_type,article_title,article_content,article_count,master,create_time,edit_time)
             VALUES(#{id},#{articleType},#{articleTitle},#{articleContent},#{articleCount},#{master},#{createTime},#{editTime})
@@ -96,5 +102,7 @@
     <delete id="deleteArticleById">
         delete from article where id = #{articleId}
     </delete>
+
+
     
 </mapper>

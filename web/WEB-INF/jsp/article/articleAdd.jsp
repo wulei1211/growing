@@ -26,34 +26,22 @@
             var E = window.wangEditor
             editor = new E('#editor');
 
-            // 自定义菜单配置
             editor.customConfig.menus = [
-                // 'head',  // 标题
-                'bold' /** 粗体*/, 'fontSize' /** 字号 */, 'fontName' /** 字体 */,'italic' /** 斜体 */,
-                //	 		    'underline',  // 下划线
-                'strikeThrough',  // 删除线
-                'foreColor',  // 文字颜色
-                // 'backColor',  // 背景颜色
-                'link',  // 插入链接
-                // 'list',  // 列表
-                'justify',  // 对齐方式
-                'quote',  // 引用
-                // 'emoticon',  // 表情   打开后支持表情功能
-                'image',  // 插入图片
-                'table',  // 表格
-                // 'video',  // 插入视频
-                //	 		    'code',  // 插入代码
-                'undo',  // 撤销
-                'redo'  // 重复
+                'bold' , 'fontSize' , 'fontName' ,'italic' ,
+                'strikeThrough',
+                'foreColor',
+                'link',
+                'justify',
+                'quote',
+                'image',
+                'table',
+                'undo',
+                'redo'
             ]
 
             editor.customConfig.uploadImgServer = "${path}/fileUploadAction/upload.action"  // 上传图片到服务器
-            // 将图片大小限制为 1M
             editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
             editor.customConfig.uploadFileName = 'myFile';
-            // editor.customConfig.showLinkImg= false;
-            // 限制一次最多上传 1 张图片
-            // editor.customConfig.uploadImgMaxLength = 1;
 
             editor.customConfig.uploadImgHooks = {
                 before : function(xhr, editor, files) {
@@ -115,8 +103,19 @@
                 })
 
                 $("#fasong").click(function(){
+                    var type = "";
+                    var data = {};
                     if($(this).parent("div").prev().find("button").hasClass("ok")){
-                        var data = {};
+                        if(typeof(articleMsg.id) == "undefined"){
+                            // 添加帖子
+                            type = "1";
+                        }else{
+                            // 更新帖子
+                            type = "2";
+                            data.id = articleMsg.id
+                        }
+
+
                         data.master = "${userId}";
                         data.articleContent = content;
                         data.articleTitle = $("#title").val();
@@ -128,7 +127,7 @@
                                 dataType:"text",
                                 data:JSON.stringify(data),
                                 contentType: 'application/json; charset=UTF-8',
-                                url:"${path}/artical/articleAdd.action",
+                                url:"${path}/artical/articleAdd.action?type="+type,
                                 success:function(data){
                                     if(data == "success"){
                                         window.close();

@@ -25,6 +25,16 @@ public class PingLun {
 
     private List<Replay> repLayList;
 
+    private Article article;
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
     public List<Replay> getRepLayList() {
         return repLayList;
     }

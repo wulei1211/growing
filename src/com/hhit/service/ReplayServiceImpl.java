@@ -36,4 +36,10 @@ public class ReplayServiceImpl implements ReplayService {
     public void deleteArticlesReplay(String articleId) {
         replayDaoMapper.deleteArticlesReplay(articleId);
     }
+
+    @Override
+    @Transactional
+    public void deletePingLunsReplay(String pId) {
+        replayDaoMapper.deletePingLunsReplay(pId);
+    }
 }

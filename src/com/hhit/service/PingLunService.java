@@ -25,4 +25,6 @@ public interface PingLunService {
     public void deleteArticlesPingLun(String articleId);
 
     public List<PingLun> findAllPingLunByUserId(String userId,Integer page);
+
+    public void deletePing(String pId);
 }

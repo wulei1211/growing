@@ -70,14 +70,20 @@ public class ArticalAction {
 
     @RequestMapping("articleAdd")
     @ResponseBody
-    public String articleAdd(@RequestBody Article article){
-        UUID id = UUID.randomUUID();
-        article.setId(id.toString());
-        article.setCreateTime(CommonUtil.getDateTimeString(new Date()));
-        article.setArticleCount(0);
-        article.setArticleLove(0);
-        articleService.articleAdd(article);
-
+    public String articleAdd(@RequestBody Article article,String type){
+        if("1".equals(type)){
+            // 添加文章
+            UUID id = UUID.randomUUID();
+            article.setId(id.toString());
+            article.setCreateTime(CommonUtil.getDateTimeString(new Date()));
+            article.setArticleCount(0);
+            article.setArticleLove(0);
+            articleService.articleAdd(article);
+        }else{
+            // 更新文章
+            article.setEditTime(CommonUtil.getDateTimeString(new Date()));
+            articleService.updateArticleById(article);
+        }
         return "success";
     }
 
@@ -222,18 +228,23 @@ public class ArticalAction {
 
     @RequestMapping("allArticlePing")
     @ResponseBody
-    public JSONObject allArticlePing(Integer page, String userId){
-        List<PingLun> list = pingLunService.findAllPingLunByUserId(userId,(page-1)*10);
-        List<PingLun> listAll = pingLunService.findAllPingLunByUserId(userId,null);
-        int count = 0;
-        for(PingLun i:listAll){
-            count += i.getReplayCount();
-        }
-        double xx = count;
+    public JSONObject allArticlePing(Integer page, String userId,HttpServletRequest request){
+        ManageUserBean userBean = (ManageUserBean) request.getSession().getAttribute("userBean");
         JSONObject json = new JSONObject();
-        int size = (int) ((xx%10==0)?xx/10: Math.ceil(xx / 10));
-        json.put("pages",size);
-        json.put("data",list);
+//        if("2".equals(type)) {
+            List<PingLun> list = pingLunService.findAllPingLunByUserId(userId, (page - 1) * 10);
+            List<PingLun> listAll = pingLunService.findAllPingLunByUserId(userId, null);
+            int count = 0;
+            for (PingLun i : listAll) {
+                count += i.getReplayCount();
+            }
+            double xx = count;
+            int size = (int) ((xx % 10 == 0) ? xx / 10 : Math.ceil(xx / 10));
+            json.put("pages", size);
+            json.put("data", list);
+//        }else{
+//            List<PingLun> pingList = pingLunService.findAllPingLunByUserId(userId,(page-1)*10);
+//        }
         return json;
     }
 
@@ -250,7 +261,6 @@ public class ArticalAction {
         return json;
     }
 
-
     @RequestMapping("articleDetailReact")
     @ResponseBody
     public JSONObject articleDetailReact(String articleId,HttpServletRequest request){
@@ -264,4 +274,12 @@ public class ArticalAction {
         json.put("booleanGuan",flag);
         return json;
     }
+
+    @RequestMapping("deletePing")
+    @ResponseBody
+    public void deletePing(String pId){
+        pingLunService.deletePing(pId);
+        replayService.deletePingLunsReplay(pId);
+    }
+
 }

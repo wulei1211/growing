@@ -59,4 +59,10 @@ public class PingLunServiceImpl implements PingLunService {
     public List<PingLun> findAllPingLunByUserId(String userId,Integer page) {
         return pingLunDaoMapper.findAllPingLunByUserId(userId,page);
     }
+
+    @Override
+    @Transactional
+    public void deletePing(String pId) {
+        pingLunDaoMapper.deletePing(pId);
+    }
 }

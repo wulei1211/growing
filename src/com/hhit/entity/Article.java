@@ -21,6 +21,16 @@ public class Article extends BaseBean {
     private Integer articleLove;
     private Integer shouCangCount;
 
+    private ManageUserBean userMsg;
+
+    public ManageUserBean getUserMsg() {
+        return userMsg;
+    }
+
+    public void setUserMsg(ManageUserBean userMsg) {
+        this.userMsg = userMsg;
+    }
+
     public Integer getShouCangCount() {
         return shouCangCount;
     }

@@ -207,7 +207,29 @@
                 //进入回复
                 $("#myReplay").click(function(){
                     $("#demo").text("");
-                    jiazaiPing();
+                    jiazaiPing("2");
+                })
+
+                //删除评论回复
+                $(document).on("click",".xian_hui_del",function(){
+                    var id = $(this).parent("div").prev("div").text();
+                    layer.confirm('确认删除此评论?', function(index){
+                        //do something
+                        $.ajax({
+                            type:"POST",
+                            async: false,  //默认true,异步
+                            dataType:"text",
+                            data:{"pId":id},
+                            url:"${path}/artical/deletePing.action",
+                            success:function(data){
+                                $("#demo").text("")
+                                jiazaiPing("1")
+                            }
+
+                        });
+                        layer.close(index);
+                    });
+
                 })
 
 
@@ -230,6 +252,12 @@
 
                     });
                 })
+
+                // 评论
+                $("#myPingLun").click(function(){
+                    $("#demo").text("")
+                    jiazaiPing("1")
+                });
 
                 //直接回复帖子
                 $(document).on("click",".xian_hui_hui",function(){
@@ -280,8 +308,8 @@
             }
         }
 
-        //加载评论
-        function jiazaiPing(){
+        //加载回复
+        function jiazaiPing(type){
             var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
             flow = layui.flow;
             flow.load({
@@ -292,24 +320,43 @@
                     $.get('${path}/artical/allArticlePing.action?page='+page+'&userId='+'${user.id}', function(res){
                         //假设你的列表返回在data集合中
 
-                        layui.each(res.data, function(index, item){
-                            var str = '';
-                            $.each(item.repLayList,function(i,val){
-                                str += '<div class = "biao_ping">';
-                                str += '              <div class = "pinglun_tou_ping">';
-                                str += '  <div style = "display:none;">'+val.replayer+'</div>';//恢复给谁
-                                str += '  <div style = "display:none;">'+val.pingLunId+'</div>';//评论id
-                                str += '  <div style = "display:none;">'+val.articleId+'</div>';//文章id
-                                str += '              <span class = ""><img src="'+val.huiTou+'" class = "pinglun_touxiang pinglun_touxiang_plus" />&nbsp;&nbsp;</span>';
-                                str += '         <span style = "font-weight: bold;">'+val.huiName+'：</span><span style="color: #666;">回复了我的评论</span>';
-                                str += '         <span class = "xian_hui xian_hui_hui">回复</span><span class = "xian_hui xian_hui_del">删除评论</span>';
-                                str += '        <div class="pinglun_content" style = "width: 25rem;padding-left: 1.25rem;">';
-                                str += val.replayContent;
-                                str += '      <span class = "pinglun_time">&nbsp;&nbsp;'+val.time+'</span></div>';
-                                str += '      <div style = "width: 4rem;position: absolute;right: 0rem;top: 1.2rem;height: 60%;overflow: hidden;">'+item.pingLunContent+'</div></div> </div>';
+                        if(type == "2"){
+                            layui.each(res.data, function(index, item){
+                                var str = '';
+                                $.each(item.repLayList,function(i,val){
+                                    str += '<div class = "biao_ping">';
+                                    str += '              <div class = "pinglun_tou_ping">';
+                                    str += '  <div style = "display:none;">'+val.replayer+'</div>';//恢复给谁
+                                    str += '  <div style = "display:none;">'+val.pingLunId+'</div>';//评论id
+                                    str += '  <div style = "display:none;">'+val.articleId+'</div>';//文章id
+                                    str += '              <span class = ""><img src="'+val.huiTou+'" class = "pinglun_touxiang pinglun_touxiang_plus" />&nbsp;&nbsp;</span>';
+                                    str += '         <span style = "font-weight: bold;">'+val.huiName+'：</span><span style="color: #666;">回复了我的评论</span>';
+                                    str += '         <span class = "xian_hui xian_hui_hui">回复</span>';
+                                    str += '        <div class="pinglun_content" style = "width: 25rem;padding-left: 1.25rem;">';
+                                    str += val.replayContent;
+                                    str += '      <span class = "pinglun_time">&nbsp;&nbsp;'+val.time+'</span></div>';
+                                    str += '      <div style = "width: 4rem;position: absolute;right: 0rem;top: 1.2rem;height: 60%;overflow: hidden;">'+item.pingLunContent+'</div></div> </div>';
+                                });
+                                lis.push(str);
                             });
-                            lis.push(str);
-                        });
+                        }else{
+                            layui.each(res.data, function(index, item){
+                                console.log(item)
+                                var str = '';
+                                str += '<div class = "biao_ping">';
+                                str += '  <div style = "display:none;">'+item.id+'</div>';//评论id
+                                str += '              <div class = "pinglun_tou_ping">';
+                                str += '              <span class = ""><img src="'+item.headImg+'" class = "pinglun_touxiang pinglun_touxiang_plus" />&nbsp;&nbsp;</span>';
+                                str += '         <span style = "font-weight: bold;">'+item.realName+'：</span><span style="color: #666;">评论了文章</span>';
+                                str += '         <span class = "xian_hui xian_hui_del">删除评论</span>';
+                                str += '        <div class="pinglun_content" style = "width: 25rem;padding-left: 1.25rem;">';
+                                str += item.pingLunContent;
+                                str += '      <span class = "pinglun_time">&nbsp;&nbsp;'+item.time+'</span></div>';
+                                str += '      <div style = "width: 4rem;position: absolute;right: 0rem;top: 1.2rem;height: 60%;overflow: hidden;">'+item.article.articleTitle+'</div></div> </div>';
+                                lis.push(str);
+                            });
+                        }
+
 
                         //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                         //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
@@ -436,8 +483,8 @@
                 <li class="layui-nav-item layui-this"><a href="javascript:;" id = "wenzhang">文章</a></li>
                 <li class="layui-nav-item"><a href="javascript:;" id = "shouCang">收藏</a></li>
                 <li class="layui-nav-item"><a href="javascript:;" id = "myPingLun">评论</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" id = "myReplay">回复</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出系统</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" id = "myReplay">回复我的</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" id="myMsg">我的资料</a></li>
                 <!-- <li class="layui-nav-item lvxian">
                     <div class="layui-input-block" style = "width:320px;position: relative;">
                       <input type="text" name="title" placeholder="请输入关键词" class="layui-input" id = "shuru">

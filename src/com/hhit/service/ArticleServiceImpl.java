@@ -53,6 +53,12 @@ public class ArticleServiceImpl implements  ArticleService {
         articleDaoMapper.deleteArticleById(articleId);
     }
 
+    @Override
+    @Transactional
+    public void updateArticleById(Article article) {
+        articleDaoMapper.updateArticleById(article);
+    }
+
 //    @Override
 //    public int findAllShouCangCount(String userId) {
 //        return articleDaoMapper.findAllShouCangCount(userId);

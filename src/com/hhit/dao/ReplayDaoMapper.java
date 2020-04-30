@@ -14,11 +14,13 @@ import java.util.List;
 public interface ReplayDaoMapper {
     public List<Replay> getAllReplayOfPingLun(@Param("pId") String pId);
 
-    public List<Replay> getAllReplayOfPingLunPlus(@Param("pId") String pId);
+    public List<Replay> getAllReplayOfPingLunPlus(@Param("id") String id,@Param("userId") String userId);
 
     public void addReplay(Replay replay);
 
     public int getReplayDianCount(@Param("replayId") String replayId);
 
     public void deleteArticlesReplay(@Param("articleId") String articleId);
+
+    public void deletePingLunsReplay(@Param("pId") String pId);
 }

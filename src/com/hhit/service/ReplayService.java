@@ -16,4 +16,6 @@ public interface ReplayService {
     public void addReplay(Replay replay);
 
     public void deleteArticlesReplay(String articleId);
+
+    public void deletePingLunsReplay(String pId);
 }

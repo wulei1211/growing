@@ -1,6 +1,7 @@
 package com.hhit.dao;
 
 import com.hhit.entity.Article;
+import com.hhit.entity.ManageUserBean;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface ArticleDaoMapper {
     public void addLiuLanCount(@Param("articleCount") int articleCount,@Param("articleId") String articleId);
 
     public void deleteArticleById(@Param("articleId") String articleId);
+
+    public void updateArticleById(Article article);
+
+    public ManageUserBean getArticleMaster(@Param("userId") String userId);
+
+
 }

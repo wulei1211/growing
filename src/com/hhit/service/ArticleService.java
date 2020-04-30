@@ -23,5 +23,7 @@ public interface ArticleService {
 
     public void deleteArticleById(String articleId);
 
+    public void updateArticleById(Article article);
+
 //    public int findAllShouCangCount(String userId);
 }

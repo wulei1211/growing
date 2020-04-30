@@ -12,8 +12,17 @@
         <result property="time" column="time" />
         <association property="replayCount" column="id" select="getPingLunReplayCount" />
         <association property="pingLunDianCount" column="id" select="getPingLunDianCount" />
-        <association property="repLayList" column="id" select="com.hhit.dao.ReplayDaoMapper.getAllReplayOfPingLun" />
+        <association property="article" column="article_id" select="com.hhit.dao.ArticleDaoMapper.findArticleById" />
+        <association property="repLayList" column="{pId=id,userId=user_id}" javaType="java.util.List" select="getAllReplayOfPingLun" />
     </resultMap>
+
+    <select id="getAllReplayOfPingLun" resultMap="com.hhit.dao.ReplayDaoMapper.ReplayBean" parameterType="java.util.Map">
+        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
+        INNER JOIN nh_manage_user u on r.replayer = u.id
+        INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
+        where r.pinglun_id = #{pId} and r.to_replayer = #{userId} ORDER BY r.time desc
+    </select>
+
 
     <select id="findAllPingLunByArticleId" resultMap="PingLunBean">
         SELECT p.*,u.head_img,u.real_name from pinglun p INNER JOIN nh_manage_user u
@@ -52,11 +61,16 @@
     </delete>
 
     <select id="findAllPingLunByUserId" resultMap="PingLunBean">
-        select *from pinglun where  user_id = #{userId}
+        select p.*,u.head_img as headImg,u.real_name as realName from pinglun p inner join nh_manage_user u on p.user_id = u.id
+        where p.user_id = #{userId}
         <if test="page != null">
             limit #{page},10
         </if>
     </select>
+
+    <delete id="deletePing">
+        delete from  pinglun where id = #{pId}
+    </delete>
 
     <!--<select id="getReplayList" resultType="com.hhit.entity.Replay">-->
         <!--select * from replay-->

@@ -2,6 +2,7 @@ package com.hhit.dao;
 
 import com.hhit.entity.PingLun;
 import com.hhit.entity.PingLunDian;
+import com.hhit.entity.Replay;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface PingLunDaoMapper {
 
     public int findAllPingLunOfArticleCount(@Param("articleId") String articleId);
 
+
     public int getPingLunReplayCount(@Param("pingLunId")String pingLunId);
 
     public void addPingLun(PingLun pin);
@@ -29,7 +31,10 @@ public interface PingLunDaoMapper {
 
     public void deleteArticlesPingLun(@Param("articleId") String articleId);
 
+
     public List<PingLun> findAllPingLunByUserId(@Param("userId") String userId,@Param("page") Integer page);
 
-//    public List<Replay> getReplayList(@Param("pingId") String pingId);
+    public List<Replay> getAllReplayOfPingLun(@Param("pId") String pId,@Param("userId")String userId);
+
+    public void deletePing(@Param("pId") String pId);
 }
