@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: wulei
@@ -39,5 +40,33 @@ public class ManageUserServiceImpl implements ManageUserService {
     @Transactional
     public void changePassword(String userId,String newPass) {
         manageUserDaoMapper.changePassword(userId,newPass);
+    }
+
+    @Override
+    public int getManageUserCountByMap(ManageUserBean paramUser) {
+        return manageUserDaoMapper.getManageUserCountByMap(paramUser);
+    }
+
+    @Override
+    public List<ManageUserBean> getManageUserByMap(ManageUserBean paramUser) {
+        return manageUserDaoMapper.getManageUserByMap(paramUser);
+    }
+
+    @Override
+    @Transactional
+    public void userAdd(ManageUserBean userBean) {
+        manageUserDaoMapper.userAdd(userBean);
+    }
+
+    @Override
+    @Transactional
+    public void userDel(String id) {
+        manageUserDaoMapper.userDel(id);
+    }
+
+    @Override
+    @Transactional
+    public void userUpdate(ManageUserBean userBean) {
+        manageUserDaoMapper.userUpdate(userBean);
     }
 }

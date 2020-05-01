@@ -223,7 +223,7 @@
 
                 layer.confirm('确认退出吗？', {icon: 3, title:'提示'}, function(index){
 
-                    window.location.href = "${path}/login/loginout.action";
+                    window.location.href = "${path}/index/clearSession.action";
                     layer.close(index);
                 });
             });
@@ -361,6 +361,54 @@
 <body class="layui-layout-body">
 
 
+<%--<div class="layui-layout layui-layout-admin">--%>
+<%--<div class="layui-header">--%>
+<%--<div class="layui-logo" style="width: 400px;">--%>
+    <%--<span class="text_web">蔬菜种植系统后台管理</span>--%>
+    <%--</div>--%>
+<%--<ul class="layui-nav layui-layout-right" lay-filter="">--%>
+    <%--<li class="layui-nav-item"><a href="">最新活动</a></li>--%>
+    <%--<li class="layui-nav-item layui-this"><a href="">产品</a></li>--%>
+    <%--<li class="layui-nav-item"><a href="">大数据</a></li>--%>
+    <%--<li class="layui-nav-item">--%>
+        <%--<a href="javascript:;">解决方案</a>--%>
+        <%--<dl class="layui-nav-child"> <!-- 二级菜单 -->--%>
+            <%--<dd><a href="">移动模块</a></dd>--%>
+            <%--<dd><a href="">后台模版</a></dd>--%>
+            <%--<dd><a href="">电商平台</a></dd>--%>
+        <%--</dl>--%>
+    <%--</li>--%>
+    <%--<li class="layui-nav-item"><a href="">社区</a></li>--%>
+<%--</ul>--%>
+<%--</div>--%>
+<%--</div>--%>
+
+<%--<ul class="layui-nav layui-nav-tree" lay-filter="test">--%>
+    <%--<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->--%>
+    <%--<li class="layui-nav-item layui-nav-itemed">--%>
+        <%--<a href="javascript:;">默认展开</a>--%>
+        <%--<dl class="layui-nav-child">--%>
+            <%--<dd><a href="javascript:;">选项1</a></dd>--%>
+            <%--<dd><a href="javascript:;">选项2</a></dd>--%>
+            <%--<dd><a href="">跳转</a></dd>--%>
+        <%--</dl>--%>
+    <%--</li>--%>
+    <%--<li class="layui-nav-item">--%>
+        <%--<a href="javascript:;">解决方案</a>--%>
+        <%--<dl class="layui-nav-child">--%>
+            <%--<dd><a href="">移动模块</a></dd>--%>
+            <%--<dd><a href="">后台模版</a></dd>--%>
+            <%--<dd><a href="">电商平台</a></dd>--%>
+        <%--</dl>--%>
+    <%--</li>--%>
+    <%--<li class="layui-nav-item"><a href="">产品</a></li>--%>
+    <%--<li class="layui-nav-item"><a href="">大数据</a></li>--%>
+<%--</ul>--%>
+
+
+
+
+
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo" style="width: 400px;">
@@ -380,13 +428,13 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="test" id="menutree">
                 <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;"><i class="layui-icon">&#xe770;</i>用户管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe770;</i>&nbsp;&nbsp;用户管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">系统用户</a></dd>
+                        <dd class = "layui-this"><a href="javascript:;">系统用户</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;"><i class="layui-icon">&#xe663;</i>文章管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe663;</i>&nbsp;&nbsp;文章管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="">文章列表</a></dd>
                         <dd><a href="">评论列表</a></dd>
@@ -398,14 +446,16 @@
     </div>
 
 
-    <div class="layui-body" style="height: 800px;">
+    <div class="layui-body" style="height: 100%;">
         <div style="padding: 10px;">
             <iframe id="myIframe" name="mainIframe" frameborder="0"
-                    style="width: 100%; min-width: 800px;" src="${path}"></iframe>
+                    style="width: 100%; min-width: 800px;" src="${path}/user/toUserList.action"></iframe>
         </div>
     </div>
-
 </div>
+
+
+
 <div id="otherMenu" style="display: none;">
     <div class="index_menu_level_0">
         <table class="leftMenu_table">

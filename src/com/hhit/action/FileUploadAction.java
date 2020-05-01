@@ -1,5 +1,6 @@
 package com.hhit.action;
 
+import com.hhit.entity.ResponseFile;
 import com.hhit.entity.WangEditor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -70,5 +71,24 @@ public class FileUploadAction {
         String str = RandomStringUtils.random(5,"abcdefghijklmnopqrstuvwxyz1234567890");
         String name = timeStr + str + ".jpg";
         return name;
+    }
+
+    @RequestMapping("fileupload")
+    public String layuiupload(){
+        return "layuiupload";
+    }
+
+    @RequestMapping("uploadLayui")
+    @ResponseBody
+    public ResponseFile upload(@RequestParam("userimg") MultipartFile file, HttpServletRequest request){
+        String path = "c://study//test";
+        String name = getFileName();
+        File d = new File(path+"/"+name);
+        try {
+            file.transferTo(d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseFile("0","上传成功!",("/upload/"+name));
     }
 }

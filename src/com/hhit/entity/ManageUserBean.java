@@ -22,12 +22,31 @@ public class ManageUserBean extends BaseBean {
     private String weiBo;
     private String memo;
     private String headImg;
+    private String updateTime;
+
+    private String userNameLike;
 
     private Integer articleCount;//文章数量
 
 
     private Integer shouCangCount;//收藏数量
     private Integer guanZhuCount;// 关注数量
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUserNameLike() {
+        return userNameLike;
+    }
+
+    public void setUserNameLike(String userNameLike) {
+        this.userNameLike = userNameLike;
+    }
 
     public Integer getGuanZhuCount() {
         return guanZhuCount;

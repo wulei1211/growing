@@ -53,6 +53,10 @@
                     $(this).next("div").find("i").css({"color":"#0584FB"});
                 });
 
+                $("#houTai").click(function(){
+                    window.location.href = "${path}/index/toManagerPage.action";
+				})
+
                 $("#shuru").blur(function(){
                     $("#tiwen").animate({"opacity":"1"},50);
                     $(this).parent("div").animate({"width":"320px"},500);
@@ -384,6 +388,9 @@
 				<li class="layui-nav-item layui-layout-right">
 					<a href="javascript:;">选项</a>
 					<dl class="layui-nav-child">
+						<c:if test="${user.userType == '2'}">
+							<dd><a href="javascript:;" id = "houTai">后台管理</a></dd>
+						</c:if>
 						<dd><a href="javascript:;" id="xiugai_mi">修改密码</a></dd>
 						<dd><a href="javascript:;" id="tuichu">退出系统</a></dd>
 					</dl>

@@ -3,6 +3,8 @@ package com.hhit.dao;
 import com.hhit.entity.ManageUserBean;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @Author: wulei
  * @Description:
@@ -23,4 +25,14 @@ public interface ManageUserDaoMapper {
     public ManageUserBean findArticleUserByArticleId(@Param("articleId") String articleId);
 
     public void changePassword(@Param("userId")String userId,@Param("newPass") String newPass);
+
+    public int getManageUserCountByMap(ManageUserBean paramUser);
+
+    public List<ManageUserBean> getManageUserByMap(ManageUserBean paramUser);
+
+    public void userAdd(ManageUserBean userBean);
+
+    public void userDel(@Param("id")String id);
+
+    public void userUpdate(ManageUserBean userBean);
 }
