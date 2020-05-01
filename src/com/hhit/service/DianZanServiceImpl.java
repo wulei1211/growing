@@ -43,4 +43,9 @@ public class DianZanServiceImpl implements DianZanService {
     public List<DianZan> findShouCangArticleIds(String id) {
         return dianZanDaoMapper.findShouCangArticleIds(id);
     }
+
+    @Override
+    public List<DianZan> checkBooleanDian(String articleId, String id) {
+        return dianZanDaoMapper.checkBooleanDian(articleId,id);
+    }
 }

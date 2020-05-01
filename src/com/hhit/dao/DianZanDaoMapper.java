@@ -19,4 +19,6 @@ public interface DianZanDaoMapper {
     public void quXiaoZan(@Param("articleId") String articleId, @Param("userId") String userId,@Param("dianType") String dianType);
 
     public List<DianZan> findShouCangArticleIds(@Param("id") String id);
+
+    public List<DianZan> checkBooleanDian(@Param("articleId") String articleId, @Param("id") String id);
 }

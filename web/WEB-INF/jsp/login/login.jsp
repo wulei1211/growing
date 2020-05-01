@@ -56,9 +56,11 @@ function login(){
 				layer.alert('密码错误', {icon: 2});
 			}else if(data == "NO_EXIST"){
 				layer.alert('用户不存在！', {icon: 2});
+			}else if(data == "manager"){// 管理后台
+                window.location.href = "${path}/index/toManagerPage.action";
 			}else{
                 window.location.href = "${path}/index/toIndexPage.action";
-			}
+            }
 	    }
 	});
 }

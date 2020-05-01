@@ -18,4 +18,6 @@ public interface DianZanService {
     public void quXiaoZan(String articleId, String userId,String dianType);
 
     public List<DianZan> findShouCangArticleIds(String id);
+
+    public List<DianZan> checkBooleanDian(String articleId, String id);
 }

@@ -282,4 +282,14 @@ public class ArticalAction {
         replayService.deletePingLunsReplay(pId);
     }
 
+    @RequestMapping("checkBooleanDian")
+    @ResponseBody
+    public JSONObject checkBooleanDian(String articleId,HttpServletRequest request){
+        JSONObject json = new JSONObject();
+        ManageUserBean userBean = (ManageUserBean) request.getSession().getAttribute("userBean");
+        List<DianZan> list = dianZanService.checkBooleanDian(articleId,userBean.getId());
+        json.put("dian",list);
+        return json;
+    }
+
 }

@@ -145,4 +145,9 @@ public class IndexAction {
         String userid = (String) session.getAttribute(Constant.SESSION_USERID_LONG);
         return userid;
     }
+
+    @RequestMapping("toManagerPage")
+    public String toManagerPage(HttpServletRequest request,HttpServletResponse response){
+        return "index/manageIndex";
+    }
 }

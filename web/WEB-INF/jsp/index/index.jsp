@@ -25,11 +25,12 @@
         var shoucang = '${shoucangs}';
         $(function(){
 
+            dongHua();
+
             //dwr
             dwr.engine.setActiveReverseAjax(true);
             dwr.engine.setNotifyServerOnPageUnload(true);
             onPageLoad();
-
 
 
 
@@ -142,8 +143,6 @@
                     });
                 });
 
-
-
                 $(document).on("click",".title",function(){
                     var id = $(this).parent("div").find(".dianzan div").text();
                     window.open(
@@ -182,7 +181,6 @@
                         "${path}/artical/toPerson.action?userId="+"${user.id}"
                     );
 				});
-
 
                 form.verify({
                     pass: function(value, item){ //value：表单的值、item：表单的DOM对象
@@ -224,20 +222,22 @@
                     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
                 });
                 //
-                // $("#saveBtu").click(function(){
-                //
-                // });
+
                 $("#closeBtu").click(function(){
                     layer.closeAll();
                 });
 
             });
-
-
-
-
-
         });
+
+        function dongHua(){
+            $("#haha").css({"transform":"translateX(0rem)","transition":"all 0.6s"})
+            $("#haha").animate({"opacity":"1",},300);
+		}
+
+        function dongHua_hui(){
+            $("#haha").css({"transform":"translateX(3.25rem)","opacity": "0","overflow-x": "hidden"})
+        }
 
         function jiaXiHuan(shuzi,type){
             var temp = parseInt(shuzi);
@@ -324,7 +324,8 @@
                         //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                         //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                         next(lis.join(''), page < res.pages);
-                    });
+                    },
+                    $.ajaxSettings.async = false);
                 }
             });
 		}
@@ -392,7 +393,7 @@
 	</div>
 </div>
 
-<div class="layui-container content" >
+<div class="layui-container content" id = "haha" >
 	<div class="layui-row layui-col-space14">
 		<div class="layui-col-md9 ">
 			<!-- 左边 -->

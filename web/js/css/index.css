@@ -50,3 +50,6 @@
 .pinglun_touxiang_plus{width: 2.7rem;height: 2.7rem;border-radius: 50%;text-align: center;margin-right: 0.3125rem;}
 .xian_hui{color: #5893C2;margin-left: 1.25rem;display: none;cursor: pointer}
 .pinglun_tou_ping:hover .xian_hui{display: inline;}
+
+#haha{opacity: 0;transform: translateX(3.25rem);overflow-x: hidden;}
+.haha_plus{opacity: 0;transform: translateX(3.25rem);overflow-x: hidden;}

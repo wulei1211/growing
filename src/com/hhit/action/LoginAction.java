@@ -49,8 +49,11 @@ public class LoginAction {
                 session.setAttribute(Constant.SESSION_USER_NAME_STRING, userBean.getUserName());
                 session.setAttribute("userBean", userBean);
                 log.debug(userName+" 登陆成功");
-
-                return userBean.getId();
+                if("2".equals(userBean.getUserType())){
+                    return "manager";
+                }else{
+                    return userBean.getId();
+                }
 
             } else {
 
