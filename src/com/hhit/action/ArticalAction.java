@@ -271,8 +271,7 @@ public class ArticalAction {
         JSONObject json = new JSONObject();
         flag = count>0?true:false;
         json.put("articleMsg",article);
-        json.put("booleanGuan",flag);
-        return json;
+         return json;
     }
 
     @RequestMapping("deletePing")
@@ -291,5 +290,4 @@ public class ArticalAction {
         json.put("dian",list);
         return json;
     }
-
 }

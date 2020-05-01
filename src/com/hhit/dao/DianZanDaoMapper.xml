@@ -33,7 +33,7 @@
         select  *from dianzan where user_id = #{id} and dian_type = "2"
     </select>
 
-    <select id="checkBooleanDian">
+    <select id="checkBooleanDian" resultMap="DianZanBean">
         select  *from  dianzan where article_id = #{articleId} and user_id = #{id}
     </select>
 
