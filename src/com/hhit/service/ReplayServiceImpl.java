@@ -21,8 +21,8 @@ public class ReplayServiceImpl implements ReplayService {
     private ReplayDaoMapper replayDaoMapper;
 
     @Override
-    public List<Replay> getAllReplayOfPingLun(String pId) {
-        return replayDaoMapper.getAllReplayOfPingLun(pId);
+    public List<Replay> getAllReplayOfPingLun(String userId,String pId) {
+        return replayDaoMapper.getAllReplayOfPingLun(userId,pId);
     }
 
     @Override

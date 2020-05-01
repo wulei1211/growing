@@ -22,8 +22,8 @@ public class PingLunServiceImpl implements PingLunService {
     private PingLunDaoMapper pingLunDaoMapper;
 
     @Override
-    public List<PingLun> findAllPingLunByArticleId(String articleId,Integer page) {
-        return pingLunDaoMapper.findAllPingLunByArticleId(articleId,page);
+    public List<PingLun> findAllPingLunByArticleId(String dengLuId,String articleId,Integer page) {
+        return pingLunDaoMapper.findAllPingLunByArticleId(dengLuId,articleId,page);
     }
 
     @Override

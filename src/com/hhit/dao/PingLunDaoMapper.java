@@ -14,7 +14,7 @@ import java.util.List;
  * @Modified By:
  */
 public interface PingLunDaoMapper {
-    public List<PingLun> findAllPingLunByArticleId(@Param("articleId") String articleId,@Param("page") Integer page);
+    public List<PingLun> findAllPingLunByArticleId(@Param("dengLuId") String dengLuId,@Param("articleId") String articleId,@Param("page") Integer page);
 
     public int findAllPingLunOfArticleCount(@Param("articleId") String articleId);
 
@@ -35,6 +35,8 @@ public interface PingLunDaoMapper {
     public List<PingLun> findAllPingLunByUserId(@Param("userId") String userId,@Param("page") Integer page);
 
     public List<Replay> getAllReplayOfPingLun(@Param("pId") String pId,@Param("userId")String userId);
+
+    public Integer checkBooleanDianPing(@Param("pId") String pId,@Param("userId")String userId);
 
     public void deletePing(@Param("pId") String pId);
 }

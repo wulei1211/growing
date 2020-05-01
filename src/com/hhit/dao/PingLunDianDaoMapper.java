@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface PingLunDianDaoMapper {
     public List<PingLunDian> findBooleanPingLunDian(@Param("userId") String userId);
+
+
+
 }

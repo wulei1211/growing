@@ -120,7 +120,8 @@ public class ArticalAction {
     @RequestMapping("getAllPingLunByArticleId")
     @ResponseBody
     public JSONObject getAllPingLunByArticleId(String articleId,Integer page,HttpServletRequest request){
-        List<PingLun> pingList = pingLunService.findAllPingLunByArticleId(articleId,(page-1)*10);
+        String dengLuId = request.getSession().getAttribute(Constant.SESSION_USERID_LONG).toString();
+        List<PingLun> pingList = pingLunService.findAllPingLunByArticleId(dengLuId,articleId,(page-1)*10);
         int count = pingLunService.findAllPingLunOfArticleCount(articleId);
         double xx = count;
         JSONObject json = new JSONObject();
@@ -132,8 +133,9 @@ public class ArticalAction {
 
     @RequestMapping("getAllReplayOfPingLun")
     @ResponseBody
-    public List<Replay> getAllReplayOfPingLun(String pId){
-        List<Replay> list = replayService.getAllReplayOfPingLun(pId);
+    public List<Replay> getAllReplayOfPingLun(String pId,HttpServletRequest request){
+        String userId = request.getSession().getAttribute(Constant.SESSION_USERID_LONG).toString();
+        List<Replay> list = replayService.getAllReplayOfPingLun(userId,pId);
         return list;
     }
 
@@ -271,7 +273,8 @@ public class ArticalAction {
         JSONObject json = new JSONObject();
         flag = count>0?true:false;
         json.put("articleMsg",article);
-         return json;
+        json.put("booleanGuan",flag);
+        return json;
     }
 
     @RequestMapping("deletePing")

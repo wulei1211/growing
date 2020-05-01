@@ -12,7 +12,7 @@ import java.util.List;
  * @Modified By:
  */
 public interface ReplayDaoMapper {
-    public List<Replay> getAllReplayOfPingLun(@Param("pId") String pId);
+    public List<Replay> getAllReplayOfPingLun(@Param("userId") String userId,@Param("pId") String pId);
 
     public List<Replay> getAllReplayOfPingLunPlus(@Param("id") String id,@Param("userId") String userId);
 

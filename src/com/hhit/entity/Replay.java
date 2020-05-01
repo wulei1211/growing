@@ -21,6 +21,17 @@ public class Replay extends BaseBean{
 
     private Integer replayDianCount;
 
+    private Integer booleanReDian;
+
+
+    public Integer getBooleanReDian() {
+        return booleanReDian;
+    }
+
+    public void setBooleanReDian(Integer booleanReDian) {
+        this.booleanReDian = booleanReDian;
+    }
+
     public Integer getReplayDianCount() {
         return replayDianCount;
     }

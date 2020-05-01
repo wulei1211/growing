@@ -11,7 +11,7 @@ import java.util.List;
  * @Modified By:
  */
 public interface ReplayService {
-    public List<Replay> getAllReplayOfPingLun(String pId);
+    public List<Replay> getAllReplayOfPingLun(String userId,String pId);
 
     public void addReplay(Replay replay);
 

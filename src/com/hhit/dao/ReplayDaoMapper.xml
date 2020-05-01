@@ -17,8 +17,9 @@
     </resultMap>
 
     <select id="getAllReplayOfPingLun" resultMap="ReplayBean">
-        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
-        INNER JOIN nh_manage_user u on r.replayer = u.id
+        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name,
+        (select count(0) from pinglun_dian pd where pd.user_id = #{userId} and pd.pinglun_id = r.id and pd.dian_type = '2' ) as booleanReDian
+        from replay r INNER JOIN nh_manage_user u on r.replayer = u.id
         INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
         where r.pinglun_id = #{pId} ORDER BY r.time desc
     </select>

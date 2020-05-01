@@ -23,9 +23,15 @@
         where r.pinglun_id = #{pId} and r.to_replayer = #{userId} ORDER BY r.time desc
     </select>
 
+    <select id="checkBooleanDianPing" resultType="int" parameterType="java.util.Map">
+        select count(0) from pinglun_dian where user_id = #{userId} and pinglun_id = #{pId} and dian_type = "1"
+    </select>
+
 
     <select id="findAllPingLunByArticleId" resultMap="PingLunBean">
-        SELECT p.*,u.head_img,u.real_name from pinglun p INNER JOIN nh_manage_user u
+        SELECT p.*,u.head_img,u.real_name,
+        (select count(0) from pinglun_dian pd where pd.user_id = #{dengLuId} and pd.pinglun_id = p.id and pd.dian_type = "1" ) as booleanDian
+        from pinglun p INNER JOIN nh_manage_user u
         ON p.user_id = u.id where p.article_id = #{articleId}
         <if test="page != null">
             limit #{page},10

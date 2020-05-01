@@ -12,7 +12,7 @@ import java.util.List;
  * @Modified By:
  */
 public interface PingLunService {
-    public List<PingLun> findAllPingLunByArticleId(String articleId,Integer page);
+    public List<PingLun> findAllPingLunByArticleId(String dengLuId,String articleId,Integer page);
 
     public int findAllPingLunOfArticleCount(String articleId);
 

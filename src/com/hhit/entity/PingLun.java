@@ -27,6 +27,16 @@ public class PingLun {
 
     private Article article;
 
+    private Integer booleanDian;
+
+    public Integer getBooleanDian() {
+        return booleanDian;
+    }
+
+    public void setBooleanDian(Integer booleanDian) {
+        this.booleanDian = booleanDian;
+    }
+
     public Article getArticle() {
         return article;
     }
