@@ -27,6 +27,8 @@
 
             dongHua();
 
+            onloadMsg();
+
             //dwr
             dwr.engine.setActiveReverseAjax(true);
             dwr.engine.setNotifyServerOnPageUnload(true);
@@ -186,6 +188,14 @@
                     );
 				});
 
+				$("#yidu").click(function(){
+                    readMsg("");
+                    $("#msg_content").html("");
+                    layer.msg("已清空");
+                    $("#msgCot").text(0);
+                    $("#message").click();
+				})
+
                 form.verify({
                     pass: function(value, item){ //value：表单的值、item：表单的DOM对象
                         var str = "";
@@ -230,6 +240,11 @@
                 $("#closeBtu").click(function(){
                     layer.closeAll();
                 });
+
+                $("#message").click(function(){
+                    onloadMsg();
+                    $("#message_lie").fadeToggle();
+                })
 
             });
         });
@@ -334,13 +349,77 @@
             });
 		}
 
-        function showMessage(data){narn('log',data);}
-        function narn (type,data) {naranja()[type]({title: '新消息提示',text: data,timeout: 'keep',buttons: [{text: '已读',click: function (e) {naranja().success({title: '通知',text: '通知已读'})}},{text: '取消',click: function (e) {e.closeNotification();}}]})}
+		function onloadMsg(){
+            $.ajax({
+                type:"POST",
+                async: false,  //默认true,异步
+                dataType:"json",
+				data:{"userId":"${user.id}"},
+                url:"${path}/index/onloadMsg.action",
+                success:function(data){
+                    var str = '';
+                    var obj = JSON.parse(data.msgList);
+                    console.log(obj)
+                    for(var i = 0;i<obj.length;i++){
+                        str += '<div style = "width: 88%;height: 2.5rem;margin: 0.625rem;">';
+                        str += '         <div style = "width: 22%;float: left;"><img src = "'+obj[i].userBean.headImg+'" style  = "width: 2.5rem;height: 2.5rem; border-radius: 50%;margin-left: 0.625rem;"/></div>';
+                        str += '        <div style = "width: 76%;float: right;padding-top: 0.3rem;">';
+                        str += '        <div style= "color: #1A1A1A;">'+obj[i].userBean.realName;
+                        if(obj[i].type == "1"){
+                            str += ' <span style = "color: #999">&nbsp;&nbsp;评论了你的文章</span>';
+                        }else{
+                            str += ' <span style = "color: #999">&nbsp;&nbsp;回复了你的评论</span>';
+                        }
+
+                        str += '</div>';
+                        str += '    <div style= "color: #1A1A1A;overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;text-overflow: ellipsis;-webkit-line-clamp: 1;line-clamp: 1;">'+obj[i].content+'</div></div> </div>';
+                    }
+                    $("#msg_content").html(str);
+                }
+			});
+		}
+
+        function showMessage(data){addMsg("1"),narn('log',data);}
+        function narn (type,data) {naranja()[type]({
+			title: '新消息提示',
+			text: JSON.parse(data).content,timeout: 'keep',
+			buttons: [{
+			    text: '已读',click: function (e) {
+			        naranja().success({title: '通知',text: '通知已读'})
+                    addMsg("2");
+			        readMsg(JSON.parse(data).id);
+			    }},
+				{text: '取消',click: function (e) {e.closeNotification();}}
+			]})}
         function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
 
         function test(){
                 window.location.reload();
             // layer.msg("发布成功！");
+		}
+
+		function readMsg(id){
+            $.ajax({
+                type:"POST",
+                async: false,  //默认true,异步
+                dataType:"json",
+                data:{"msgId":id},
+                url:"${path}/artical/readMsg.action",
+                success:function(data){
+
+                }
+            });
+		}
+        function addMsg(val){
+            var count = $("#msgCot").text();
+            if(val == "1"){
+                $("#msgCot").text(parseInt(count)+1);
+			}else{
+                if(count<=0) return ;
+                $("#msgCot").text(parseInt(count)-1);
+			}
+
+
 		}
 	</script>
 </head>
@@ -377,10 +456,24 @@
 					<button type="button" class="layui-btn layui-btn-warm" id = "tiwen">发帖</button>
 					<%--<a href="http://www.layui.com" class="layui-btn layui-btn-warm" >发帖</a>--%>
 				</li>
-				<div class = "one">
+				<div class = "one" id= "message">
 					<li class="layui-nav-item layui-layout-right">
-						<a href=""><i class="layui-icon" style="font-size: 20px;">&#xe667;</i><span class="layui-badge">9</span></a>
+						<a href="javascript:;"><i class="layui-icon" style="font-size: 20px;">&#xe667;</i><span class="layui-badge" id = "msgCot">${msgCount}</span></a>
 					</li></div>
+
+				<%--消息列表--%>
+				<div id = "message_lie" style = "border-radius: 3%;display: none;box-shadow: 0px 0px 8px #999;width: 17.5rem;height: 25rem;position: absolute;top: 2.5rem;right: 0rem;background-color: white;z-index: 999;">
+					<div style = "color: #009688;font-size: 0.8rem;padding:0.625rem 0rem 0.625rem 0.625rem;border-bottom: 0.0625rem solid #EFEFEF;">消息列表
+						<button type="button" id="yidu" class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius" style = "position: absolute;right: 1.25rem;">全部已读</button>
+					</div>
+
+					<div style = "width: 100%;height: 22rem; overflow-y: auto;" id = "msg_content">
+
+					</div>
+				</div>
+
+
+
 				<div class = "two">
 					<li class="layui-nav-item layui-layout-right">
 						<a href="javascript:;" id="geren">个人中心</a>

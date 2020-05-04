@@ -1,7 +1,6 @@
 package com.hhit.dao;
 
 import com.hhit.entity.Article;
-import com.hhit.entity.ManageUserBean;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public interface ArticleDaoMapper {
 
     public void updateArticleById(Article article);
 
-    public ManageUserBean getArticleMaster(@Param("userId") String userId);
+    public List<Article> getAllArticles(Article article);
 
-
+    public int getAllArticlesCount(Article article);
 }

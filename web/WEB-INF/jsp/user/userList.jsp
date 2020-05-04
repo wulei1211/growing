@@ -146,7 +146,7 @@
 
 <div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>管理员管理</legend>
+        <legend>用户管理</legend>
     </fieldset>
     <div class="first_div"
          style="border-right: none; border-bottom: none; border-left: none;">

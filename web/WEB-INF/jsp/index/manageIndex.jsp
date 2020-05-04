@@ -316,6 +316,12 @@
                 layer.closeAll();
             });
 
+            $("#article").click(function(){
+                $("#myIframe").attr("src","${path}/artical/toAllArticleList.action");
+            })
+            $("#xitong").click(function(){
+                $("#myIframe").attr("src","${path}/user/toUserList.action");
+            })
 
             layui.use('element', function(){
                 var element = layui.element;
@@ -430,15 +436,15 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;"><i class="layui-icon">&#xe770;</i>&nbsp;&nbsp;用户管理</a>
                     <dl class="layui-nav-child">
-                        <dd class = "layui-this"><a href="javascript:;">系统用户</a></dd>
+                        <dd class = "layui-this"><a href="javascript:;" id="xitong">系统用户</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;"><i class="layui-icon">&#xe663;</i>&nbsp;&nbsp;文章管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="">文章列表</a></dd>
-                        <dd><a href="">评论列表</a></dd>
-                        <dd><a href="">回复列表</a></dd>
+                        <dd><a href="javascript:;" id = "article">文章列表</a></dd>
+                        <dd><a href="javascript:;" id = "pingLun">评论列表</a></dd>
+                        <dd><a href="javascript:;" id = "replay">回复列表</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -453,8 +459,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div id="otherMenu" style="display: none;">
     <div class="index_menu_level_0">

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.MyTaskDaoMapper">
+    <resultMap id="MyTaskBean" type="com.hhit.entity.MyTask">
+        <id property="id" column="id"/>
+        <result property="sendId" column="send_id"/>
+        <result property="receiveId" column="receive_id"/>
+        <result property="type" column="type" />
+        <result property="status" column="status" />
+        <result property="url" column="url" />
+        <result property="createTime" column="createtime" />
+        <result property="content" column="content" />
+        <association property="userBean" column="send_id" select="getSendUserMsg" />
+    </resultMap>
+
+    <select id="findAllTaskByUserId" resultMap="MyTaskBean">
+        select *from mytask where status = "0" and receive_id = #{userId}
+    </select>
+
+    <select id="getSendUserMsg" resultMap="com.hhit.dao.ManageUserDaoMapper.ManageUserBean">
+        select *from nh_manage_user where id = #{userId}
+    </select>
+
+    <insert id="addMsg" parameterType="com.hhit.entity.MyTask">
+        insert into mytask(id,send_id,receive_id,type,status,createtime,content)
+        values (#{id},#{sendId},#{receiveId},#{type},#{status},#{createTime},#{content})
+    </insert>
+
+    <select id="findMsgCount" resultType="int">
+        select count(0) from mytask where receive_id = #{id} and status = "0"
+    </select>
+
+    <update id="readMsg">
+        update mytask set status = "1"
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="msgId != null and msgId != '' ">
+                AND id = #{msgId}
+            </if>
+            <if test="userId != null and userId != '' ">
+                AND receive_id = #{userId}
+            </if>
+        </trim>
+    </update>
+</mapper>

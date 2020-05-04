@@ -103,6 +103,34 @@
         delete from article where id = #{articleId}
     </delete>
 
+    <select id="getAllArticles" resultMap="ArticleBean" parameterType="com.hhit.entity.Article">
+        select *,at.type_name as typeName from article INNER JOIN article_type at ON article_type = `at`.id
+        <include refid="articleParam"></include>
+        <if test="fromNum != null and limit != null ">
+            limit #{fromNum}, #{limit}
+        </if>
+    </select>
 
+    <select id="getAllArticlesCount" resultType="int" parameterType="com.hhit.entity.Article">
+        select count(0) from article
+        <include refid="articleParam"></include>
+    </select>
+
+    <sql id="articleParam">
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="articleTitle != null and articleTitle != '' ">
+                AND article_title like CONCAT('%', #{articleTitle}, '%')
+            </if>
+            <if test="articleType != null and articleType != '' ">
+                AND article_type = #{articleType}
+            </if>
+            <if test="startTime != null and startTime != '' ">
+                AND create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </trim>
+    </sql>
     
 </mapper>

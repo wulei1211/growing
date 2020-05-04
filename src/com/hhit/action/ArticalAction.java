@@ -45,6 +45,9 @@ public class ArticalAction {
     @Resource(name = "pingLunService")
     private PingLunService pingLunService;
 
+    @Resource(name = "articleTypeService")
+    private ArticleTypeService articleTypeService;
+
     @Resource(name = "pingLunDianService")
     private PingLunDianService pingLunDianService;
 
@@ -53,6 +56,9 @@ public class ArticalAction {
 
     @Resource(name = "manageUserService")
     private ManageUserService manageUserService;
+
+    @Resource(name = "myTaskService")
+    private MyTaskService myTaskService;
 
     @RequestMapping("toArticalAdd")
     public String toArticalAdd(String articleId,HttpServletRequest request, HttpServletResponse response){
@@ -148,8 +154,19 @@ public class ArticalAction {
         pin.setUserId(userId);
         pingLunService.addPingLun(pin);
 
-        dwrService.send(articleMasterId,"您有一条新评论");
-
+        if(!articleMasterId.equals(pin.getUserId())){
+            MyTask task = new MyTask();
+            String id = UUID.randomUUID().toString();
+            task.setId(id);
+            task.setCreateTime(CommonUtil.getDateTimeString(new Date()));
+            task.setContent(pin.getPingLunContent());
+            task.setSendId(pin.getUserId());
+            task.setReceiveId(articleMasterId);
+            task.setStatus("0");
+            task.setType("1");
+            myTaskService.addMsg(task);
+            dwrService.send(articleMasterId,JSONObject.toJSONString(new MsgParam(id,"您的文章有一条新评论")));
+        }
         return "success";
     }
 
@@ -161,6 +178,20 @@ public class ArticalAction {
         replay.setReplayer(userId);
         replay.setTime(CommonUtil.getDateTimeString(new Date()));
         replayService.addReplay(replay);
+
+        if(!userId.equals(replay.getToPlayer())){
+            MyTask task = new MyTask();
+            String id = UUID.randomUUID().toString();
+            task.setId(id);
+            task.setCreateTime(CommonUtil.getDateTimeString(new Date()));
+            task.setContent(replay.getReplayContent());
+            task.setSendId(userId);
+            task.setReceiveId(replay.getToPlayer());
+            task.setStatus("0");
+            task.setType("2");
+            myTaskService.addMsg(task);
+            dwrService.send(replay.getToPlayer(),JSONObject.toJSONString(new MsgParam(id,"您的评论有一条新回复")));
+        }
         return "success";
     }
 
@@ -292,5 +323,35 @@ public class ArticalAction {
         List<DianZan> list = dianZanService.checkBooleanDian(articleId,userBean.getId());
         json.put("dian",list);
         return json;
+    }
+
+    @RequestMapping("readMsg")
+    @ResponseBody
+    public void readMsg(String msgId,HttpServletRequest request){
+        String userId = request.getSession().getAttribute(Constant.SESSION_USERID_LONG).toString();
+        myTaskService.readMsg(msgId,userId);
+    }
+
+    @RequestMapping("toAllArticleList")
+    public String toAllArticleList(HttpServletRequest request){
+        List<ArticleType> artTypeList = articleTypeService.findAllArticleType();
+        request.setAttribute("artTypeList",JsonUtil.getJsonString4JavaList(artTypeList));
+        return "article/articleList";
+    }
+
+    @RequestMapping("getAllArticles")
+    @ResponseBody
+    public MMGridPageVoBean<Article> getAllArticles(Article article){
+        MMGridPageVoBean<Article> data = new MMGridPageVoBean<>();
+        int count = articleService.getAllArticlesCount(article);
+        int from = (article.getPage()-1) * article.getLimit();
+        article.setFromNum(from);
+        List<Article> list = articleService.getAllArticles(article);
+
+        data.setCount(count+"");
+        data.setCode("0");
+        data.setData(list);
+        data.setMsg("");
+        return data;
     }
 }

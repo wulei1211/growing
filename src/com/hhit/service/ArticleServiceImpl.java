@@ -59,6 +59,16 @@ public class ArticleServiceImpl implements  ArticleService {
         articleDaoMapper.updateArticleById(article);
     }
 
+    @Override
+    public List<Article> getAllArticles(Article article) {
+        return articleDaoMapper.getAllArticles(article);
+    }
+
+    @Override
+    public int getAllArticlesCount(Article article) {
+        return articleDaoMapper.getAllArticlesCount(article);
+    }
+
 //    @Override
 //    public int findAllShouCangCount(String userId) {
 //        return articleDaoMapper.findAllShouCangCount(userId);

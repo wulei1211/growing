@@ -1,14 +1,14 @@
 package com.hhit.action;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hhit.common.Constant;
 import com.hhit.entity.ArticleType;
 import com.hhit.entity.DianZan;
 import com.hhit.entity.ManageUserBean;
-import com.hhit.service.ArticleService;
-import com.hhit.service.ArticleTypeService;
-import com.hhit.service.DianZanService;
-import com.hhit.service.ManageUserService;
+import com.hhit.entity.MyTask;
+import com.hhit.service.*;
 import com.hhit.util.CommonUtil;
+import com.hhit.util.JsonUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +41,8 @@ public class IndexAction {
     private ArticleService articleService;
     @Resource(name = "articleTypeService")
     private ArticleTypeService articleTypeService;
+    @Resource(name = "myTaskService")
+    private MyTaskService myTaskService;
 
     @RequestMapping("toIndexPage")
     public String toIndexPage(HttpServletRequest request, HttpServletResponse response){
@@ -59,8 +61,10 @@ public class IndexAction {
         }
         List<ArticleType> artTypeList = articleTypeService.findAllArticleType();
 
+        int msgCount = myTaskService.findMsgCount(user.getId());
 
         request.setAttribute("dianzans",ids);
+        request.setAttribute("msgCount",msgCount);
         request.setAttribute("artTypeList",artTypeList);
         request.setAttribute("user",user);
         request.setAttribute("realName",user.getRealName());
@@ -149,5 +153,14 @@ public class IndexAction {
     @RequestMapping("toManagerPage")
     public String toManagerPage(HttpServletRequest request,HttpServletResponse response){
         return "index/manageIndex";
+    }
+
+    @RequestMapping("onloadMsg")
+    @ResponseBody
+    public JSONObject onloadMsg(String userId,HttpServletRequest request){
+        JSONObject json = new JSONObject();
+        List<MyTask> list = myTaskService.findAllTaskByUserId(userId);
+        json.put("msgList",JsonUtil.getJsonString4JavaList(list));
+        return json;
     }
 }

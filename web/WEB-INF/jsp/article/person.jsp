@@ -25,6 +25,11 @@
     <script type="text/javascript" src="${path }/dwr/interface/MessagePush.js"></script>
     <script type="text/javascript" src="${path }/js/naranja.js"></script>
     <link rel="stylesheet" href="${path }/js/css/naranja.min.css">
+    <script type='text/javascript' src='${path }/dwr/engine.js'></script>
+    <script type='text/javascript' src='${path }/dwr/util.js'></script>
+    <script type="text/javascript" src="${path }/dwr/interface/MessagePush.js"></script>
+    <script type="text/javascript" src="${path }/js/naranja.js"></script>
+    <link rel="stylesheet" href="${path }/js/css/naranja.min.css">
     <script>
         var layer = null;
         var flow = null;
@@ -469,6 +474,41 @@
         function test(){
             window.location.reload();
             // layer.msg("发布成功！");
+        }
+        function showMessage(data){addMsg("1"),narn('log',data);}
+        function narn (type,data) {naranja()[type]({
+            title: '新消息提示',
+            text: JSON.parse(data).content,timeout: 'keep',
+            buttons: [{
+                text: '已读',click: function (e) {
+                    naranja().success({title: '通知',text: '通知已读'})
+                    addMsg("2");
+                    readMsg(JSON.parse(data).id);
+                }},
+                {text: '取消',click: function (e) {e.closeNotification();}}
+            ]})}
+        function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
+
+        function readMsg(id){
+            $.ajax({
+                type:"POST",
+                async: false,  //默认true,异步
+                dataType:"json",
+                data:{"msgId":id},
+                url:"${path}/artical/readMsg.action",
+                success:function(data){
+
+                }
+            });
+        }
+        function addMsg(val){
+            var count = $("#msgCot").text();
+            if(val == "1"){
+                $("#msgCot").text(parseInt(count)+1);
+            }else{
+                if(count<=0) return ;
+                $("#msgCot").text(parseInt(count)-1);
+            }
         }
     </script>
 </head>

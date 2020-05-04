@@ -25,5 +25,9 @@ public interface ArticleService {
 
     public void updateArticleById(Article article);
 
+    public List<Article> getAllArticles(Article article);
+
+    public int getAllArticlesCount(Article article);
+
 //    public int findAllShouCangCount(String userId);
 }
