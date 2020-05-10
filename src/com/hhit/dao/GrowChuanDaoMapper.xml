@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.GrowChuanDaoMapper">
+    <resultMap id="GrowChuanBean" type="com.hhit.entity.GrowChuan">
+        <id property="id" column="id"/>
+        <result property="growId" column="grow_id"/>
+        <result property="chuanId" column="chuan_id"/>
+        <association property="chuan" column="chuan_id" select="com.hhit.dao.ChuanDaoMapper.getChuanById" />
+    </resultMap>
+
+    <select id="getGrowsChuanByGrowId" resultMap="GrowChuanBean">
+        select * from grow_chuan where grow_id = #{growId}
+    </select>
+
+    <insert id="addGrowChuan" parameterType="com.hhit.entity.GrowChuan">
+        insert into grow_chuan(id,grow_id,chuan_id) values (#{id},#{growId},#{chuanId})
+    </insert>
+
+    <delete id="deleteAllGrowChuan">
+        delete from grow_chuan where grow_id = #{id}
+    </delete>
+
+    <select id="findGrowByCid" resultMap="GrowChuanBean">
+        select *from grow_chuan where chuan_id = #{cid}
+    </select>
+
+    <select id="getChuanListByGrowId" resultMap="com.hhit.dao.ChuanDaoMapper.ChuanBean">
+        select *from grow_chuan where grow_id = #{gid}
+    </select>
+</mapper>

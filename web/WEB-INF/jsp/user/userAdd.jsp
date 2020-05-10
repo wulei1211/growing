@@ -106,7 +106,6 @@
                 form.on('submit(*)', function(data){
 
                     layer.confirm('确定添加?', function(index){
-                        getFormData("#myForm")
                         // console.log(getFormData("#myForm"));
                         $.ajax({
                             type:"POST",

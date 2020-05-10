@@ -77,6 +77,8 @@
     </bean>
 
 
+    <bean class="com.hhit.util.SpringBeanFactoryUtils"/>
+
     <!--启动spring事务管理-->
     <bean id="transactionManager-mysql" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource-mysql" />

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.DataDaoMapper">
+    <resultMap id="dataBean" type="com.hhit.entity.Data">
+        <id property="id" column="id"/>
+        <result property="gid" column="gid"/>
+        <result property="cid" column="cid"/>
+        <result property="wen" column="wen"/>
+        <result property="shi" column="shi" />
+        <result property="guang" column="guang" />
+        <result property="er" column="er" />
+        <result property="time" column="time" />
+    </resultMap>
+
+    <insert id="addData" parameterType="com.hhit.entity.Data">
+        insert into data(id,gid,cid,wen,shi,guang,er,time)
+        values (#{id},#{gid},#{cid},#{wen},#{shi},#{guang},#{er},#{time})
+    </insert>
+
+    <select id="findGrowsDataById" resultMap="dataBean">
+        select *from data where gid = #{gid} limit 0,10
+    </select>
+</mapper>

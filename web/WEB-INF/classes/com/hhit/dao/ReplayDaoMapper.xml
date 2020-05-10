@@ -17,18 +17,19 @@
     </resultMap>
 
     <select id="getAllReplayOfPingLun" resultMap="ReplayBean">
-        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
-        INNER JOIN nh_manage_user u on r.replayer = u.id
+        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name,
+        (select count(0) from pinglun_dian pd where pd.user_id = #{userId} and pd.pinglun_id = r.id and pd.dian_type = '2' ) as booleanReDian
+        from replay r INNER JOIN nh_manage_user u on r.replayer = u.id
         INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
         where r.pinglun_id = #{pId} ORDER BY r.time desc
     </select>
 
-    <!--<select id="getAllReplayOfPingLunPlus" resultMap="ReplayBean">-->
-        <!--select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r-->
-        <!--INNER JOIN nh_manage_user u on r.replayer = u.id-->
-        <!--INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer-->
-        <!--where r.pinglun_id = #{pId} and r.to_replayer = #{} ORDER BY r.time desc-->
-    <!--</select>-->
+    <select id="getAllReplayOfPingLunPlus"  resultMap="ReplayBean" parameterType="java.util.Map">
+        select r.*,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name from replay r
+        INNER JOIN nh_manage_user u on r.replayer = u.id
+        INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
+        where r.pinglun_id = #{pId} and r.to_replayer = #{userId} ORDER BY r.time desc
+    </select>
 
     <insert id="addReplay" parameterType="com.hhit.entity.Replay">
         insert into replay(id,pinglun_id,article_id,replay_content,replayer,to_replayer,time)
@@ -41,6 +42,10 @@
 
     <delete id="deleteArticlesReplay">
         delete  from  replay where  article_id = #{articleId}
+    </delete>
+
+    <delete id="deletePingLunsReplay">
+        delete from  replay where pinglun_id = #{pId}
     </delete>
 
 </mapper>

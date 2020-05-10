@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.ChuanDaoMapper">
+    <resultMap id="ChuanBean" type="com.hhit.entity.Chuan">
+        <id property="id" column="id"/>
+        <result property="cname" column="cname"/>
+        <result property="status" column="status"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <select id="getAllChuanCount" parameterType="com.hhit.entity.Chuan" resultType="int">
+        select count(0) from chuan
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="userId != null and userId != '' ">
+                AND user_id = #{userId}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getAllChuan" parameterType="com.hhit.entity.Chuan" resultMap="ChuanBean">
+        select *from  chuan
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="userId != null and userId != '' ">
+                AND user_id = #{userId}
+            </if>
+        </trim>
+        <if test="fromNum != null and limit != null ">
+            limit #{fromNum}, #{limit}
+        </if>
+    </select>
+
+    <select id="getChuanById" resultMap="ChuanBean">
+        select *from chuan where id = #{cId}
+    </select>
+
+    <select id="getNoUseChuan" parameterType="com.hhit.entity.Chuan" resultMap="ChuanBean">
+        select *from chuan where id not in (select chuan_id from grow_chuan GROUP BY chuan_id)
+    </select>
+
+    <insert id="addChuan" parameterType="com.hhit.entity.Chuan">
+        insert into chuan(id,cname,status,user_id) values (#{id},#{cname},#{status},#{user_id})
+    </insert>
+
+
+    <update id="updateChuanStatus" parameterType="com.hhit.entity.Chuan">
+        update chuan set status = #{status} where id = #{id}
+    </update>
+
+    <select id="getChuanListByGrowId" resultMap="ChuanBean">
+        select c.*from chuan c inner join grow_chuan g on g.chuan_id = c.id
+        where g.grow_id = #{gid}
+    </select>
+
+</mapper>

@@ -16,6 +16,7 @@
         <result property="weiXin" column="weixin" />
         <result property="memo" column="memo" />
         <result property="headImg" column="head_img" />
+        <result property="updateTime" column="update_time" />
         <association property="shouCangCount" column="id" select="getShouCangCount" />
         <association property="articleCount" column="id" select="getArticleCount" />
         <association property="guanZhuCount" column="id" select="getGuanZhuCount" />
@@ -50,4 +51,94 @@
         update nh_manage_user set password = #{newPass} where id = #{userId}
     </update>
 
+    <!-- 根据条件获得用户的数量 -->
+    <select id="getManageUserCountByMap" resultType="int" parameterType="com.hhit.entity.ManageUserBean">
+        select count(0) from nh_manage_user <include refid="manageUserMap"/>
+    </select>
+
+    <sql id="manageUserMap">
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="realName != null and realName != '' ">
+                AND real_name like CONCAT('%', #{realName}, '%')
+            </if>
+            <if test="userName != null and userName != '' ">
+                AND user_name like CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userType != null and userType != '' ">
+                AND user_type = #{userType}
+            </if>
+            <if test="deleteFlag != null">
+                AND delete_flag = #{deleteFlag}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="manageUser_protery">
+		id,
+		user_name,
+		password,
+		real_name,
+		gender,
+        user_type,
+		phone,
+		email,
+		delete_flag,
+		memo,
+        head_img,
+        update_time
+	</sql>
+
+
+    <!-- 根据条件获得用户 -->
+    <select id="getManageUserByMap" resultMap="ManageUserBean" parameterType="com.hhit.entity.ManageUserBean">
+        select
+        <include refid="manageUser_protery"/>
+        from
+        nh_manage_user
+        <include refid="manageUserMap"/>
+        order by update_time desc
+        <if test="fromNum != null and limit != null ">
+            limit #{fromNum}, #{limit}
+        </if>
+    </select>
+
+    <insert id="userAdd" parameterType="com.hhit.entity.ManageUserBean">
+        insert into nh_manage_user(id,user_name,password,real_name,user_type,gender,phone,email,delete_flag,memo,head_img,update_time) values
+        (#{id},#{userName},#{password},#{realName},#{userType},#{gender},#{phone},#{email},#{deleteFlag},#{memo},#{headImg},#{updateTime})
+    </insert>
+
+    <update id="userDel">
+        update nh_manage_user set delete_flag = "1" where id = #{id}
+    </update>
+
+    <update id="userUpdate" parameterType="com.hhit.entity.ManageUserBean">
+        update nh_manage_user
+        <set>
+            <if test="userName != null and userName != '' ">
+                user_name = #{userName},
+            </if>
+            <if test="password != null and password != '' ">
+                password = #{password},
+            </if>
+            <if test="realName != null and realName != '' ">
+                real_name = #{realName},
+            </if>
+            <if test="gender != null ">
+                gender = #{gender},
+            </if>
+            <if test="phone != null and phone != '' ">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email},
+            </if>
+            <if test="memo != null and memo != '' ">
+                memo = #{memo},
+            </if>
+            <if test="headImg != null and headImg != '' ">
+                head_img = #{headImg},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

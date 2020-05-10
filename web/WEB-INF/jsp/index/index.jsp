@@ -188,12 +188,17 @@
                     );
 				});
 
+
 				$("#yidu").click(function(){
                     readMsg("");
                     $("#msg_content").html("");
                     layer.msg("已清空");
                     $("#msgCot").text(0);
                     $("#message").click();
+				})
+
+				$("#jiance").click(function(){
+				    window.location.href = "${path}/chuan/toManagerGrow.action"
 				})
 
                 form.verify({
@@ -379,7 +384,12 @@
 			});
 		}
 
-        function showMessage(data){addMsg("1"),narn('log',data);}
+        function showMessage(data){
+            if("${status}" == "1"){
+                return ;
+            }
+            addMsg("1"),narn('log',data);
+        }
         function narn (type,data) {naranja()[type]({
 			title: '新消息提示',
 			text: JSON.parse(data).content,timeout: 'keep',
@@ -425,6 +435,7 @@
 </head>
 
 <body style="background-color: #F6F6F6;">
+
 <!-- 上面的导航条 -->
 <div class="tou">
 	<div class="layui-row">
@@ -530,7 +541,7 @@
 				</div>
 
 				<div>
-					<button type="button" class="layui-btn" style = "width: 100%;height: 2.5rem;">蔬菜种植环境</button>
+					<button type="button" id="jiance" class="layui-btn" style = "width: 100%;height: 2.5rem;">蔬菜种植环境</button>
 				</div>
 
 			</div>

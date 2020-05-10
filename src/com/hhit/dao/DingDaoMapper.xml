@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhit.dao.DingDaoMapper">
+    <resultMap id="DingBean" type="com.hhit.entity.Ding">
+        <id property="id" column="id"/>
+        <result property="ding" column="ding"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <insert id="addDing" parameterType="com.hhit.entity.Ding">
+        insert into ding(id,ding,user_id) values(#{id},#{ding},#{userId})
+    </insert>
+
+    <select id="findDingByUserId" resultMap="DingBean">
+        select *from ding where user_id = #{userId}
+    </select>
+
+
+    <delete id="deleteDingByUserId">
+        delete from ding where user_id = #{userId}
+    </delete>
+</mapper>
