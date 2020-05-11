@@ -488,4 +488,14 @@ public class ChuanAction {
         json.put("data",list);
         return json;
     }
+
+    @RequestMapping("getGrowParamById")
+    @ResponseBody
+    public JSONObject getGrowParamById(String pId){
+        Grows grows = growsService.getGrowsById(pId);
+        JSONObject json = new JSONObject();
+        json.put("grow",grows);
+        return json;
+    }
+
 }
