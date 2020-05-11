@@ -239,7 +239,7 @@ public class ChuanAction {
 
     @RequestMapping("addPeng")
     @ResponseBody
-    public String addPeng(Grows grows){
+    public String addPeng(@RequestBody Grows grows){
         grows.setUserId(userId);
         String gid = UUID.randomUUID().toString();
         grows.setId(gid);
@@ -468,4 +468,24 @@ public class ChuanAction {
     }
 
 
+    @RequestMapping("getGrowsChuanById")
+    @ResponseBody
+    public JSONObject getGrowsChuanById(String gid,String cids){
+        JSONObject json = new JSONObject();
+        List<Data> data = new ArrayList<>();
+        List<Data> list = new ArrayList<>();
+        if(cids != null && cids != ""){
+            String[] arr = cids.split(";");
+            for(String cid:arr){
+                data = dataService.getGrowsChuanById(gid,cids);
+                list.addAll(data);
+            }
+            json.put("data",list);
+        }else{
+            data = dataService.getGrowsChuanById(gid,cids);
+            json.put("data",data);
+        }
+        json.put("data",list);
+        return json;
+    }
 }

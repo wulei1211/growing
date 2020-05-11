@@ -21,4 +21,9 @@
     <select id="findGrowsDataById" resultMap="dataBean">
         select *from data where gid = #{gid} limit 0,10
     </select>
+
+    <select id="getGrowsChuanById" resultMap="dataBean">
+        select *from data where gid = #{gid} and cid = #{cid}
+    </select>
+
 </mapper>

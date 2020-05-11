@@ -30,6 +30,7 @@
 
                 var growStr = "";
                 var beginGrowId = "";
+                var chuanId = [];
                 for(var i = 0;i<growsList.length;i++){
                     beginGrowId = growsList[0].id;
                     growStr += '<option value="'+growsList[i].id+'">'+growsList[i].growName+'</option>'
@@ -48,14 +49,12 @@
                     success:function(data){
                         var arr = data.chuanList;
                         var chuanStr = "";
-                        if(arr.length == 0){
-                            chuanStr = "<option value=''>无数据</option>";
-                        }
                         for(var i = 0;i<arr.length;i++){
-                            chuanStr += '<option value="'+arr[i].id+'">'+arr[i].cname+'</option>';
+                            chuanId.push(arr[0].id);
+                            chuanStr += '<input type="checkbox" name="cids" value = "'+arr[0].id+'" title="'+arr[0].cname+'" checked>';
                         }
                         $("#chuan").html(chuanStr);
-                        form.render('select');
+                        form.render();
                     }
                 });
 
@@ -71,17 +70,27 @@
                             console.log(data)
                             var arr = data.chuanList;
                             var chuanStr = "";
-                            if(arr.length == 0){
-                                chuanStr = "<option value=''>无数据</option>";
-                            }
                             for(var i = 0;i<arr.length;i++){
-                                chuanStr += '<option value="'+arr[i].id+'">'+arr[i].cname+'</option>';
+                                // chuanId.push(arr[i].id)
+                                chuanStr += '<input type="checkbox" name="cids" value = "'+arr[0].id+'" title="'+arr[0].cname+'">';
                             }
                             $("#chuan").html(chuanStr);
-                            form.render('select');
+                            form.render();
                         }
                     });
                 })
+
+                $.ajax({
+                    type:"POST",
+                    async: false,  //默认true,异步
+                    dataType:"json",
+                    data:{"gid":beginGrowId,"cids":chuanId.join(";")},
+                    url:"${path}/chuan/getGrowsChuanById.action",
+                    success:function(data){
+                        var data = data.data;
+                        for(var i = 0;i<)
+                    }
+                });
 
 
                 var nowTime=new Date();
@@ -114,7 +123,82 @@
                             seconds:date.seconds
                         }
                     }
-                })
+                });
+
+
+
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+
+                var myChart_wen = echarts.init(document.getElementById('wen'));
+                var option_wen = {
+
+                    title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
+                        text: '温度曲线图',
+                        show:true
+                    },
+                    backgroundColor: '#FFFFFF',
+
+                        tooltip : {//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置
+                        trigger: 'axis'
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            axisLabel:{
+                                rotate: 30,
+                                interval:0
+                            },
+                            axisLine:{
+                                lineStyle :{
+                                    color: '#CCCCCC'
+                                }
+                            },
+                            type : 'category',
+                            boundaryGap : false,//从0刻度开始
+                            // data:[]  X轴的定义
+                            data : function (){
+                                var list = [];
+                                for (var i = 10; i <= 18; i++) {
+                                    if(i<= 12){
+                                        list.push('2016-'+i + '-01');
+                                    }else{
+                                        list.push('2017-'+(i-12) + '-01');
+                                    }
+                                }
+                                return list;
+                            }()
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLine:{
+                                lineStyle :{
+                                    color: '#CCCCCC'
+                                }
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'温度',
+                            type:'line',
+                            // symbol:'none',//原点
+                            smooth: 0.2,//弧度
+                            color:['#5FB878'],
+                            // data:Y轴数据
+                            data:[500,100,200,400,600,150,750,800,400,250,650,350]
+                        },
+                    ]
+                };
+                myChart_wen.setOption(option_wen);
+
+
 
             });
         })
@@ -140,11 +224,12 @@
             </select>
         </div>
     </div>
+
+</div>
+<div class="layui-form-item ">
     <div class="layui-inline">
         <label class="layui-form-label">传感器：</label>
-        <div class="layui-input-block">
-            <select name="chuan" id = "chuan" lay-filter="chuan" style="width: 150px;" >
-            </select>
+        <div class="layui-input-block" id = "chuan">
         </div>
     </div>
     <button type="button" class="layui-btn" id="chakan">查看</button>
@@ -153,22 +238,22 @@
 
 <div style = "width: 100%;height: 300px; display: flex;justify-content: space-between">
     <%--温度--%>
-    <div style = "width: 50%;height: 300px;">
+    <div style = "width: 50%;height: 300px;" id="wen">
 
 
     </div>
         <%--湿度--%>
-    <div style = "width: 50%;height: 300px;">
+    <div style = "width: 50%;height: 300px;" id = "shi">
 
     </div>
 </div>
 <div style = "width: 100%;height: 300px; display: flex;justify-content: space-between">
     <%--光照--%>
-    <div style = "width: 50%;height: 300px;">
+    <div style = "width: 50%;height: 300px;" id = "guang">
 
     </div>
         <%--二氧--%>
-    <div style = "width: 50%;height: 300px;">
+    <div style = "width: 50%;height: 300px;" id = "er">
 
     </div>
 </div>

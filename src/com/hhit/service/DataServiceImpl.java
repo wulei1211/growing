@@ -28,4 +28,9 @@ public class DataServiceImpl implements DataService {
     public List<Data> findGrowsDataById(String gid) {
         return dataDaoMapper.findGrowsDataById(gid);
     }
+
+    @Override
+    public List<Data> getGrowsChuanById(String gid, String cid) {
+        return dataDaoMapper.getGrowsChuanById(gid,cid);
+    }
 }

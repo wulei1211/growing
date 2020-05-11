@@ -15,4 +15,6 @@ public interface DataDaoMapper {
     void addData(Data d);
 
     List<Data> findGrowsDataById(@Param("gid") String gid);
+
+    List<Data> getGrowsChuanById(@Param("gid")String gid,@Param("cid") String cid);
 }
