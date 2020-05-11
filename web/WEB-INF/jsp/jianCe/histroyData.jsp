@@ -48,6 +48,9 @@
                     success:function(data){
                         var arr = data.chuanList;
                         var chuanStr = "";
+                        if(arr.length == 0){
+                            chuanStr = "<option value=''>无数据</option>";
+                        }
                         for(var i = 0;i<arr.length;i++){
                             chuanStr += '<option value="'+arr[i].id+'">'+arr[i].cname+'</option>';
                         }
@@ -68,6 +71,9 @@
                             console.log(data)
                             var arr = data.chuanList;
                             var chuanStr = "";
+                            if(arr.length == 0){
+                                chuanStr = "<option value=''>无数据</option>";
+                            }
                             for(var i = 0;i<arr.length;i++){
                                 chuanStr += '<option value="'+arr[i].id+'">'+arr[i].cname+'</option>';
                             }
@@ -131,12 +137,6 @@
         <label class="layui-form-label">种植园：</label>
         <div class="layui-input-block">
             <select name="grow" id = "grow" lay-filter="grow" style="width: 170px;" >
-                <%--<option value=""></option>--%>
-                <%--<option value="0">写作</option>--%>
-                <%--<option value="1" selected="">阅读</option>--%>
-                <%--<option value="2">游戏</option>--%>
-                <%--<option value="3">音乐</option>--%>
-                <%--<option value="4">旅行</option>--%>
             </select>
         </div>
     </div>
@@ -144,12 +144,6 @@
         <label class="layui-form-label">传感器：</label>
         <div class="layui-input-block">
             <select name="chuan" id = "chuan" lay-filter="chuan" style="width: 150px;" >
-                <%--<option value=""></option>--%>
-                <%--<option value="0">写作</option>--%>
-                <%--<option value="1" selected="">阅读</option>--%>
-                <%--<option value="2">游戏</option>--%>
-                <%--<option value="3">音乐</option>--%>
-                <%--<option value="4">旅行</option>--%>
             </select>
         </div>
     </div>
@@ -157,6 +151,27 @@
 </div>
 </form>
 
+<div style = "width: 100%;height: 300px; display: flex;justify-content: space-between">
+    <%--温度--%>
+    <div style = "width: 50%;height: 300px;">
+
+
+    </div>
+        <%--湿度--%>
+    <div style = "width: 50%;height: 300px;">
+
+    </div>
+</div>
+<div style = "width: 100%;height: 300px; display: flex;justify-content: space-between">
+    <%--光照--%>
+    <div style = "width: 50%;height: 300px;">
+
+    </div>
+        <%--二氧--%>
+    <div style = "width: 50%;height: 300px;">
+
+    </div>
+</div>
 
 
 

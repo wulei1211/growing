@@ -361,6 +361,7 @@
         });
 
         function showMessage(data){
+            console.log(data)
             if(type != ""){
                 if(MyMarhq==null){
                     tableScroll('tableId', 0, 30, 8)

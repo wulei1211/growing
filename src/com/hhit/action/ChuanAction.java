@@ -30,6 +30,7 @@ import java.util.*;
 @RequestMapping("chuan")
 public class ChuanAction {
 
+
     //串口对象
     private SerialPort mSerialport;
 
@@ -65,6 +66,60 @@ public class ChuanAction {
 
     @Resource(name="chuanService")
     private ChuanService chuanService;
+
+
+    @RequestMapping("getData")
+    @ResponseBody
+    public void getData(){
+
+        // 串口列表
+        List<String> mCommList = null;
+//        // 获取串口名称
+        mCommList = SerialPortManager.findPorts();
+        String commName = mCommList.get(0);
+        // 获取波特率，默认为9600
+        int baudrate = 9600;
+        String bps = "115200";
+        baudrate = Integer.parseInt(bps);
+
+        // 检查串口名称是否获取正确
+        if (commName == null || commName.equals("")) {
+            ShowUtils.warningMessage("没有搜索到有效串口！");
+        } else {
+            try {
+                mSerialport = SerialPortManager.openPort(commName, baudrate);
+            } catch (PortInUseException e) {
+//                ShowUtils.warningMessage("串口已被占用！");
+            }
+        }
+
+        // 添加串口监听
+        SerialPortManager.addListener(mSerialport, new SerialPortManager.DataAvailableListener() {
+
+            @Override
+            public void dataAvailable() {
+                byte[] data = null;
+                try {
+                    if (mSerialport == null) {
+                        ShowUtils.errorMessage("串口对象为空，监听失败！");
+                    } else {
+                        // 读取串口数据
+                        data = SerialPortManager.readFromPort(mSerialport);
+                        String s = new String(data);
+                        dwrService.send(userId,s );
+                        d = changData(s);
+                        testAction.setD(d);
+//                        d.setTime(CommonUtil.getDateTimeString(new Date()));
+//                        dataService.addData(d);
+                    }
+                } catch (Exception e) {
+                    ShowUtils.errorMessage(e.toString());
+                    System.exit(0);
+                }
+            }
+        });
+    }
+
 
     @RequestMapping("toJianCe")
     public String toJianCeCenter(HttpServletRequest request){
@@ -145,57 +200,7 @@ public class ChuanAction {
         return "success";
     }
 
-    @RequestMapping("getData")
-    @ResponseBody
-    public void getData(){
 
-        // 串口列表
-        List<String> mCommList = null;
-//        // 获取串口名称
-        mCommList = SerialPortManager.findPorts();
-        String commName = mCommList.get(0);
-        // 获取波特率，默认为9600
-        int baudrate = 9600;
-        String bps = "115200";
-        baudrate = Integer.parseInt(bps);
-
-        // 检查串口名称是否获取正确
-        if (commName == null || commName.equals("")) {
-            ShowUtils.warningMessage("没有搜索到有效串口！");
-        } else {
-            try {
-                mSerialport = SerialPortManager.openPort(commName, baudrate);
-            } catch (PortInUseException e) {
-//                ShowUtils.warningMessage("串口已被占用！");
-            }
-        }
-
-        // 添加串口监听
-        SerialPortManager.addListener(mSerialport, new SerialPortManager.DataAvailableListener() {
-
-            @Override
-            public void dataAvailable() {
-                byte[] data = null;
-                try {
-                    if (mSerialport == null) {
-                        ShowUtils.errorMessage("串口对象为空，监听失败！");
-                    } else {
-                        // 读取串口数据
-                        data = SerialPortManager.readFromPort(mSerialport);
-                        String s = new String(data);
-                        dwrService.send(userId,s );
-                        d = changData(s);
-                        testAction.setD(d);
-//                        d.setTime(CommonUtil.getDateTimeString(new Date()));
-//                        dataService.addData(d);
-                    }
-                } catch (Exception e) {
-                    ShowUtils.errorMessage(e.toString());
-                    System.exit(0);
-                }
-            }
-        });
-    }
 
     @RequestMapping("toAllZhong")
     public String toAllZhong(){
