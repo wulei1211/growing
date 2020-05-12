@@ -36,6 +36,8 @@ public class ChuanAction {
 
     private String userId;
 
+    private static String s;
+
     private GrowChuan growChuan = null;
 
     private static Data d = null;
@@ -105,7 +107,7 @@ public class ChuanAction {
                     } else {
                         // 读取串口数据
                         data = SerialPortManager.readFromPort(mSerialport);
-                        String s = new String(data);
+                        s = new String(data);
                         dwrService.send(userId,s );
                         d = changData(s);
                         testAction.setD(d);
@@ -477,7 +479,7 @@ public class ChuanAction {
         if(cids != null && cids != ""){
             String[] arr = cids.split(";");
             for(String cid:arr){
-                data = dataService.getGrowsChuanById(gid,cids);
+                data = dataService.getGrowsChuanById(gid,cid);
                 list.addAll(data);
             }
             json.put("data",list);
@@ -495,6 +497,14 @@ public class ChuanAction {
         Grows grows = growsService.getGrowsById(pId);
         JSONObject json = new JSONObject();
         json.put("grow",grows);
+        return json;
+    }
+
+    @RequestMapping("getDateReact")
+    @ResponseBody
+    public JSONObject getDateReact(){
+        JSONObject json = new JSONObject();
+        json.put("data",s);
         return json;
     }
 
