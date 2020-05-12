@@ -12,6 +12,7 @@ public class Chuan extends BaseBean{
     private String status;
     private String userId;
 
+
     public String getUserId() {
         return userId;
     }

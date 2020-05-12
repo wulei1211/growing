@@ -146,6 +146,7 @@
 
                 form.on('submit(*)', function(data){
                     dataType = [];
+                    xList = [];
                     // layer.confirm('确定添加?', function(index){
                     //     console.log(getFormData("#myForm"));/
                     $.ajax({
@@ -164,6 +165,8 @@
                                     dataType.push(dataList[i].cid+"号传感器")
                                 }
                             }
+                            console.log(dataList)
+                            console.log(dataType)
                             fourEcharts(dataList,dataType,xList)
                         }
                     });
@@ -260,6 +263,23 @@
             myChart_guang.setOption(option_guang);
 
 
+            for (var i = 0; i < option_wen.series.length; i++) {
+                option_wen.series[i].data = [];
+                option_wen.series[i].name = "";
+                option_shi.series[i].data = [];
+                option_shi.series[i].name = "";
+                option_er.series[i].data = [];
+                option_er.series[i].name = "";
+                option_guang.series[i].data = [];
+                option_guang.series[i].name = "";
+
+            }
+
+            myChart_wen.setOption(option_wen,true);
+            myChart_shi.setOption(option_shi,true);
+            myChart_er.setOption(option_er,true);
+            myChart_guang.setOption(option_guang,true);
+
 
             var wenDate = [];
             var wenObj = {};
@@ -327,6 +347,7 @@
             myChart_guang.setOption({
                 series: guangDate
             });
+
 
 
 

@@ -23,8 +23,9 @@
     </select>
 
     <select id="getGrowsChuanById" resultMap="dataBean">
-        select *from data where gid = #{gid} and cid = #{cid}
+        select *from data
         <trim prefix="where" prefixOverrides="AND">
+            gid = #{gid} and cid = #{cid}
             <if test="startTime != null and startTime != '' ">
                 AND time &gt;= #{startTime}
             </if>
