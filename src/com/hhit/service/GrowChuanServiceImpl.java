@@ -38,4 +38,9 @@ public class GrowChuanServiceImpl implements GrowChuanService {
     public List<Chuan> getChuanListByGrowId(String gid) {
         return growChuanDaoMapper.getChuanListByGrowId(gid);
     }
+
+    @Override
+    public void deleteGrowsChuanById(String gid, String cid) {
+        growChuanDaoMapper.deleteGrowsChuanById(gid,cid);
+    }
 }

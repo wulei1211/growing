@@ -28,4 +28,8 @@
     <select id="getChuanListByGrowId" resultMap="com.hhit.dao.ChuanDaoMapper.ChuanBean">
         select *from grow_chuan where grow_id = #{gid}
     </select>
+
+    <delete id="deleteGrowsChuanById">
+        delete from grow_chuan where chuan_id = #{cid} and grow_id = #{gid}
+    </delete>
 </mapper>

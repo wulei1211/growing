@@ -518,4 +518,24 @@ public class ChuanAction {
         return json;
     }
 
+    @RequestMapping("addChuanReact")
+    @ResponseBody
+    public String addChuanReact(String gid,String cid){
+        String[] arr = cid.split(";");
+        GrowChuan growChuan = new GrowChuan();
+        for(String str:arr){
+            growChuan.setId(UUID.randomUUID().toString());
+            growChuan.setGrowId(gid);
+            growChuan.setChuanId(str);
+            growChuanService.addGrowChuan(growChuan);
+        }
+        return "success";
+    }
+
+    @RequestMapping("deleteChuanReact")
+    @ResponseBody
+    public String deleteChuanReact(String gid,String cid){
+        growChuanService.deleteGrowsChuanById(gid,cid);
+        return "success";
+    }
 }
