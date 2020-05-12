@@ -12,6 +12,25 @@ public class Chuan extends BaseBean{
     private String status;
     private String userId;
 
+    private String gid;
+
+    private Integer booleanGrow;
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
+    public Integer getBooleanGrow() {
+        return booleanGrow;
+    }
+
+    public void setBooleanGrow(Integer booleanGrow) {
+        this.booleanGrow = booleanGrow;
+    }
 
     public String getUserId() {
         return userId;

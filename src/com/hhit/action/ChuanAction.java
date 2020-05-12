@@ -151,8 +151,7 @@ public class ChuanAction {
 
     @RequestMapping("getAllChuanReact")
     @ResponseBody
-    public JSONObject getAllChuanReact(String gid){
-        Chuan param = new Chuan();
+    public JSONObject getAllChuanReact(Chuan param){
         param.setUserId(userId);
         List<Chuan> data = chuanService.getAllChuan(param);
         JSONObject json = new JSONObject();

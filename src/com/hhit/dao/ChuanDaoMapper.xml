@@ -19,10 +19,10 @@
     </select>
 
     <select id="getAllChuan" parameterType="com.hhit.entity.Chuan" resultMap="ChuanBean">
-        select *from  chuan
+        select c.*,(select count(0) from grow_chuan gc where gc.chuan_id = c.id and gc.grow_id = #{gid} ) as booleanGrow from  chuan c
         <trim prefix="where" prefixOverrides="AND">
             <if test="userId != null and userId != '' ">
-                AND user_id = #{userId}
+                AND c.user_id = #{userId}
             </if>
         </trim>
         <if test="fromNum != null and limit != null ">
