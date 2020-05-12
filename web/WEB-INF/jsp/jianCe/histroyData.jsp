@@ -31,6 +31,14 @@
                 var growStr = "";
                 var beginGrowId = "";
                 var chuanId = [];
+
+                var wenList = [];
+                var xList = [];
+                var dataList = [];
+
+                var dataType = [];
+
+
                 for(var i = 0;i<growsList.length;i++){
                     beginGrowId = growsList[0].id;
                     growStr += '<option value="'+growsList[i].id+'">'+growsList[i].growName+'</option>'
@@ -80,6 +88,7 @@
                     });
                 })
 
+                // chuanId.push("2")
                 $.ajax({
                     type:"POST",
                     async: false,  //默认true,异步
@@ -87,8 +96,16 @@
                     data:{"gid":beginGrowId,"cids":chuanId.join(";")},
                     url:"${path}/chuan/getGrowsChuanById.action",
                     success:function(data){
-                        var data = data.data;
-                        for(var i = 0;i<)
+                        dataList = data.data;
+                        for(var i = 0;i<dataList.length;i++){
+                            xList.push(dataList[i].time);
+                            if(dataType.indexOf(dataList[i].cid+"号传感器")>-1){
+                                continue;
+                            }else{
+                                dataType.push(dataList[i].cid+"号传感器")
+                            }
+                        }
+                        fourEcharts(dataList,dataType,xList)
                     }
                 });
 
@@ -127,85 +144,217 @@
 
 
 
-            //    温度
-            //    温度
-            //    温度
-            //    温度
-            //    温度
-            //    温度
-
-                var myChart_wen = echarts.init(document.getElementById('wen'));
-                var option_wen = {
-
-                    title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
-                        text: '温度曲线图',
-                        show:true
-                    },
-                    backgroundColor: '#FFFFFF',
-
-                        tooltip : {//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置
-                        trigger: 'axis'
-                    },
-                    calculable : true,
-                    xAxis : [
-                        {
-                            axisLabel:{
-                                rotate: 30,
-                                interval:0
-                            },
-                            axisLine:{
-                                lineStyle :{
-                                    color: '#CCCCCC'
-                                }
-                            },
-                            type : 'category',
-                            boundaryGap : false,//从0刻度开始
-                            // data:[]  X轴的定义
-                            data : function (){
-                                var list = [];
-                                for (var i = 10; i <= 18; i++) {
-                                    if(i<= 12){
-                                        list.push('2016-'+i + '-01');
-                                    }else{
-                                        list.push('2017-'+(i-12) + '-01');
-                                    }
-                                }
-                                return list;
-                            }()
-                        }
-                    ],
-                    yAxis : [
-                        {
-                            type : 'value',
-                            axisLine:{
-                                lineStyle :{
-                                    color: '#CCCCCC'
+                form.on('submit(*)', function(data){
+                    dataType = [];
+                    // layer.confirm('确定添加?', function(index){
+                    //     console.log(getFormData("#myForm"));/
+                    $.ajax({
+                        type:"POST",
+                        async: false,  //默认true,异步
+                        dataType:"json",
+                        data:getFormData("#myForm"),
+                        url:"${path}/chuan/getGrowsChuanById.action",
+                        success:function(data){
+                            dataList = data.data;
+                            for(var i = 0;i<dataList.length;i++){
+                                xList.push(dataList[i].time);
+                                if(dataType.indexOf(dataList[i].cid+"号传感器")>-1){
+                                    continue;
+                                }else{
+                                    dataType.push(dataList[i].cid+"号传感器")
                                 }
                             }
+                            fourEcharts(dataList,dataType,xList)
                         }
-                    ],
-                    series : [
-                        {
-                            name:'温度',
-                            type:'line',
-                            // symbol:'none',//原点
-                            smooth: 0.2,//弧度
-                            color:['#5FB878'],
-                            // data:Y轴数据
-                            data:[500,100,200,400,600,150,750,800,400,250,650,350]
-                        },
-                    ]
-                };
-                myChart_wen.setOption(option_wen);
+                    });
+                    // });
+                    // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                    // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                    // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                });
 
 
 
             });
         })
+
+        function fourEcharts(dataList,dataType,xList){
+
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+            //    温度
+
+            var myChart_wen = echarts.init(document.getElementById('wen'));
+            var option_wen = {
+
+                title: {text: '温度曲线图',show:true},
+                backgroundColor: '#FFFFFF',tooltip : {/*//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置*/trigger: 'axis'},
+                legend: {data:dataType},
+                calculable : true,
+                xAxis : [{axisLabel:{/*// rotate: 40,*/interval:0,textStyle: {fontSize : 7 },formatter:function(value){return value.split(" ").join("\n");}},
+                    axisLine:{lineStyle :{color: '#CCCCCC'}},
+                    type : 'category',
+                    boundaryGap : false,//从0刻度开始
+                    data : xList}],
+                yAxis : [{type : 'value',min:10,max:50,interval:5,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                series : []
+            };
+            myChart_wen.setOption(option_wen);
+
+            //湿度
+            var myChart_shi = echarts.init(document.getElementById('shi'));
+            var option_shi = {
+
+                title: {text: '湿度曲线图',show:true},
+                backgroundColor: '#FFFFFF',tooltip : {/*//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置*/trigger: 'axis'},
+                legend: {data:dataType},
+                calculable : true,
+                xAxis : [{axisLabel:{/*// rotate: 40,*/interval:0,textStyle: {fontSize : 7 },formatter:function(value){return value.split(" ").join("\n");}},
+                    axisLine:{lineStyle :{color: '#CCCCCC'}},
+                    type : 'category',
+                    boundaryGap : false,//从0刻度开始
+                    data : xList}],
+                yAxis : [{type : 'value',min:20,max:100,interval:10,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                series : []
+            };
+            myChart_shi.setOption(option_shi);
+
+            // 二氧化碳
+            var myChart_er = echarts.init(document.getElementById('er'));
+            var option_er = {
+
+                title: {text: '二氧化碳曲线图',show:true},
+                backgroundColor: '#FFFFFF',tooltip : {/*//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置*/trigger: 'axis'},
+                legend: {data:dataType},
+                calculable : true,
+                xAxis : [{axisLabel:{/*// rotate: 40,*/interval:0,textStyle: {fontSize : 7 },formatter:function(value){return value.split(" ").join("\n");}},
+                    axisLine:{lineStyle :{color: '#CCCCCC'}},
+                    type : 'category',
+                    boundaryGap : false,//从0刻度开始
+                    data : xList}],
+                yAxis : [{type : 'value',min:7600,max:8000,interval:40,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                series : []
+            };
+            myChart_er.setOption(option_er);
+
+            // 光照
+            var myChart_guang = echarts.init(document.getElementById('guang'));
+            var option_guang = {
+
+                title: {text: '光照曲线图',show:true},
+                backgroundColor: '#FFFFFF',tooltip : {/*//鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置*/trigger: 'axis'},
+                legend: {data:dataType},
+                calculable : true,
+                xAxis : [{axisLabel:{/*// rotate: 40,*/interval:0,textStyle: {fontSize : 7 },formatter:function(value){return value.split(" ").join("\n");}},
+                    axisLine:{lineStyle :{color: '#CCCCCC'}},
+                    type : 'category',
+                    boundaryGap : false,//从0刻度开始
+                    data : xList}],
+                yAxis : [{type : 'value',min:5100,max:5500,interval:40,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                series : []
+            };
+            myChart_guang.setOption(option_guang);
+
+
+
+            var wenDate = [];
+            var wenObj = {};
+            var shiDate = [];
+            var shiObj = {};
+            var guangDate = [];
+            var guangObj = {};
+            var erDate = [];
+            var erObj = {};
+            for(var i = 0;i<dataType.length;i++){
+                var wenList = [];
+                var shiList = [];
+                var erList = [];
+                var guangList = [];
+                for(var j = 0;j<dataList.length;j++){
+                    if(dataType[i].substring(0,1) == dataList[j].cid){
+                        wenList.push(dataList[j].wen);
+                        shiList.push(dataList[j].shi);
+                        erList.push(dataList[j].er);
+                        guangList.push(dataList[j].guang);
+                    }
+                }
+                wenObj = {
+                    name:dataType[i],
+                    type:'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2,//弧度
+                    data: wenList
+                }
+                shiObj = {
+                    name:dataType[i],
+                    type:'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2,//弧度
+                    data: shiList
+                }
+                erObj = {
+                    name:dataType[i],
+                    type:'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2,//弧度
+                    data: erList
+                }
+                guangObj = {
+                    name:dataType[i],
+                    type:'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2,//弧度
+                    data: guangList
+                }
+                wenDate.push(wenObj);
+                shiDate.push(shiObj);
+                erDate.push(erObj);
+                guangDate.push(guangObj);
+            }
+            myChart_wen.setOption({
+                series: wenDate
+            });
+            myChart_shi.setOption({
+                series: shiDate
+            });
+            myChart_er.setOption({
+                series: erDate
+            });
+            myChart_guang.setOption({
+                series: guangDate
+            });
+
+
+
+        }
+
+
+
+        function getFormData(formId){
+            var data = {};
+            var results = $(formId).serializeArray();
+            $.each(results,function(index,item){
+                //文本表单的值不为空才处理
+                if(item.value && $.trim(item.value)!=""){
+                    if(!data[item.name]){
+                        data[item.name]=item.value;
+                    }else{
+                        //name属性相同的表单，值以英文,拼接
+                        data[item.name]=data[item.name]+','+item.value;
+                    }
+                }
+            });
+            //console.log(data);
+            return data;
+        }
     </script>
 </head>
 <body style="overflow-x: hidden; background-color: white;margin: 10px;padding: 10px;">
-<form class = "layui-form">
+<form class = "layui-form" id = "myForm">
 <div class="layui-form-item ">
     <div class="layui-inline">
         <label class="layui-form-label">时间范围：</label>
@@ -220,7 +369,7 @@
     <div class="layui-inline">
         <label class="layui-form-label">种植园：</label>
         <div class="layui-input-block">
-            <select name="grow" id = "grow" lay-filter="grow" style="width: 170px;" >
+            <select name="gid" id = "grow" lay-filter="grow" style="width: 170px;" >
             </select>
         </div>
     </div>
@@ -232,7 +381,7 @@
         <div class="layui-input-block" id = "chuan">
         </div>
     </div>
-    <button type="button" class="layui-btn" id="chakan">查看</button>
+    <button type="button" class="layui-btn" id="chakan" lay-submit lay-filter="*">查看</button>
 </div>
 </form>
 

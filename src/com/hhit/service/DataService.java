@@ -15,5 +15,5 @@ public interface DataService {
 
     List<Data> findGrowsDataById(String gid);
 
-    List<Data> getGrowsChuanById(String gid, String cid);
+    List<Data> getGrowsChuanById(String gid, String cid,String startTime,String endTime);
 }

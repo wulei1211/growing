@@ -91,8 +91,9 @@
                         $.ajax({
                             type:"POST",
                             async: false,  //默认true,异步
-                            data:getFormData("#myForm"),
+                            data:JSON.stringify(getFormData("#myForm")),
                             dataType:"text",
+                            contentType:"application/json",
                             url:"${path}/chuan/addPeng.action",
                             success:function(data){
                                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

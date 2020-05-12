@@ -30,7 +30,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<Data> getGrowsChuanById(String gid, String cid) {
-        return dataDaoMapper.getGrowsChuanById(gid,cid);
+    public List<Data> getGrowsChuanById(String gid, String cid,String startTime,String endTime) {
+        return dataDaoMapper.getGrowsChuanById(gid,cid,startTime,endTime);
     }
 }
