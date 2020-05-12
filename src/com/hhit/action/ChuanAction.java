@@ -504,7 +504,7 @@ public class ChuanAction {
     @ResponseBody
     public JSONObject getDateReact(){
         JSONObject json = new JSONObject();
-        json.put("data",s);
+        json.put("data",d);
         return json;
     }
 
