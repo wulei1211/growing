@@ -149,6 +149,16 @@ public class ChuanAction {
         return "jianCe/managerGrow";
     }
 
+    @RequestMapping("getAllChuanReact")
+    @ResponseBody
+    public JSONObject getAllChuanReact(Chuan param){
+        param.setUserId(userId);
+        List<Chuan> data = chuanService.getAllChuan(param);
+        JSONObject json = new JSONObject();
+        json.put("chuanList",data);
+        return json;
+    }
+
     @RequestMapping("getAllChuan")
     @ResponseBody
     public MMGridPageVoBean<Chuan> getAllChuan(HttpServletRequest request, Chuan paramUser){
@@ -472,19 +482,19 @@ public class ChuanAction {
 
     @RequestMapping("getGrowsChuanById")
     @ResponseBody
-    public JSONObject getGrowsChuanById(String gid,String cids){
+    public JSONObject getGrowsChuanById(String gid,String cids,String startTime,String endTime){
         JSONObject json = new JSONObject();
         List<Data> data = new ArrayList<>();
         List<Data> list = new ArrayList<>();
         if(cids != null && cids != ""){
             String[] arr = cids.split(";");
             for(String cid:arr){
-                data = dataService.getGrowsChuanById(gid,cid);
+                data = dataService.getGrowsChuanById(gid,cid,startTime,endTime);
                 list.addAll(data);
             }
             json.put("data",list);
         }else{
-            data = dataService.getGrowsChuanById(gid,cids);
+            data = dataService.getGrowsChuanById(gid,cids,startTime,endTime);
             json.put("data",data);
         }
         json.put("data",list);
