@@ -418,6 +418,19 @@ public class ChuanAction {
         return vo;
     }
 
+    @RequestMapping("getErrorListReact")
+    @ResponseBody
+    public JSONObject getErrorListReact(ErrorMsg paramUser){
+
+        paramUser.setUserId(userId);
+
+        List<ErrorMsg> data = errorMsgService.getErrorList(paramUser);
+
+        JSONObject json = new JSONObject();
+        json.put("data",data);
+        return json;
+    }
+
 
     @RequestMapping("caiJiData")
     @ResponseBody
