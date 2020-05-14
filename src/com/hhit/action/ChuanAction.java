@@ -256,7 +256,7 @@ public class ChuanAction {
         growsService.addPeng(grows);
         if(grows.getChuanId()!=null && !"".equals(grows.getChuanId())){
             String[] arr = grows.getChuanId().split(";");
-            String[] pos = grows.getPositions().split(";");
+            String[] pos = grows.getPosition().split(";");
             GrowChuan growChuan = new GrowChuan();
             for(int i = 0;i<arr.length;i++){
                 growChuan.setId(UUID.randomUUID().toString());
@@ -303,7 +303,7 @@ public class ChuanAction {
         growChuanService.deleteAllGrowChuan(grows.getId());
         if(grows.getChuanId() != null && !"".equals(grows.getChuanId())){
             String[] arr = grows.getChuanId().split(";");
-            String[] pos = grows.getPositions().split(";");
+            String[] pos = grows.getPosition().split(";");
             GrowChuan growChuan = new GrowChuan();
             for(int i = 0;i<arr.length;i++){
                 growChuan.setId(UUID.randomUUID().toString());

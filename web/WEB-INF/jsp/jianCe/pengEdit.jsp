@@ -31,7 +31,7 @@
 
                 $("#growName").val(grows.growName);
                 $("#memo").val(grows.memo);
-                $("#position").val(grows.position);
+                // $("#position").val(grows.position);
                 $("#startWen").val(grows.startWen);
                 $("#startShi").val(grows.startShi);
                 $("#startGuang").val(grows.startGuang);
@@ -111,7 +111,7 @@
                 });
 
                 form.on('submit(*)', function(data){
-
+                    // console.log(getFormData("#myForm"))
                     layer.confirm('确定修改?', function(index){
                         $.ajax({
                             type:"POST",

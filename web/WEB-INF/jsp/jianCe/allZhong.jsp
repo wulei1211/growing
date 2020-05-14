@@ -63,6 +63,7 @@
                             }
                                 return str;
                             }}
+                        ,{field: 'position', title: "位置"}
                         ,{field: 'memo', title: "温度范围",templet:function (d) {
                             if(d.startWen==""|| d.startWen==null){
                                 return "";

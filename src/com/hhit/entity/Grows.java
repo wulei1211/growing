@@ -14,16 +14,16 @@ public class Grows extends BaseBean{
     private String memo;
     private String userId;
 
-    private String positions;
+    private String position;
     private String chuanId;
     private List<Chuan> chuanGanList;
 
-    public String getPositions() {
-        return positions;
+    public String getPosition() {
+        return position;
     }
 
-    public void setPositions(String positions) {
-        this.positions = positions;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     private Integer startWen;
