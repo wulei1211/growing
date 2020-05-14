@@ -296,9 +296,9 @@ public class ChuanAction {
     @ResponseBody
     public String growUpdate(Grows grows){
 
-        List<Chuan> list = growChuanService.getChuanListByGrowId(grows.getId());
-        for(Chuan c:list){
-            chuanService.updateChuanPosition(c.getId(),"");
+        List<GrowChuan> list = growChuanService.findGrowChuanById(grows.getId());
+        for(GrowChuan c:list){
+            chuanService.updateChuanPosition(c.getChuanId(),"");
         }
         growChuanService.deleteAllGrowChuan(grows.getId());
         if(grows.getChuanId() != null && !"".equals(grows.getChuanId())){

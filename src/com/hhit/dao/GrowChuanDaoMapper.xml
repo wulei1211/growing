@@ -32,4 +32,8 @@
     <delete id="deleteGrowsChuanById">
         delete from grow_chuan where chuan_id = #{cid} and grow_id = #{gid}
     </delete>
+
+    <select id="findGrowChuanById" resultMap="GrowChuanBean">
+        select  *from grow_chuan where grow_id = #{id}
+    </select>
 </mapper>

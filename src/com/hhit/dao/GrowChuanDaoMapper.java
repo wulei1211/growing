@@ -24,4 +24,6 @@ public interface GrowChuanDaoMapper {
     List<Chuan> getChuanListByGrowId(@Param("gid")String gid);
 
     void deleteGrowsChuanById(@Param("gid")String gid, @Param("cid")String cid);
+
+    List<GrowChuan> findGrowChuanById(@Param("id")String id);
 }

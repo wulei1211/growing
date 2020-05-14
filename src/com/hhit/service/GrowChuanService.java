@@ -21,4 +21,6 @@ public interface GrowChuanService {
     List<Chuan> getChuanListByGrowId(String gid);
 
     void deleteGrowsChuanById(String gid, String cid);
+
+    List<GrowChuan> findGrowChuanById(String id);
 }

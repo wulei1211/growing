@@ -63,7 +63,18 @@
                             }
                                 return str;
                             }}
-                        ,{field: 'position', title: "位置"}
+                        ,{field: 'position', title: "位置",templet:function (d) {
+                                var str = "";
+                                var arr = d.chuanGanList;
+                                for(var i = 0;i<arr.length;i++){
+                                    if(i==arr.length-1){
+                                        str += arr[i].chuan.position
+                                    }else{
+                                        str += arr[i].chuan.position+";"
+                                    }
+                                }
+                                return str;
+                            }}
                         ,{field: 'memo', title: "温度范围",templet:function (d) {
                             if(d.startWen==""|| d.startWen==null){
                                 return "";
