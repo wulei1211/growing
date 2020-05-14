@@ -153,7 +153,7 @@ public class ChuanAction {
     @ResponseBody
     public JSONObject getAllChuanReact(Chuan param){
         param.setUserId(userId);
-        List<Chuan> data = chuanService.getAllChuan(param);
+        List<Chuan> data = chuanService.getNoUseChuan(param);
         JSONObject json = new JSONObject();
         json.put("chuanList",data);
         return json;

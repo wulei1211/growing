@@ -35,7 +35,7 @@
     </select>
 
     <select id="getNoUseChuan" parameterType="com.hhit.entity.Chuan" resultMap="ChuanBean">
-        select *from chuan where id not in (select chuan_id from grow_chuan GROUP BY chuan_id)
+        select *from chuan where user_id = #{userId} id not in (select chuan_id from grow_chuan GROUP BY chuan_id)
     </select>
 
     <insert id="addChuan" parameterType="com.hhit.entity.Chuan">
