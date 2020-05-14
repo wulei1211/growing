@@ -14,8 +14,17 @@ public class Grows extends BaseBean{
     private String memo;
     private String userId;
 
+    private String positions;
     private String chuanId;
     private List<Chuan> chuanGanList;
+
+    public String getPositions() {
+        return positions;
+    }
+
+    public void setPositions(String positions) {
+        this.positions = positions;
+    }
 
     private Integer startWen;
     private Integer startShi;

@@ -22,4 +22,6 @@ public interface ChuanService {
     void updateChuanStatus(Chuan chuan);
 
     List<Chuan> getChuanListByGrowId(String gid);
+
+    void updateChuanPosition(String s, String po);
 }

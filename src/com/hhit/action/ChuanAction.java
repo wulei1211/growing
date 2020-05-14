@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -203,14 +209,6 @@ public class ChuanAction {
         mSerialport = null;
     }
 
-    @RequestMapping("addChuan")
-    @ResponseBody
-    public String  addChuan(@RequestBody Chuan chuan){
-        chuan.setStatus("0");
-        chuan.setUserId(userId);
-        chuanService.addChuan(chuan);
-        return "success";
-    }
 
 
 
@@ -258,12 +256,14 @@ public class ChuanAction {
         growsService.addPeng(grows);
         if(grows.getChuanId()!=null && !"".equals(grows.getChuanId())){
             String[] arr = grows.getChuanId().split(";");
+            String[] pos = grows.getPositions().split(";");
             GrowChuan growChuan = new GrowChuan();
-            for(String str:arr){
+            for(int i = 0;i<arr.length;i++){
                 growChuan.setId(UUID.randomUUID().toString());
                 growChuan.setGrowId(gid);
-                growChuan.setChuanId(str);
+                growChuan.setChuanId(arr[i]);
                 growChuanService.addGrowChuan(growChuan);
+                chuanService.updateChuanPosition(arr[i],pos[i]);
             }
         }
         return "success";
@@ -296,15 +296,21 @@ public class ChuanAction {
     @ResponseBody
     public String growUpdate(Grows grows){
 
+        List<Chuan> list = growChuanService.getChuanListByGrowId(grows.getId());
+        for(Chuan c:list){
+            chuanService.updateChuanPosition(c.getId(),"");
+        }
         growChuanService.deleteAllGrowChuan(grows.getId());
         if(grows.getChuanId() != null && !"".equals(grows.getChuanId())){
             String[] arr = grows.getChuanId().split(";");
+            String[] pos = grows.getPositions().split(";");
             GrowChuan growChuan = new GrowChuan();
-            for(String str:arr){
+            for(int i = 0;i<arr.length;i++){
                 growChuan.setId(UUID.randomUUID().toString());
                 growChuan.setGrowId(grows.getId());
-                growChuan.setChuanId(str);
+                growChuan.setChuanId(arr[i]);
                 growChuanService.addGrowChuan(growChuan);
+                chuanService.updateChuanPosition(arr[i],pos[i]);
             }
         }
         growsService.updateGrow(grows);
@@ -370,7 +376,8 @@ public class ChuanAction {
 
     @RequestMapping("addError")
     @ResponseBody
-    public void addError(String gid,String cid,String type,String val){
+    public void addError(String gid,String cid,String type,String val,HttpServletRequest request){
+        ManageUserBean user = (ManageUserBean) request.getSession().getAttribute("userBean");
         String str = "";
         if("wen".equals(type)){
             str = "温度数值异常，数值为："+val;
@@ -389,6 +396,7 @@ public class ChuanAction {
         e.setMsg(str);
         e.setUserId(userId);
         errorMsgService.addError(e);
+        sendEmail(user.getEmail(),gid+"出现预警信息",str+",请尽快前去查看！！");
     }
 
     @RequestMapping("toErrorMsgList")
@@ -531,16 +539,28 @@ public class ChuanAction {
         return json;
     }
 
+
+    @RequestMapping("addChuan")
+    @ResponseBody
+    public String  addChuan(@RequestBody Chuan chuan){
+        chuan.setStatus("0");
+        chuan.setUserId(userId);
+        chuanService.addChuan(chuan);
+        return "success";
+    }
+
     @RequestMapping("addChuanReact")
     @ResponseBody
-    public String addChuanReact(String gid,String cid){
+    public String addChuanReact(String gid,String cid,String poistion){
         String[] arr = cid.split(";");
+        String[] pos = poistion.split(";");
         GrowChuan growChuan = new GrowChuan();
-        for(String str:arr){
+        for(int i = 0;i<arr.length;i++){
             growChuan.setId(UUID.randomUUID().toString());
             growChuan.setGrowId(gid);
-            growChuan.setChuanId(str);
+            growChuan.setChuanId(arr[i]);
             growChuanService.addGrowChuan(growChuan);
+            chuanService.updateChuanPosition(arr[i],pos[i]);
         }
         return "success";
     }
@@ -550,5 +570,30 @@ public class ChuanAction {
     public String deleteChuanReact(String gid,String cid){
         growChuanService.deleteGrowsChuanById(gid,cid);
         return "success";
+    }
+
+    public void sendEmail(String email,String title,String content) {
+        Properties properties = new Properties();
+        properties.put("mail.transport.protocol", "smtp");// 连接协议
+        properties.put("mail.smtp.host", "smtp.qq.com");// 主机名
+        properties.put("mail.smtp.port", 465);// 端口号
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.enable", "true");// 设置是否使用ssl安全连接 ---一般都使用
+        properties.put("mail.debug", "true");// 设置是否显示debug信息 true 会在控制台显示相关信息
+        Session session = Session.getInstance(properties);
+        Message message = new MimeMessage(session);
+        try{
+            message.setFrom(new InternetAddress(email));
+//        message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com")});
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));//一个收件人
+            message.setSubject(title);
+            message.setText(content);
+            Transport transport = session.getTransport();
+            transport.connect("1468631228@qq.com", "lqavouzgkktngigc");// 密码为QQ邮箱开通的stmp服务后得到的客户端授权码
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        }catch (MessagingException e){
+
+        }
     }
 }

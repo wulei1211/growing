@@ -31,6 +31,7 @@
 
                 $("#growName").val(grows.growName);
                 $("#memo").val(grows.memo);
+                $("#position").val(grows.position);
                 $("#startWen").val(grows.startWen);
                 $("#startShi").val(grows.startShi);
                 $("#startGuang").val(grows.startGuang);
@@ -179,6 +180,12 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">位置：</label>
+        <div class="layui-input-block" >
+            <input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">

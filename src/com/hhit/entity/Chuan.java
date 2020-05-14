@@ -11,10 +11,19 @@ public class Chuan extends BaseBean{
     private String cname;
     private String status;
     private String userId;
+    private String position;
 
     private String gid;
 
     private Integer booleanGrow;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
     public String getGid() {
         return gid;

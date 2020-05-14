@@ -51,5 +51,10 @@ public class ChuanServiceImpl implements ChuanService {
         return chuanDaoMapper.getChuanListByGrowId(gid);
     }
 
+    @Override
+    public void updateChuanPosition(String s, String po) {
+        chuanDaoMapper.updateChuanPosition(s,po);
+    }
+
 
 }

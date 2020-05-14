@@ -156,6 +156,13 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">位置：</label>
+        <div class="layui-input-block" >
+            <input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>

@@ -7,6 +7,7 @@
         <result property="cname" column="cname"/>
         <result property="status" column="status"/>
         <result property="userId" column="user_id"/>
+        <result property="position" column="position"/>
     </resultMap>
 
     <select id="getAllChuanCount" parameterType="com.hhit.entity.Chuan" resultType="int">
@@ -39,7 +40,7 @@
     </select>
 
     <insert id="addChuan" parameterType="com.hhit.entity.Chuan">
-        insert into chuan(id,cname,status,user_id) values (#{id},#{cname},#{status},#{user_id})
+        insert into chuan(id,cname,status,user_id,`position`) values (#{id},#{cname},#{status},#{user_id},#{position})
     </insert>
 
 
@@ -51,5 +52,9 @@
         select c.*from chuan c inner join grow_chuan g on g.chuan_id = c.id
         where g.grow_id = #{gid}
     </select>
+
+    <update id="updateChuanPosition">
+        update chuan set `position` = #{po} where id = #{s}
+    </update>
 
 </mapper>

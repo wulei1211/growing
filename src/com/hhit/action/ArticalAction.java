@@ -285,6 +285,7 @@ public class ArticalAction {
     @ResponseBody
     public JSONObject findAllArticle(String articleTitle,String guanzhu,String articleType,String master,String shouCang,Integer page){
         List<Article> list = articleService.findAllArticle(articleTitle,guanzhu,articleType,master,shouCang,(page-1)*10);
+
         int count = articleService.findAllArticleCount(articleTitle,guanzhu,articleType,master,shouCang,null);
         double xx = count;
         JSONObject json = new JSONObject();
