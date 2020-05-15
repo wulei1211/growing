@@ -329,6 +329,16 @@
             });
 
             $(".layui-nav-item layui-nav-itemed");
+
+
+            $("#pingLun").click(function(){
+                $("#myIframe").attr("src","${path}/artical/toAllPingLun.action");
+            })
+            $("#replay").click(function(){
+                $("#myIframe").attr("src","${path}/artical/toAllReplay.action");
+            })
+
+
         });
 
         //保存新密码

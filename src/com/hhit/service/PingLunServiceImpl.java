@@ -65,4 +65,14 @@ public class PingLunServiceImpl implements PingLunService {
     public void deletePing(String pId) {
         pingLunDaoMapper.deletePing(pId);
     }
+
+    @Override
+    public int getPingLunCount(PingLun paramUser) {
+        return pingLunDaoMapper.getPingLunCount(paramUser);
+    }
+
+    @Override
+    public List<PingLun> getAllPingLun(PingLun paramUser) {
+        return pingLunDaoMapper.getAllPingLun(paramUser);
+    }
 }

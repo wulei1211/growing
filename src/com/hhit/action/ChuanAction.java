@@ -292,6 +292,23 @@ public class ChuanAction {
         return "jianCe/pengEdit";
     }
 
+    @RequestMapping("growUpdateReact")
+    @ResponseBody
+    public String growUpdateReact(Grows grows){
+        if(grows.getChuanId() != null && !"".equals(grows.getChuanId())){
+            String[] arr = grows.getChuanId().split(";");
+            GrowChuan growChuan = new GrowChuan();
+            for(int i = 0;i<arr.length;i++){
+                growChuan.setId(UUID.randomUUID().toString());
+                growChuan.setGrowId(grows.getId());
+                growChuan.setChuanId(arr[i]);
+                growChuanService.addGrowChuan(growChuan);
+            }
+        }
+        growsService.updateGrow(grows);
+        return "success";
+    }
+
     @RequestMapping("growUpdate")
     @ResponseBody
     public String growUpdate(Grows grows){
@@ -314,7 +331,7 @@ public class ChuanAction {
             }
         }
         growsService.updateGrow(grows);
-        return "";
+        return "success";
     }
 
     @RequestMapping("growDel")

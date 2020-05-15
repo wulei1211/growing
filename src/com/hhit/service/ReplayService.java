@@ -1,5 +1,6 @@
 package com.hhit.service;
 
+import com.hhit.entity.PingLun;
 import com.hhit.entity.Replay;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface ReplayService {
     public void deleteArticlesReplay(String articleId);
 
     public void deletePingLunsReplay(String pId);
+
+    int findReplayCount(Replay paramUser);
+
+    List<PingLun> findAllReplay(Replay paramUser);
 }

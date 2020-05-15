@@ -311,9 +311,10 @@ public class ArticalAction {
 
     @RequestMapping("deletePing")
     @ResponseBody
-    public void deletePing(String pId){
+    public String deletePing(String pId){
         pingLunService.deletePing(pId);
         replayService.deletePingLunsReplay(pId);
+        return "success";
     }
 
     @RequestMapping("checkBooleanDian")
@@ -355,4 +356,57 @@ public class ArticalAction {
         data.setMsg("");
         return data;
     }
+
+    @RequestMapping("toAllPingLun")
+    public String toAllPingLun(){
+        return "article/pingLunList";
+    }
+
+    @RequestMapping("getAllPingLun")
+    @ResponseBody
+    public MMGridPageVoBean<PingLun> getAllPingLun(PingLun paramUser){
+
+
+        int size = pingLunService.getPingLunCount(paramUser);
+
+        //放入分页
+        int from = (paramUser.getPage()-1) * paramUser.getLimit();
+
+        paramUser.setFromNum(from);
+
+        List<PingLun> data = pingLunService.getAllPingLun(paramUser);
+
+        MMGridPageVoBean<PingLun> vo = new MMGridPageVoBean<PingLun>();
+        vo.setCount(size+"");
+        vo.setCode("0");
+        vo.setData(data);
+        vo.setMsg("");
+        return vo;
+    }
+
+    @RequestMapping("toAllReplay")
+    public String toAllReplay(){
+        return "article/replayLst";
+    }
+
+    @RequestMapping("getAllReplay")
+    @ResponseBody
+    public MMGridPageVoBean<PingLun> getAllReplay(Replay paramUser){
+
+        int size = replayService.findReplayCount(paramUser);
+        //放入分页
+        int from = (paramUser.getPage()-1) * paramUser.getLimit();
+
+        paramUser.setFromNum(from);
+
+        List<PingLun> data = replayService.findAllReplay(paramUser);
+
+        MMGridPageVoBean<PingLun> vo = new MMGridPageVoBean<PingLun>();
+        vo.setCount(size+"");
+        vo.setCode("0");
+        vo.setData(data);
+        vo.setMsg("");
+        return vo;
+    }
+
 }

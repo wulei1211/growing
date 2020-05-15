@@ -1,6 +1,7 @@
 package com.hhit.service;
 
 import com.hhit.dao.ReplayDaoMapper;
+import com.hhit.entity.PingLun;
 import com.hhit.entity.Replay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,15 @@ public class ReplayServiceImpl implements ReplayService {
     @Transactional
     public void deletePingLunsReplay(String pId) {
         replayDaoMapper.deletePingLunsReplay(pId);
+    }
+
+    @Override
+    public int findReplayCount(Replay paramUser) {
+        return replayDaoMapper.findReplayCount(paramUser);
+    }
+
+    @Override
+    public List<PingLun> findAllReplay(Replay paramUser) {
+        return replayDaoMapper.findAllReplay(paramUser);
     }
 }

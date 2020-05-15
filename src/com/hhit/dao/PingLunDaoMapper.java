@@ -39,4 +39,9 @@ public interface PingLunDaoMapper {
     public Integer checkBooleanDianPing(@Param("pId") String pId,@Param("userId")String userId);
 
     public void deletePing(@Param("pId") String pId);
+
+    int getPingLunCount(PingLun paramUser);
+
+    List<PingLun> getAllPingLun(PingLun paramUser);
+    List<PingLun> getPingLunById(@Param("id") String id);
 }

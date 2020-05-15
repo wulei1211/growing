@@ -8,7 +8,7 @@ import java.util.List;
  * @Date: Created in 20:09 2020/4/24
  * @Modified By:
  */
-public class PingLun {
+public class PingLun extends BaseBean {
     private String id;
     private String articleId;
     private String userId;

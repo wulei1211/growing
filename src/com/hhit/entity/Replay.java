@@ -19,10 +19,29 @@ public class Replay extends BaseBean{
     private String huiTou;
     private String beiName;
 
+    private String pingLun;
+
     private Integer replayDianCount;
 
     private Integer booleanReDian;
 
+    private String articleTitle;
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
+    }
+
+    public String getPingLun() {
+        return pingLun;
+    }
+
+    public void setPingLun(String pingLun) {
+        this.pingLun = pingLun;
+    }
 
     public Integer getBooleanReDian() {
         return booleanReDian;
