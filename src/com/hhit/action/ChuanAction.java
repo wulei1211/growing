@@ -295,6 +295,7 @@ public class ChuanAction {
     @RequestMapping("growUpdateReact")
     @ResponseBody
     public String growUpdateReact(Grows grows){
+        growChuanService.deleteAllGrowChuan(grows.getId());
         if(grows.getChuanId() != null && !"".equals(grows.getChuanId())){
             String[] arr = grows.getChuanId().split(";");
             GrowChuan growChuan = new GrowChuan();
