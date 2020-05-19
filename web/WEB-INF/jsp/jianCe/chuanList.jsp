@@ -26,22 +26,15 @@
         var chuanList = ${chuanList};
         console.log(chuanList)
         $(function(){
-
-
             dwr.engine.setActiveReverseAjax(true);
             dwr.engine.setNotifyServerOnPageUnload(true);
             onPageLoad();
-
-
-
-
 
             layui.use(['layer','element','form','table'],function(){
                 layer = layui.layer;
                 element = layui.element;
                 var form = layui.form;
                 table = layui.table;
-
 
                 table.render({
                     elem: '#test'
@@ -81,48 +74,9 @@
 
                         }
                     });
-                    // layer.open({
-                    //     content: '确定'
-                    //     ,btn: ['确定', '取消']
-                    //     ,yes: function(index, layero){
-                    //         data.elem.checked=x;
-                    //         form.render();
-                    //         layer.close(index);
-                    //         //按钮【按钮一】的回调
-                    //     }
-                    //     ,btn2: function(index, layero){
-                    //         //按钮【按钮二】的回调
-                    //         data.elem.checked=!x;
-                    //         form.render();
-                    //         layer.close(index);
-                    //         //return false 开启该代码可禁止点击该按钮关闭
-                    //     }
-                    //     ,cancel: function(){
-                    //         //右上角关闭回调
-                    //         data.elem.checked=!x;
-                    //         form.render();
-                    //         //return false 开启该代码可禁止点击该按钮关闭
-                    //     }
-                    // });
                     return false;
                 });
 
-                // $("#chaxun").click(function () {
-                //     var realName = $("#realName").val();
-                //     var userName = $("#userName").val();
-                //     var userType = $("#userType").val();
-                //
-                //     table.reload('test', {
-                //         where: { //设定异步数据接口的额外参数，任意设
-                //             realName: realName
-                //             ,userName: userName
-                //             ,userType:userType
-                //         }
-                //         ,page: {
-                //             curr: 1 //重新从第 1 页开始
-                //         }
-                //     });
-                // });
 
                 $("#tianjia").click(function(){
                     layer.open({
@@ -191,6 +145,7 @@
                         url:"${path}/chuan/addChuan.action",
                         success:function(data){
                             $("#chuanMsg").html("");
+                            chuanList = [id];
                             layer.close(index)
                             table.reload("test");
                         }
@@ -241,10 +196,13 @@
         function showMessage(data){
             // console.log(data)
             // console.log($("#chuanMsg").html());
+            // ID:2 Temp:0 Humi:0 Light:189 MQ2:5  Time:114
             var id = data.substring(data.indexOf("ID:")+3,data.indexOf("Temp")).trim();
-            if($("#chuanMsg").html().isEmpty() && chuanList.indexOf(id)==-1){
+            console.log(id)
+            console.log(chuanList)
+            if(chuanList.indexOf(id)==-1){
                 chuanList.push(id);
-                $("#chuanMsg").html('<button type="button" class="layui-btn xuan" id = '+id+'>'+id+'号传感器</button>');
+                $("#chuanMsg").append('<button type="button" class="layui-btn xuan" id = '+id+'>'+id+'号传感器</button>');
             }
             // element.init();
         }

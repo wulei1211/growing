@@ -40,7 +40,7 @@
     </select>
 
     <insert id="addChuan" parameterType="com.hhit.entity.Chuan">
-        insert into chuan(id,cname,status,user_id,`position`) values (#{id},#{cname},#{status},#{user_id},#{position})
+        insert into chuan(id,cname,status,user_id,`position`) values (#{id},#{cname},#{status},#{userId},#{position})
     </insert>
 
 

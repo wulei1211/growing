@@ -199,6 +199,9 @@ a{
 	line-height: 0.85rem;
 	background-color: darkgray;
 	height: 0.85rem;
+    overflow: hidden;
+    text-align: center;
+
 }
 .yuan{
 	/* border: 1px solid red; */

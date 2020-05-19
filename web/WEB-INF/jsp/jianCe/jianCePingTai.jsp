@@ -31,6 +31,30 @@
         .bgcolor{
             background-color: red;
         }
+        .yuan_chuan{
+            cursor: pointer;
+            width: 100%;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+        }
+        .xuan{
+            background-color: red;
+            cursor: pointer;
+        }
+        .kuo:hover{
+
+            width: 1.25rem;
+            height: 3rem;
+
+
+            /*
+            width: 0.625;10px;
+            height: 13.6px; */
+        }
+        .kuo{
+            transition:all 0.5s;
+        }
     </style>
     <script type="text/javascript">
 
@@ -40,10 +64,12 @@
         var wendu_val = "0";
         var eryang_val = "0";
         var shi_val = "0";
+        var cid_val = "0";
         var guang_val = "0";
         var MyMarhq = null;
         var type = "";
         var gid = "";
+        var cid = "";
         var xuan_grow = null;
         // var timeDing = null;
         $(document).ready(function(){
@@ -63,6 +89,10 @@
             var erXList = [];
             var guangXList = [];
             var tableStr = "";
+            var flag = 0;
+            var temp = 0;
+
+            // 判断正在使用的园子有哪些，通过传感器状态判断
             for(var i = 0;i<growsList.length;i++){
                 var chuanGanList = growsList[i].chuanGanList;
                 if(chuanGanList.length == 0){
@@ -75,92 +105,112 @@
                     }
                 }
             }
+            //将园子渲染出来，并赋值第一个园子的id
             for(var i = 0;i<growsList.length;i++){
                 var chuanGanList = growsList[i].chuanGanList;
                 if(chuanGanList.length == 0){
-                    tableStr += '<div class = "yuan_ge" id = "'+growsList[i].id+'">'+growsList[i].growName+'</div>';
+                    tableStr += '<div class = "yuan_ge" id = "'+growsList[i].id+'"><div>'+growsList[i].growName+'</div></div>';
                     continue;
                 }else{
                     for(var j = 0;j<chuanGanList.length;j++){
                         if(chuanGanList[j].chuan.status == "0"){
-                            if(j==0){
-                                tableStr += '<div class = "yuan_ge color border" id = "'+growsList[i].id+'">'+growsList[i].growName+'</div>';
-                                $("#xuan_now").text(growsList[i].growName);
-                                gid = growsList[i].id;
-                                xuan_grow = growsList[i];
-                                type = "1";
-                            }else{
-                                tableStr += '<div class = "yuan_ge color" id = "'+growsList[i].id+'">'+growsList[i].growName+'</div>';
-                            }
-                            break;
-                        }else{
-                            tableStr += '<div class = "yuan_ge" id = "'+growsList[i].id+'">'+growsList[i].growName+'</div>';
+                            flag++;
                         }
                     }
+                    if(flag>0){
+                        if(temp == 0){
+                            tableStr += '<div class = "yuan_ge color border kuo" id = "'+growsList[i].id+'"><div>'+growsList[i].growName+'</div>'
+
+                            gid = growsList[i].id;// 园子的id
+                            xuan_grow = growsList[i]; // 选中的这个园子对象
+                            type = "1";
+                        }else{
+                            tableStr += '<div class = "yuan_ge color kuo" id = "'+growsList[i].id+'"><div>'+growsList[i].growName+'</div>'
+                        }
+                        tableStr += '  <div style = "margin-top: 0rem;">';
+                        for(var j = 0;j<chuanGanList.length;j++){
+                            if(chuanGanList[j].chuan.status == "0"){
+                                if(temp == 0){
+                                    tableStr += '<div class = "yuan_chuan xuan" id = '+chuanGanList[j].chuan.id+'>'+chuanGanList[j].chuan.cname+'</div>';
+                                    cid = chuanGanList[j].chuan.id;
+                                    $("#xuan_now").text(growsList[i].growName+" "+cid+"号传感器");
+                                    temp++;
+                                }else{
+                                    tableStr += '<div class = "yuan_chuan" id = '+chuanGanList[j].chuan.id+'>'+chuanGanList[j].chuan.cname+'</div>';
+                                }
+                            }
+                        }
+                        tableStr += '     </div>';
+                        tableStr += '</div>';
+                    }else{
+                        tableStr += '<div class = "yuan_ge" id = "'+growsList[i].id+'"><div>'+growsList[i].growName+'</div></div>';
+                    }
                 }
+                flag = 0;
             }
 
-            //点击切换种植园
-            $(document).on("click",".yuan_ge ",function(){
-                var name = $(this).text();
-                $("#xuan_now").text(name);
-                if($(this).hasClass("border")){
-                    $(this).removeClass("border");
-                }else{
-                    $(this).addClass("border");
-                    $(this).siblings().removeClass("border");
+            //点击切换种植园传感器
+            $(document).on("click",".yuan_chuan ",function(){
+
+                erList = [];
+                guangList = [];
+                erXList = [];
+                guangXList = [];
+                eryang_val = "0";
+                guang_val = "0";
+                MyMarhq = null;
+                $("#dataTable").html("");
+                type = "";
+                gid = ""
+                cid = ""
+                var chuan = $(this).text();
+                var gname = $(this).parent("div").prev().text();
+                $("#xuan_now").text(gname+" "+chuan);
+                if(!$(this).hasClass("xuan")){
+                    $.each($(this).parent("div").parent("div").parent("div").find("div"),function(i,val){
+                        if($(val).hasClass("xuan")){
+                            $(val).removeClass("xuan")
+                        }
+                    })
+                    $(this).addClass("xuan")
                 }
-                if($(this).hasClass("color")){
-                    gid = $(this).attr("id");
+                if($(this).parent("div").parent("div").hasClass("border")){
+                    // $(this).parent("div").parent("div").removeClass("border");
+                }else{
+                    $(this).parent("div").parent("div").addClass("border");
+                    $(this).parent("div").parent("div").siblings().removeClass("border");
+                }
+                if($(this).parent("div").parent("div").hasClass("color")){
+                    gid = $(this).parent("div").parent("div").attr("id");
+                    cid = $(this).attr("id");
                     for(var i = 0;i<growsList.length;i++){
                         if(growsList[i].id == gid){
                             xuan_grow = growsList[i];
                             break;
                         }
                     }
-                }else{
-                    gid = "";
-                    // clearInterval(timeDing);
                 }
-                if(gid == ""){
 
-                    erList = [];
-                    guangList = [];
-                    erXList = [];
-                    guangXList = [];
-                    wendu_val = "0";
-                    eryang_val = "0";
-                    shi_val = "0";
-                    guang_val = "0";
-                    MyMarhq = null;
-                    $("#dataTable").html("");
-                    type = "";
-                    // closeDate();
-                }else{
-                    type = "1";
-                    $.ajax({
-                        type:"POST",
-                        async: false,  //默认true,异步
-                        data:{"gid":gid},
-                        dataType:"json",
-                        url:"${path}/chuan/findGrowsDataById.action",
-                        success:function(data){
+                type = "1";
+                $.ajax({
+                    type:"POST",
+                    async: false,  //默认true,异步
+                    data:{"gid":gid,"cid":cid},
+                    dataType:"json",
+                    url:"${path}/chuan/findGrowsDataById.action",
+                    success:function(data){
 
-                            dataList = data.dataList;
-                            for(var i = 0;i<dataList.length;i++){
-                                str += '<tr><td>'+dataList[i].time.substring(dataList[i].time.trim().indexOf(" "))+'</td><td>'+dataList[i].wen+'</td><td>'+dataList[i].shi+'</td><td>'+dataList[i].er+'</td><td>'+dataList[i].guang+'</td></tr>';
-                                erList.push(dataList[i].er);
-                                erXList.push(dataList[i].time.substring(dataList[i].time.trim().indexOf(" ")));
-                                guangList.push(dataList[i].guang);
-                                guangXList.push(dataList[i].time.substring(dataList[i].time.trim().indexOf(" ")));
-                            }
-                            $("#dataTable").html(str);
-
+                        dataList = data.dataList;
+                        for(var i = 0;i<dataList.length;i++){
+                            str += '<tr><td>'+dataList[i].time.substring(dataList[i].time.trim().indexOf(" "))+'</td><td>'+dataList[i].wen+'</td><td>'+dataList[i].shi+'</td><td>'+dataList[i].er+'</td><td>'+dataList[i].guang+'</td></tr>';
+                            erList.push(dataList[i].er);
+                            erXList.push(dataList[i].time.substring(dataList[i].time.trim().indexOf(" ")));
+                            guangList.push(dataList[i].guang);
+                            guangXList.push(dataList[i].time.substring(dataList[i].time.trim().indexOf(" ")));
                         }
-                    });
-
-
-                }
+                        $("#dataTable").html(str);
+                    }
+                });
             });
 
 
@@ -174,7 +224,7 @@
             $.ajax({
                 type:"POST",
                 async: false,  //默认true,异步
-                data:{"gid":gid},
+                data:{"gid":gid,"cid":cid},
                 dataType:"json",
                 url:"${path}/chuan/findGrowsDataById.action",
                 success:function(data){
@@ -182,6 +232,7 @@
                 }
             });
 
+            // 关闭窗口时关闭串口
             window.onbeforeunload = onbeforeunload_handler;
             // window.onunload = onunload_handler;
             function onbeforeunload_handler(){
@@ -190,9 +241,9 @@
                 return warning;
             }
 
-
-
+            // 循环gid和cid拿到的床干起的数据
             for(var i = 0;i<dataList.length;i++){
+                // 渲染到滚动表格
                 str += '<tr><td>'+dataList[i].time.substring(dataList[i].time.trim().indexOf(" "))+'</td><td>'+dataList[i].wen+'</td><td>'+dataList[i].shi+'</td><td>'+dataList[i].er+'</td><td>'+dataList[i].guang+'</td></tr>';
                 erList.push(dataList[i].er);
                 erXList.push(dataList[i].time.substring(dataList[i].time.trim().indexOf(" ")));
@@ -211,7 +262,7 @@
                 },
                 series: [
                     {
-                        name: '业务指标',
+                        name: '温度',
                         type: 'gauge',
                         detail: {formatter: '{value}℃'},
                         data: [{value: 50, name: '温度'}]
@@ -230,7 +281,7 @@
                 },
                 series: [
                     {
-                        name: '业务指标',
+                        name: '湿度',
                         type: 'gauge',
                         detail: {formatter: '{value}%RH'},
                         data: [{value: 50, name: '湿度'}]
@@ -359,85 +410,95 @@
             }
 
         });
-
+        var wendu_val_temp = "0"
+        // ID:2 Temp:28 Humi:57 Light:128 MQ2:4  Time:0
         function showMessage(data){
+
             console.log(data)
             if(type != ""){
+                wendu_val_temp = wendu_val;
                 if(MyMarhq==null){
                     tableScroll('tableId', 0, 30, 8)
                 }
-                wendu_val = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
-                eryang_val = data.substring(data.indexOf("AD1:")+4,data.indexOf("AD2:")).trim();
-                shi_val = data.substring(data.indexOf("Humi:")+5,data.indexOf("AD1:")).trim();
-                guang_val = data.substring(data.indexOf("AD2:")+4,data.indexOf("Time:")).trim();
-                $("#dataTable").append('<tr><td>'+now()+'</td><td>'+wendu_val+'</td><td>'+shi_val+'</td><td>'+eryang_val+'</td><td>'+guang_val+'</td></tr>');
+                cid_val = data.substring(data.indexOf("ID:")+3,data.indexOf("Temp:")).trim();
+                if(cid_val == cid){
+                    wendu_val = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
+                    if(parseInt(wendu_val)!=0){
+                        eryang_val = data.substring(data.indexOf("MQ2:")+4,data.indexOf("Time:")).trim();
+                        shi_val = data.substring(data.indexOf("Humi:")+5,data.indexOf("Light:")).trim();
+                        guang_val = data.substring(data.indexOf("Light:")+6,data.indexOf("MQ2:")).trim();
+                        $("#dataTable").append('<tr><td>'+now()+'</td><td>'+wendu_val+'</td><td>'+shi_val+'</td><td>'+eryang_val+'</td><td>'+guang_val+'</td></tr>');
 
-                $.each($("#yuanList").find("div"),function(i,val){
-                    if($(this).attr("id") == xuan_grow.id){
-                        // 温度
-                        if(parseInt(wendu_val)<xuan_grow.startWen || parseInt(wendu_val)>xuan_grow.endWen){
-                            if($(this).hasClass("wen")){}else{
-                                $(this).addClass("bgcolor");
-                                $(this).addClass("wen");
-                                $("#yuJing").html("<div>"+xuan_grow.growName+"1号传感器异常</div>");
-                                addError(xuan_grow.growName,"1号传感器","wen",wendu_val);
+                        $.each($("#yuanList").find("div"),function(i,val){
+                            if($(this).attr("id") == xuan_grow.id){
+                                // 温度
+                                if(parseInt(wendu_val)<xuan_grow.startWen || parseInt(wendu_val)>xuan_grow.endWen){
+                                    if($(this).hasClass("wen")){}else{
+                                        $(this).addClass("bgcolor");
+                                        $(this).addClass("wen");
+                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
+                                        addError(xuan_grow.growName,cid+"号传感器","wen",wendu_val);
+                                    }
+                                }else{
+                                    if($(this).hasClass("yi")){
+                                        $(this).removeClass("bgcolor");
+                                        $(this).removeClass("yi");
+                                        $("#yuJing").html("");
+                                    }
+                                }
+                                // 湿度
+                                if(parseInt(shi_val)<xuan_grow.startShi || parseInt(shi_val)>xuan_grow.endShi){
+                                    if($(this).hasClass("shi")){}else{
+                                        $(this).addClass("bgcolor");
+                                        $(this).addClass("shi");
+                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
+                                        addError(xuan_grow.growName,cid+"号传感器","shi",shi_val);
+                                    }
+                                }else{
+                                    if($(this).hasClass("shi")){
+                                        $(this).removeClass("bgcolor");
+                                        $(this).removeClass("shi");
+                                        $("#yuJing").html("");
+                                    }
+                                }
+                                // 二氧化碳
+                                if(parseInt(eryang_val)<xuan_grow.startEr || parseInt(eryang_val)>xuan_grow.endEr){
+                                    if($(this).hasClass("er")){}else{
+                                        $(this).addClass("bgcolor");
+                                        $(this).addClass("er");
+                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
+                                        addError(xuan_grow.growName,cid+"号传感器","er",eryang_val);
+                                    }
+                                }else{
+                                    if($(this).hasClass("er")){
+                                        $(this).removeClass("bgcolor");
+                                        $(this).removeClass("er");
+                                        $("#yuJing").html("");
+                                    }
+                                }
+                                // 光照
+                                if(parseInt(guang_val)<xuan_grow.startGuang || parseInt(guang_val)>xuan_grow.endGuang){
+                                    if($(this).hasClass("guang")){}else{
+                                        $(this).addClass("bgcolor");
+                                        $(this).addClass("guang");
+                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
+                                        addError(xuan_grow.growName,cid+"号传感器","guang",guang_val);
+                                    }
+                                }else{
+                                    if($(this).hasClass("guang")){
+                                        $(this).removeClass("bgcolor");
+                                        $(this).removeClass("guang");
+                                        $("#yuJing").html("");
+                                    }
+                                }
                             }
-                        }else{
-                            if($(this).hasClass("yi")){
-                                $(this).removeClass("bgcolor");
-                                $(this).removeClass("yi");
-                                $("#yuJing").html("");
-                            }
-                        }
-                        // 湿度
-                        if(parseInt(shi_val)<xuan_grow.startShi || parseInt(shi_val)>xuan_grow.endShi){
-                            if($(this).hasClass("shi")){}else{
-                                $(this).addClass("bgcolor");
-                                $(this).addClass("shi");
-                                $("#yuJing").html("<div>"+xuan_grow.growName+"1号传感器异常</div>");
-                                addError(xuan_grow.growName,"1号传感器","shi",shi_val);
-                            }
-                        }else{
-                            if($(this).hasClass("shi")){
-                                $(this).removeClass("bgcolor");
-                                $(this).removeClass("shi");
-                                $("#yuJing").html("");
-                            }
-                        }
-                        // 二氧化碳
-                        if(parseInt(eryang_val)<xuan_grow.startEr || parseInt(eryang_val)>xuan_grow.endEr){
-                            if($(this).hasClass("er")){}else{
-                                $(this).addClass("bgcolor");
-                                $(this).addClass("er");
-                                $("#yuJing").html("<div>"+xuan_grow.growName+"1号传感器异常</div>");
-                                addError(xuan_grow.growName,"1号传感器","er",eryang_val);
-                            }
-                        }else{
-                            if($(this).hasClass("er")){
-                                $(this).removeClass("bgcolor");
-                                $(this).removeClass("er");
-                                $("#yuJing").html("");
-                            }
-                        }
-                        // 光照
-                        if(parseInt(guang_val)<xuan_grow.startGuang || parseInt(guang_val)>xuan_grow.endGuang){
-                            if($(this).hasClass("guang")){}else{
-                                $(this).addClass("bgcolor");
-                                $(this).addClass("guang");
-                                $("#yuJing").html("<div>"+xuan_grow.growName+"1号传感器异常</div>");
-                                addError(xuan_grow.growName,"1号传感器","guang",guang_val);
-                            }
-                        }else{
-                            if($(this).hasClass("guang")){
-                                $(this).removeClass("bgcolor");
-                                $(this).removeClass("guang");
-                                $("#yuJing").html("");
-                            }
-                        }
+                        });
+
+                        exchangeYuCount();
+                    }else{
+                        wendu_val = wendu_val_temp;
                     }
-                });
-
-                exchangeYuCount();
+                }
             }
         }
         function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
@@ -626,6 +687,7 @@
                     <div class = "yuan_title">
                         大棚分布  <span style = "font-size: 0.18rem;">&nbsp;&nbsp;&nbsp;您当前查看的是：<span  id = "xuan_now"></span></span>
                     </div>
+                    <%--种植园分布--%>
                     <div class = "yuan" id = "yuanList">
 
                     </div>

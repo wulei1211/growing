@@ -348,7 +348,6 @@ public class ChuanAction {
         int chuanCount = chuanService.getAllChuanCount(new Chuan(null,null,null,userId));
         List<Grows> growsList = growsService.getAllChuan(new Grows(null,null,null,userId));
 
-
         request.setAttribute("chuanCount",chuanCount);
         request.setAttribute("growCount",growsList.size());
         request.setAttribute("growsList",JsonUtil.getJsonString4JavaList(growsList));
@@ -367,13 +366,14 @@ public class ChuanAction {
         return "success";
     }
     public Data changData(String data){
+//        ID:2 Temp:28 Humi:57 Light:128 MQ2:4  Time:0
         String cid = data.substring(data.indexOf("ID:")+3,data.indexOf("Temp:")).trim();
         growChuan = growChuanService.findGrowByCid(cid);
         if(growChuan == null){return null;}
         String wen = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
-        String er = data.substring(data.indexOf("AD1:")+4,data.indexOf("AD2:")).trim();
-        String shi = data.substring(data.indexOf("Humi:")+5,data.indexOf("AD1:")).trim();
-        String guang = data.substring(data.indexOf("AD2:")+4,data.indexOf("Time:")).trim();
+        String er = data.substring(data.indexOf("MQ2:")+4,data.indexOf("Time:")).trim();
+        String shi = data.substring(data.indexOf("Humi:")+5,data.indexOf("Light:")).trim();
+        String guang = data.substring(data.indexOf("Light:")+6,data.indexOf("MQ2:")).trim();
         d = new Data(wen,shi,guang,er);
         d.setCid(cid);
         d.setGid(growChuan.getGrowId());
@@ -384,9 +384,9 @@ public class ChuanAction {
 
     @RequestMapping("findGrowsDataById")
     @ResponseBody
-    public JSONObject findGrowsDataById(String gid){
+    public JSONObject findGrowsDataById(String gid,String cid){
         JSONObject json = new JSONObject();
-        List<Data> list = dataService.findGrowsDataById(gid);
+        List<Data> list = dataService.findGrowsDataById(gid,cid);
         json.put("dataList",list);
         return json;
     }

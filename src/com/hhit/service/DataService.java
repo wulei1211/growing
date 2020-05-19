@@ -13,7 +13,7 @@ import java.util.List;
 public interface DataService {
     void addData(Data d);
 
-    List<Data> findGrowsDataById(String gid);
+    List<Data> findGrowsDataById(String gid,String cid);
 
     List<Data> getGrowsChuanById(String gid, String cid,String startTime,String endTime);
 }

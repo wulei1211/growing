@@ -17,8 +17,17 @@
     <link rel="stylesheet" type="text/css" href="${path}/js/layui/css/layui.css"/>
     <script type="text/javascript" src="${path}/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="${path}/js/layui/layui.js"></script>
+    <style>
+        .yingPos{
+            display: none;
+        }
+        .chuPos{
+            display: block;
+        }
+    </style>
     <script type="text/javascript">
         var grows = ${grows};
+        // console.log(grows)
         var chuanList = ${chuanList};
         $(function(){
 
@@ -41,12 +50,25 @@
                 $("#endGuang").val(grows.endGuang);
                 $("#endEr").val(grows.endEr);
 
-
+                //已经用过的
                 for(var i = 0;i<grows.chuanGanList.length;i++){
-                    $("#chuangan").append('<input type="checkbox" name="chuanId" value = "'+grows.chuanGanList[i].chuan.id+'" lay-skin="primary" checked="" title="'+grows.chuanGanList[i].chuan.cname+'">');
+                    $("#chuangan").append('<input type="checkbox" lay-filter="chuan"  name="chuanId" value = "'+grows.chuanGanList[i].chuan.id+'" lay-skin="primary" checked="" title="'+grows.chuanGanList[i].chuan.cname+'">');
+                    var str = '';
+                    str += ' <div class="layui-form-item posXuan chuPos">';
+                    str += '      <label class="layui-form-label">'+grows.chuanGanList[i].chuan.id+'号位置：</label>';
+                    str += '    <div class="layui-input-block" id = "pos">';
+                    str += '       <input type="text" name="position" lay-verify= "" value = "'+grows.chuanGanList[i].chuan.position+'" placeholder="请输入'+grows.chuanGanList[i].chuan.id+'号传感器位置" autocomplete="off" class="layui-input" id = "position"> </div> </div>';
+                    $("#chuanAppend").append(str);
                 }
+                //没用过的
                 for(var i = 0;i<chuanList.length;i++){
-                    $("#chuangan").append('<input type="checkbox" name="chuanId" value = "'+chuanList[i].id+'" lay-skin="primary" title="'+chuanList[i].cname+'">');
+                    $("#chuangan").append('<input type="checkbox" lay-filter="chuan" name="chuanId" value = "'+chuanList[i].id+'" lay-skin="primary" title="'+chuanList[i].cname+'">');
+                    var str = '';
+                    str += ' <div class="layui-form-item posXuan yingPos">';
+                    str += '      <label class="layui-form-label">'+chuanList[i].id+'号位置：</label>';
+                    str += '    <div class="layui-input-block" id = "pos">';
+                    str += '       <input type="text" name="position" lay-verify= "" placeholder="请输入'+chuanList[i].id+'号传感器位置" autocomplete="off" class="layui-input" id = "position"> </div> </div>';
+                    $("#chuanAppend").append(str);
                 }
 
                 form.render();
@@ -87,6 +109,11 @@
                         if(value==''){
                             return '请上传头像'
                         }
+                    },
+                    position:function(value, item){
+                        if(value==''){
+                            return '请填写传感器位置'
+                        }
                     }
 
                     //我们既支持上述函数式的方式，也支持下述数组的形式
@@ -95,19 +122,29 @@
                         /^[\S]{6,20}$/
                         ,'密码必须6到20位，且不能出现空格'
                     ]
-                    ,realName: [
-                        /^[\S]{2,20}$/
-                        ,'姓名必须2到20位，且不能出现空格'
-                    ]
-                    ,position: [
-                        /^[\S]{0,10}$/
-                        ,'姓名必须0到10位，且不能出现空格'
-                    ]
-                    ,address: [
-                        /^[\S]{1,100}$/
-                        ,'地址不能超过100位'
-                    ]
+                });
 
+                form.on('checkbox(chuan)', function(data){
+                    var _this = $(".posXuan");
+                    console.log(data.elem.checked)
+                    if(data.elem.checked){
+                        $.each(_this,function(i,val){
+                            if($(val).find("label").text().substring(0,1) == data.value){
+                                $(val).addClass("chuPos")
+                                $(val).removeClass("yingPos")
+                                $(val).find("input").attr({"lay-verify":"position"})
+                            }
+                        })
+                    }else{
+                        $.each(_this,function(i,val){
+                            if($(val).find("label").text().substring(0,1) == data.value){
+                                $(val).removeClass("chuPos")
+                                $(val).addClass("yingPos")
+                                $(val).find("input").attr({"lay-verify":""})
+                                $(val).find("input").val("");
+                            }
+                        })
+                    }
                 });
 
                 form.on('submit(*)', function(data){
@@ -116,6 +153,8 @@
                         $.ajax({
                             type:"POST",
                             async: false,  //默认true,异步
+
+
                             data:getFormData("#myForm"),
                             dataType:"text",
                             url:"${path}/chuan/growUpdate.action?id="+grows.id,
@@ -174,18 +213,18 @@
         </div>
     </div>
 
-    <div class="layui-form-item" pane="">
+    <div class="layui-form-item" pane="" id = "chuanAppend">
         <label class="layui-form-label">传感器：</label>
         <div class="layui-input-block" id = "chuangan" style = "height: 50px;">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">位置：</label>
-        <div class="layui-input-block" >
-            <input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">
-        </div>
-    </div>
+    <%--<div class="layui-form-item">--%>
+        <%--<label class="layui-form-label">位置：</label>--%>
+        <%--<div class="layui-input-block" id = "pos">--%>
+            <%--<input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">--%>
+        <%--</div>--%>
+    <%--</div>--%>
 
     <div class="layui-form-item">
         <div class="layui-inline">

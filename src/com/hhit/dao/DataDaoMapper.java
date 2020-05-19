@@ -14,7 +14,7 @@ import java.util.List;
 public interface DataDaoMapper {
     void addData(Data d);
 
-    List<Data> findGrowsDataById(@Param("gid") String gid);
+    List<Data> findGrowsDataById(@Param("gid") String gid,@Param("cid") String cid);
 
     List<Data> getGrowsChuanById(@Param("gid")String gid,@Param("cid") String cid,@Param("startTime")String startTime,@Param("endTime")String endTime);
 }
