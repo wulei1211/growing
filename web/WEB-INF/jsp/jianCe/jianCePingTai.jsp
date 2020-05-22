@@ -66,6 +66,16 @@
         var shi_val = "0";
         var cid_val = "0";
         var guang_val = "0";
+
+        var wendu_val_ce = "0";
+        var eryang_val_ce = "0";
+        var shi_val_ce = "0";
+        var cid_val_ce = "0";
+        var guang_val_ce = "0";
+
+
+        var chuan_grow = [];
+
         var MyMarhq = null;
         var type = "";
         var gid = "";
@@ -128,6 +138,7 @@
                             tableStr += '<div class = "yuan_ge color kuo" id = "'+growsList[i].id+'"><div>'+growsList[i].growName+'</div>'
                         }
                         tableStr += '  <div style = "margin-top: 0rem;">';
+
                         for(var j = 0;j<chuanGanList.length;j++){
                             if(chuanGanList[j].chuan.status == "0"){
                                 if(temp == 0){
@@ -138,6 +149,10 @@
                                 }else{
                                     tableStr += '<div class = "yuan_chuan" id = '+chuanGanList[j].chuan.id+'>'+chuanGanList[j].chuan.cname+'</div>';
                                 }
+                                var tempGrow = {};
+                                tempGrow.chuan = chuanGanList[j].chuan.id;
+                                tempGrow.grow = growsList[i];
+                                chuan_grow.push(tempGrow);
                             }
                         }
                         tableStr += '     </div>';
@@ -148,6 +163,8 @@
                 }
                 flag = 0;
             }
+
+            console.log(chuan_grow)
 
             //点击切换种植园传感器
             $(document).on("click",".yuan_chuan ",function(){
@@ -313,9 +330,9 @@
 
                 yAxis: {
                     type: 'value',
-                    min:7500,
-                    max:8500,
-                    interval:100,
+                    min:0,
+                    max:20,
+                    interval:4,
                     axisLine: {
                         lineStyle: {
                             color: '#ffffff',
@@ -354,9 +371,7 @@
                 },
                 yAxis: {
                     type: 'value',
-                    min:5200,
-                    max:5600,
-                    interval:40,
+                    min:0, max:400,interval:50,
                     axisLine: {
                         lineStyle: {
                             color: '#ffffff',
@@ -410,94 +425,116 @@
             }
 
         });
+        console.log(xuan_grow)
         var wendu_val_temp = "0"
         // ID:2 Temp:28 Humi:57 Light:128 MQ2:4  Time:0
         function showMessage(data){
 
-            console.log(data)
+
             if(type != ""){
                 wendu_val_temp = wendu_val;
                 if(MyMarhq==null){
-                    tableScroll('tableId', 0, 30, 8)
+                    tableScroll('tableId', 0, 20, 8)
                 }
                 cid_val = data.substring(data.indexOf("ID:")+3,data.indexOf("Temp:")).trim();
-                if(cid_val == cid){
-                    wendu_val = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
-                    if(parseInt(wendu_val)!=0){
+                wendu_val = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
+                if(parseInt(wendu_val)!=0){
+                    if(cid == cid_val){
+                        wendu_val = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
                         eryang_val = data.substring(data.indexOf("MQ2:")+4,data.indexOf("Time:")).trim();
                         shi_val = data.substring(data.indexOf("Humi:")+5,data.indexOf("Light:")).trim();
                         guang_val = data.substring(data.indexOf("Light:")+6,data.indexOf("MQ2:")).trim();
                         $("#dataTable").append('<tr><td>'+now()+'</td><td>'+wendu_val+'</td><td>'+shi_val+'</td><td>'+eryang_val+'</td><td>'+guang_val+'</td></tr>');
-
-                        $.each($("#yuanList").find("div"),function(i,val){
-                            if($(this).attr("id") == xuan_grow.id){
-                                // 温度
-                                if(parseInt(wendu_val)<xuan_grow.startWen || parseInt(wendu_val)>xuan_grow.endWen){
-                                    if($(this).hasClass("wen")){}else{
-                                        $(this).addClass("bgcolor");
-                                        $(this).addClass("wen");
-                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
-                                        addError(xuan_grow.growName,cid+"号传感器","wen",wendu_val);
-                                    }
-                                }else{
-                                    if($(this).hasClass("yi")){
-                                        $(this).removeClass("bgcolor");
-                                        $(this).removeClass("yi");
-                                        $("#yuJing").html("");
-                                    }
-                                }
-                                // 湿度
-                                if(parseInt(shi_val)<xuan_grow.startShi || parseInt(shi_val)>xuan_grow.endShi){
-                                    if($(this).hasClass("shi")){}else{
-                                        $(this).addClass("bgcolor");
-                                        $(this).addClass("shi");
-                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
-                                        addError(xuan_grow.growName,cid+"号传感器","shi",shi_val);
-                                    }
-                                }else{
-                                    if($(this).hasClass("shi")){
-                                        $(this).removeClass("bgcolor");
-                                        $(this).removeClass("shi");
-                                        $("#yuJing").html("");
-                                    }
-                                }
-                                // 二氧化碳
-                                if(parseInt(eryang_val)<xuan_grow.startEr || parseInt(eryang_val)>xuan_grow.endEr){
-                                    if($(this).hasClass("er")){}else{
-                                        $(this).addClass("bgcolor");
-                                        $(this).addClass("er");
-                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
-                                        addError(xuan_grow.growName,cid+"号传感器","er",eryang_val);
-                                    }
-                                }else{
-                                    if($(this).hasClass("er")){
-                                        $(this).removeClass("bgcolor");
-                                        $(this).removeClass("er");
-                                        $("#yuJing").html("");
-                                    }
-                                }
-                                // 光照
-                                if(parseInt(guang_val)<xuan_grow.startGuang || parseInt(guang_val)>xuan_grow.endGuang){
-                                    if($(this).hasClass("guang")){}else{
-                                        $(this).addClass("bgcolor");
-                                        $(this).addClass("guang");
-                                        $("#yuJing").html("<div>"+xuan_grow.growName+""+cid+"号传感器异常</div>");
-                                        addError(xuan_grow.growName,cid+"号传感器","guang",guang_val);
-                                    }
-                                }else{
-                                    if($(this).hasClass("guang")){
-                                        $(this).removeClass("bgcolor");
-                                        $(this).removeClass("guang");
-                                        $("#yuJing").html("");
-                                    }
-                                }
-                            }
-                        });
-
-                        exchangeYuCount();
-                    }else{
-                        wendu_val = wendu_val_temp;
                     }
+                    $.each(chuan_grow,function(i,val){
+                        if(cid_val == val.chuan){
+                            var xuan_grow = val.grow;
+                            wendu_val_ce = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
+                            eryang_val_ce = data.substring(data.indexOf("MQ2:")+4,data.indexOf("Time:")).trim();
+                            shi_val_ce = data.substring(data.indexOf("Humi:")+5,data.indexOf("Light:")).trim();
+                            guang_val_ce = data.substring(data.indexOf("Light:")+6,data.indexOf("MQ2:")).trim();
+
+
+                            $.each($("#yuanList").find("div"),function(i,val){
+                                if($(this).attr("id") == xuan_grow.id){
+                                    // 温度
+                                    if(parseInt(wendu_val_ce)<xuan_grow.startWen || parseInt(wendu_val_ce)>xuan_grow.endWen){
+                                        if($(this).hasClass("wen")){}else{
+                                            $(this).addClass("bgcolor");
+                                            $(this).addClass("wen");
+                                            $("#yuJing").append("<div id = 'wen'>"+xuan_grow.growName+""+cid_val+"号传感器温度异常</div>");
+                                            addError(xuan_grow.growName,cid_val+"号传感器","wen",wendu_val_ce);
+                                        }
+                                    }else{
+                                        if($(this).hasClass("wen")){
+                                            if($(this).hasClass("shi") || ($(this).hasClass("guang")) || ($(this).hasClass("er"))){}else{
+                                                $(this).removeClass("bgcolor");
+                                            }
+                                            $(this).removeClass("wen");
+                                            $("#wen").remove();
+                                        }
+                                    }
+                                    // 湿度
+                                    if(parseInt(shi_val_ce)<xuan_grow.startShi || parseInt(shi_val_ce)>xuan_grow.endShi){
+                                        if($(this).hasClass("shi")){}else{
+                                            $(this).addClass("bgcolor");
+                                            $(this).addClass("shi");
+                                            $("#yuJing").append("<div id = 'shi'>"+xuan_grow.growName+""+cid_val+"号传感器湿度异常</div>");
+                                            addError(xuan_grow.growName,cid_val+"号传感器","shi",shi_val_ce);
+                                        }
+                                    }else{
+                                        if($(this).hasClass("shi")){
+                                            if($(this).hasClass("guang") || ($(this).hasClass("wen")) || ($(this).hasClass("er"))){}else{
+                                                $(this).removeClass("bgcolor");
+                                            }
+                                            $(this).removeClass("shi");
+                                            $("#shi").remove();
+                                        }
+                                    }
+                                    // 二氧化碳
+                                    if(parseInt(eryang_val_ce)<xuan_grow.startEr || parseInt(eryang_val_ce)>xuan_grow.endEr){
+                                        if($(this).hasClass("er")){}else{
+                                            $(this).addClass("bgcolor");
+                                            $(this).addClass("er");
+                                            $("#yuJing").append("<div id = 'er'>"+xuan_grow.growName+""+cid_val+"号传感器二氧化碳异常</div>");
+                                            addError(xuan_grow.growName,cid_val+"号传感器","er",eryang_val_ce);
+                                        }
+                                    }else{
+                                        if($(this).hasClass("er")){
+                                            if($(this).hasClass("shi") || ($(this).hasClass("wen")) || ($(this).hasClass("guang"))){}else{
+                                                $(this).removeClass("bgcolor");
+                                            }
+                                            $(this).removeClass("er");
+                                            $("#er").remove();
+                                        }
+                                    }
+                                    // 光照
+                                    if(parseInt(guang_val_ce)<xuan_grow.startGuang || parseInt(guang_val_ce)>xuan_grow.endGuang){
+                                        if($(this).hasClass("guang")){}else{
+                                            $(this).addClass("bgcolor");
+                                            $(this).addClass("guang");
+                                            $("#yuJing").append("<div id = 'guang'>"+xuan_grow.growName+""+cid_val+"号传感器光照异常</div>");
+                                            addError(xuan_grow.growName,cid_val+"号传感器","guang",guang_val_ce);
+                                        }
+                                    }else{
+                                        if($(this).hasClass("guang")){
+                                            if($(this).hasClass("shi") || ($(this).hasClass("wen")) || ($(this).hasClass("er"))){}else{
+                                                $(this).removeClass("bgcolor");
+                                            }
+                                            $(this).removeClass("guang");
+                                            $("#guang").remove();
+                                        }
+                                    }
+                                }
+                            });
+
+                            exchangeYuCount();
+
+
+                        }
+                    });
+                }else{
+                    wendu_val = wendu_val_temp;
                 }
             }
         }

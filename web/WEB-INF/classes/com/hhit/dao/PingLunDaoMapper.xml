@@ -68,7 +68,11 @@
 
     <select id="findAllPingLunByUserId" resultMap="PingLunBean">
         select p.*,u.head_img as headImg,u.real_name as realName from pinglun p inner join nh_manage_user u on p.user_id = u.id
-        where p.user_id = #{userId}
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="userId != null and userId != '' ">
+                AND p.user_id = #{userId}
+            </if>
+        </trim>
         <if test="page != null">
             limit #{page},10
         </if>
@@ -82,5 +86,20 @@
         <!--select * from replay-->
         <!--where pinglun_id = #{pingId}-->
     <!--</select>-->
+
+    <select id="getPingLunCount" parameterType="com.hhit.entity.PingLun" resultType="int">
+        select count(0) from pinglun
+    </select>
+
+    <select id="getAllPingLun" parameterType="com.hhit.entity.PingLun" resultMap="PingLunBean">
+        select p.*,u.head_img as headImg,u.real_name as realName from pinglun p inner join nh_manage_user u on p.user_id = u.id
+        <if test="fromNum != null and limit != null ">
+            limit #{fromNum}, #{limit}
+        </if>
+    </select>
+
+    <select id="getPingLunById" resultMap="PingLunBean">
+        select *from pinglun where id = #{id}
+    </select>
 
 </mapper>

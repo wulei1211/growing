@@ -46,6 +46,8 @@ public class ChuanAction {
 
     private GrowChuan growChuan = null;
 
+    private Map<String,Data> map = new HashMap<>();
+
     private static Data d = null;
 
     private Timer timer = new Timer();
@@ -116,16 +118,27 @@ public class ChuanAction {
                         s = new String(data);
                         dwrService.send(userId,s );
                         d = changData(s);
-                        testAction.setD(d);
+                        map = updateData(d.getCid(),d);
+                        testAction.setD(map);
 //                        d.setTime(CommonUtil.getDateTimeString(new Date()));
 //                        dataService.addData(d);
                     }
                 } catch (Exception e) {
-                    ShowUtils.errorMessage(e.toString());
-                    System.exit(0);
+                    System.out.println(e.toString());
+//                    ShowUtils.errorMessage(e.toString());
+//                    System.exit(0);
                 }
             }
         });
+    }
+
+    public Map<String, Data> updateData(String cid, Data d){
+        for (Map.Entry<String, Data> entry : map.entrySet()) {
+            if(cid.equals(entry.getKey())){
+                entry.setValue(d);
+            }
+        }
+        return map;
     }
 
 
@@ -147,6 +160,10 @@ public class ChuanAction {
         request.setAttribute("status","1");
         Ding d = dingService.findDingByUserId(userId);
         request.setAttribute("ding",JsonUtil.getJsonString4JavaPOJO(d));
+        List<Chuan> list = chuanService.findAllChuan();
+        for(Chuan c : list){
+            map.put(c.getId(),new Data());
+        }
         if(d!=null){
             ceShi(d.getDing());
         }else{
@@ -279,7 +296,7 @@ public class ChuanAction {
     @RequestMapping("checkGrowName")
     @ResponseBody
     public String checkGrowName(String growName){
-        int count = growsService.checkGrowName(growName);
+        int count = growsService.checkGrowName(growName,userId);
         return count+"";
     }
 
@@ -368,15 +385,14 @@ public class ChuanAction {
     public Data changData(String data){
 //        ID:2 Temp:28 Humi:57 Light:128 MQ2:4  Time:0
         String cid = data.substring(data.indexOf("ID:")+3,data.indexOf("Temp:")).trim();
-        growChuan = growChuanService.findGrowByCid(cid);
-        if(growChuan == null){return null;}
+//        growChuan = growChuanService.findGrowByCid(cid);
+//        if(growChuan == null){return null;}
         String wen = data.substring(data.indexOf("Temp:")+5,data.indexOf("Humi:")).trim();
         String er = data.substring(data.indexOf("MQ2:")+4,data.indexOf("Time:")).trim();
         String shi = data.substring(data.indexOf("Humi:")+5,data.indexOf("Light:")).trim();
         String guang = data.substring(data.indexOf("Light:")+6,data.indexOf("MQ2:")).trim();
         d = new Data(wen,shi,guang,er);
         d.setCid(cid);
-        d.setGid(growChuan.getGrowId());
         d.setId(UUID.randomUUID().toString());
         d.setTime(CommonUtil.getDateTimeString(new Date()));
         return d;
@@ -414,7 +430,7 @@ public class ChuanAction {
         e.setMsg(str);
         e.setUserId(userId);
         errorMsgService.addError(e);
-        sendEmail(user.getEmail(),gid+"出现预警信息",str+",请尽快前去查看！！");
+        sendEmail(user.getEmail(),gid+"出现预警信息",cid+str+",请尽快前去查看！！");
     }
 
     @RequestMapping("toErrorMsgList")
@@ -465,7 +481,7 @@ public class ChuanAction {
             timer.cancel();
             timer.purge();
             timer = new Timer();
-            testAction = new TestAction(d);
+            testAction = new TestAction(map);
             flag = true;
         }else{
             flag = true;

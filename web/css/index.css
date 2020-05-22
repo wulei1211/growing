@@ -158,12 +158,24 @@ a{
     top: 50%;
     left: 45%;
 }
+.t_mbox_yu:hover{
+    width: 2.5rem;
+    height: 5rem;
+    z-index: 999;
+}
+.t_mbox_yu{
+    transition:all 0.5s;
+}
 .t_mbox_yu h6{
     font-size: 0.18rem;
     color: #fff;
     position: absolute;
-    top: 40%;
+    /*width: 100%;*/
+    height: 60%;
+    top: 30%;
     left: 10%;
+    overflow: hidden;
+    display: -webkit-box; -webkit-box-orient: vertical;text-overflow: ellipsis;-webkit-line-clamp: 4;line-clamp: 4;
 }
 .zheng{
 	position: absolute;

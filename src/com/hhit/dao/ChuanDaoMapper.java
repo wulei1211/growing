@@ -27,4 +27,6 @@ public interface ChuanDaoMapper {
     List<Chuan> getChuanListByGrowId(@Param("gid") String gid);
 
     void updateChuanPosition(@Param("s") String s,@Param("po")  String po);
+
+    List<Chuan> findAllChuan();
 }

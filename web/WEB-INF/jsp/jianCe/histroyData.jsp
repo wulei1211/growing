@@ -239,7 +239,7 @@
                     type : 'category',
                     boundaryGap : false,//从0刻度开始
                     data : xList}],
-                yAxis : [{type : 'value',min:7600,max:8000,interval:40,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                yAxis : [{type : 'value',min:0, max:20,interval:4,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
                 series : []
             };
             myChart_er.setOption(option_er);
@@ -257,7 +257,7 @@
                     type : 'category',
                     boundaryGap : false,//从0刻度开始
                     data : xList}],
-                yAxis : [{type : 'value',min:5100,max:5500,interval:40,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
+                yAxis : [{type : 'value',min:0, max:400,interval:50,axisLine:{lineStyle :{color: '#CCCCCC'}}}],
                 series : []
             };
             myChart_guang.setOption(option_guang);

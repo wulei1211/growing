@@ -37,8 +37,8 @@ public class GrowsServiceImpl implements GrowsService {
     }
 
     @Override
-    public int checkGrowName(String growName) {
-        return growsDaoMapper.checkGrowName(growName);
+    public int checkGrowName(String growName,String userId) {
+        return growsDaoMapper.checkGrowName(growName,userId);
     }
 
     @Override

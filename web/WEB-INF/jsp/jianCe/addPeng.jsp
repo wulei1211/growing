@@ -25,9 +25,9 @@
                 var element = layui.element;
                 var form = layui.form;
 
-                for(var i = 0;i<chuanList.length;i++){
-                    $("#chuangan").append('<input type="checkbox" name="chuanId" value = "'+chuanList[i].id+'" lay-skin="primary" title="'+chuanList[i].cname+'">');
-                }
+                // for(var i = 0;i<chuanList.length;i++){
+                //     $("#chuangan").append('<input type="checkbox" name="chuanId" value = "'+chuanList[i].id+'" lay-skin="primary" title="'+chuanList[i].cname+'">');
+                // }
 
                 form.verify({
                     growName: function(value, item){ //value：表单的值、item：表单的DOM对象
@@ -148,19 +148,19 @@
         </div>
     </div>
 
-    <div class="layui-form-item" pane="">
-        <label class="layui-form-label">传感器：</label>
-        <div class="layui-input-block" id = "chuangan" style = "height: 50px;">
+    <%--<div class="layui-form-item" pane="">--%>
+        <%--<label class="layui-form-label">传感器：</label>--%>
+        <%--<div class="layui-input-block" id = "chuangan" style = "height: 50px;">--%>
 
-        </div>
-    </div>
+        <%--</div>--%>
+    <%--</div>--%>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">位置：</label>
-        <div class="layui-input-block" >
-            <input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">
-        </div>
-    </div>
+    <%--<div class="layui-form-item">--%>
+        <%--<label class="layui-form-label">位置：</label>--%>
+        <%--<div class="layui-input-block" >--%>
+            <%--<input type="text" name="position" placeholder="请输入位置" autocomplete="off" class="layui-input" id = "position">--%>
+        <%--</div>--%>
+    <%--</div>--%>
 
     <div class="layui-form-item">
         <div class="layui-input-block">

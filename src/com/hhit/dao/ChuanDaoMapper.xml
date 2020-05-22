@@ -57,4 +57,7 @@
         update chuan set `position` = #{po} where id = #{s}
     </update>
 
+    <select id="findAllChuan" resultMap="ChuanBean">
+        select *from chuan where status = "0"
+    </select>
 </mapper>

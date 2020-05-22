@@ -1,10 +1,13 @@
 package com.hhit.action;
 
 import com.hhit.entity.Data;
+import com.hhit.entity.GrowChuan;
 import com.hhit.service.DataService;
+import com.hhit.service.GrowChuanService;
 import com.hhit.util.SpringBeanFactoryUtils;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
 import java.util.TimerTask;
 
 /**
@@ -21,35 +24,43 @@ public class TestAction extends TimerTask {
 //
 //    private static TestAction mybTimeTask = null;
 
-    private Data d ;
+    private Map<String, Data> d ;
 
     public static DataService dataService;
 
+    public static GrowChuanService growChuanService;
+
     static{
         dataService = (DataService) SpringBeanFactoryUtils.getBean("dataService");
+        growChuanService = (GrowChuanService) SpringBeanFactoryUtils.getBean("growChuanService");
     }
 
     public TestAction(){
 
     }
 
-    public TestAction(Data d) {
+    public TestAction(Map<String, Data> d) {
         this.d = d;
     }
 
     @Override
     public void run() {
-        System.out.println(11);
-        if(d != null){
-            dataService.addData(d);
+
+        for (Map.Entry<String, Data> entry : d.entrySet()) {
+            GrowChuan growChuan = growChuanService.findGrowByCid(entry.getKey());
+            if(growChuan != null){
+                entry.getValue().setGid(growChuan.getGrowId());
+                dataService.addData(entry.getValue());
+            }
         }
+
     }
 
-    public Data getD() {
+    public Map<String, Data> getD() {
         return d;
     }
 
-    public void setD(Data d) {
+    public void setD(Map<String, Data> d) {
         this.d = d;
     }
 

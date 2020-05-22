@@ -56,5 +56,10 @@ public class ChuanServiceImpl implements ChuanService {
         chuanDaoMapper.updateChuanPosition(s,po);
     }
 
+    @Override
+    public List<Chuan> findAllChuan() {
+        return chuanDaoMapper.findAllChuan();
+    }
+
 
 }

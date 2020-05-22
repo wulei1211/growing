@@ -44,7 +44,7 @@
     </insert>
 
     <select id="checkGrowName" resultType="int">
-        select count(0) from grows where grow_name = #{growName}
+        select count(0) from grows where grow_name = #{growName} and user_id = #{userId}
     </select>
 
     <select id="getGrowsById" resultMap="GrowsBean">

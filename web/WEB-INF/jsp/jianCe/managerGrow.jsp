@@ -220,7 +220,9 @@
 
             var ding = ${ding};
             // console.log(ding)
-            $("#time").val(ding.ding);
+            if(ding!=null){
+                $("#time").val(ding.ding);
+            }
 
             //退出
             $("#loginOut").click(function(){

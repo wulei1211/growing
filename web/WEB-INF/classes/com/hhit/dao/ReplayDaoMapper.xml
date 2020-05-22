@@ -48,4 +48,17 @@
         delete from  replay where pinglun_id = #{pId}
     </delete>
 
+    <select id="findReplayCount" resultType="int" parameterType="com.hhit.entity.Replay">
+        select Count(0) from replay
+    </select>
+
+    <select id="findAllReplay" resultMap="ReplayBean" parameterType="com.hhit.entity.Replay">
+        select r.*,a.article_title as articleTitle,pl.pinglun_content as pingLun,u.head_img as hui_tou,u.real_name as hui_name,uu.real_name as bei_name
+        from replay r INNER JOIN nh_manage_user u on r.replayer = u.id
+        INNER JOIN nh_manage_user uu ON uu.id = r.to_replayer
+        inner join article a on a.id = r.article_id
+        inner join pinglun pl on r.pinglun_id = pl.id
+        ORDER BY r.time desc
+    </select>
+
 </mapper>

@@ -18,7 +18,7 @@ public interface GrowsDaoMapper {
 
     void addPeng(Grows grows);
 
-    int checkGrowName(@Param("growName") String growName);
+    int checkGrowName(@Param("growName") String growName,@Param("userId")String userId);
 
     Grows getGrowsById(@Param("pId") String pId);
 

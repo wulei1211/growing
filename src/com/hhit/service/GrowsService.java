@@ -17,7 +17,7 @@ public interface GrowsService {
 
     void addPeng(Grows grows);
 
-    int checkGrowName(String growName);
+    int checkGrowName(String growName,String userId);
 
     Grows getGrowsById(String pId);
 
