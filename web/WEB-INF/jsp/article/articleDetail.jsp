@@ -299,6 +299,11 @@
                     $("#quxiaohuifu").css({"display":"none"});
                     $("#pinglunfa").find("div").text("");
                 });
+                $("#person").click(function(){
+                    window.open(
+                        "${path}/artical/toPerson.action?userId="+"${user.id}"
+                    );
+                });
 
 
 
@@ -353,6 +358,9 @@
                     window.open(
                         "${path}/artical/toPerson.action?userId="+"${artUser.id}"
                     );
+                });
+                $("#shucai").click(function(){
+                    window.location.href = "${path}/chuan/toManagerGrow.action"
                 });
 
 
@@ -426,8 +434,11 @@
     <div class="layui-row">
         <div class="layui-container">
             <ul class="layui-nav layui-bg-green" lay-filter="">
-                <li class="layui-nav-item layui-this"><a href="">首页</a></li>
-                <li class="layui-nav-item"><a href="">关注</a></li>
+                <li class="layui-nav-item layui-this"><a href="${path}/index/toIndexPage.action">首页</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id = "person">个人中心</a>
+                </li>
+                <%--<li class="layui-nav-item"><a href="">关注</a></li>
                 <li class="layui-nav-item"><a href="">回答</a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">我的</a>
@@ -436,7 +447,7 @@
                         <dd><a href="">我的评论</a></dd>
                         <dd><a href="">我的转发</a></dd>
                     </dl>
-                </li>
+                </li>--%>
                 <%--<li class="layui-nav-item lvxian">--%>
                     <%--<div class="layui-input-block" style = "width:320px;position: relative;">--%>
                         <%--<input type="text" name="title" placeholder="请输入关键词" class="layui-input" id = "shuru">--%>
@@ -448,22 +459,22 @@
                     <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
                     <%--<button type="button" class="layui-btn layui-btn-warm" id = "tiwen">发帖</button>--%>
                 <%--</li>--%>
-                <div class = "one">
+               <%-- <div class = "one">
                     <li class="layui-nav-item layui-layout-right">
                         <a href=""><i class="layui-icon" style="font-size: 20px;">&#xe667;</i><span class="layui-badge">9</span></a>
-                    </li></div>
-                <div class = "two">
-                    <li class="layui-nav-item layui-layout-right">
-                        <a href="">个人中心</a>
-                    </li></div>
-                <li class="layui-nav-item layui-layout-right">
+                    </li></div>--%>
+                <%--<div class = "two">--%>
+                    <%--<li class="layui-nav-item layui-layout-right">--%>
+                        <%--<a href="">个人中心</a>--%>
+                    <%--</li></div>--%>
+                <%--<li class="layui-nav-item layui-layout-right">
                     <a href="">选项</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">修改信息</a></dd>
                         <dd><a href="javascript:;">安全管理</a></dd>
                         <dd><a href="javascript:;">退了</a></dd>
                     </dl>
-                </li>
+                </li>--%>
             </ul>
         </div>
     </div>
@@ -581,7 +592,7 @@
                 </div>
 
                 <div>
-                    <button type="button" class="layui-btn" style = "width: 100%;height: 2.5rem;">蔬菜种植环境</button>
+                    <button type="button" class="layui-btn" style = "width: 100%;height: 2.5rem;" id="shucai">蔬菜种植环境</button>
                 </div>
 
             </div>

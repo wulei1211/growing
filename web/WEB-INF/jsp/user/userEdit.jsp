@@ -19,6 +19,7 @@
     <script type="text/javascript" src="${path}/js/layui/layui.js"></script>
     <script type="text/javascript">
         var user = ${user}
+        var type = ${type}
         $(function(){
 
 
@@ -143,6 +144,9 @@
                                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                                 parent.layer.close(index); //再执行关闭
                                 layer.msg("修改成功！");
+                                if(type == 12){
+                                    parent.location.reload();
+                                }
                             }
                         });
                     });
@@ -151,7 +155,6 @@
                     // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
                 });
-
 
             });
 
@@ -192,15 +195,17 @@
             <input type="text" name="realName" id = "realName"  placeholder="请输入昵称" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户等级：</label>
-        <div class="layui-input-block">
-            <select name="userType" lay-filter="dengji" id = "userType">
-                <option value="1">用户</option>
-                <option value="2">管理员</option>
-            </select>
+    <c:if test="${type != 12}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户等级：</label>
+            <div class="layui-input-block">
+                <select name="userType" lay-filter="dengji" id = "userType">
+                    <option value="1">用户</option>
+                    <option value="2">管理员</option>
+                </select>
+            </div>
         </div>
-    </div>
+    </c:if>
     <div class="layui-form-item">
         <label class="layui-form-label">性别：</label>
         <div class="layui-input-block">

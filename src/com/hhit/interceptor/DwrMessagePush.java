@@ -25,30 +25,27 @@ public class DwrMessagePush {
             e.printStackTrace();
         }
     }
-
+    //过滤 dwr ScriptSession，满足条件（userid相同）发送消息
+    //调用页面的showMessage方法，打印消息
+    //满足过滤器的 ScriptSession 遍历，发送消息
     //发送消息
     public void sendMessageAuto(String userid, String message) {
-
         final String userId = userid;
         final String autoMessage = message;
         System.out.println("sendMessageAuto  " + userId + " " + autoMessage);
-        //过滤 dwr ScriptSession，满足条件（userid相同）发送消息
         Browser.withAllSessionsFiltered(new ScriptSessionFilter() {
         public boolean match(ScriptSession session) {
             if (session.getAttribute("userId") == null) {
                 return false;
             } else {
-                //userId一样  返回true
                 return (session.getAttribute("userId")).equals(userId);
             }
         }
     }, new Runnable() {
         private ScriptBuffer script = new ScriptBuffer();
         public void run() {
-            //调用页面的showMessage方法，打印消息
             script.appendCall("showMessage", message);
             Collection<ScriptSession> sessions = Browser.getTargetSessions();
-            //满足过滤器的 ScriptSession 遍历，发送消息
             for (ScriptSession scriptSession : sessions) {
                 scriptSession.addScript(script);
             }

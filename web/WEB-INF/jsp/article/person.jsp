@@ -257,6 +257,10 @@
 
                     });
                 })
+                $(document).on("click","#myMsg",function(){
+                    var id = "${dengUser.id}";
+                    $("#demo").html('<iframe id="myIframe" name="mainIframe" frameborder="0" style="width: 100%; height: 600px;" src="${path}/user/toUserEidt.action?type=12&userId='+id+'"></iframe>');
+                })
 
                 // 评论
                 $("#myPingLun").click(function(){
@@ -567,12 +571,12 @@
                     <div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">${user.realName}</div>
                     <div style = "margin-top: 1.125rem;text-align: center;font-size: 0.625rem;color: #999;">
                         ${user.memo}</div>
-                    <div style = "font-size: 0.625rem;color: #999;;height: 3.125rem;border-top: 1px solid #E0E0E0;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;line-height: 3.125rem;">
+                   <%-- <div style = "font-size: 0.625rem;color: #999;;height: 3.125rem;border-top: 1px solid #E0E0E0;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;line-height: 3.125rem;">
                         社交：&nbsp;&nbsp;&nbsp;&nbsp;
                         <i class="layui-icon layui-icon-login-qq tubiao"></i> &nbsp;&nbsp;
                         <i class="layui-icon layui-icon-login-wechat tubiao"></i> &nbsp;&nbsp;
                         <i class="layui-icon layui-icon-login-weibo tubiao"></i>
-                    </div>
+                    </div>--%>
                     <div style = "padding: 1.25rem 3rem 1.25rem 3rem;height: 3.125rem;">
                         <div style = "height: 100%;float: left;color: #999;text-align: center;">文章</br></br><span class="shuzi">${user.articleCount}</span></div>
                         <div style = "height: 100%;float: right;color: #999;text-align: center">关注者</br></br><span class="shuzi">${user.guanZhuCount}</span></div>

@@ -120,13 +120,9 @@ public class ChuanAction {
                         d = changData(s);
                         map = updateData(d.getCid(),d);
                         testAction.setD(map);
-//                        d.setTime(CommonUtil.getDateTimeString(new Date()));
-//                        dataService.addData(d);
                     }
                 } catch (Exception e) {
                     System.out.println(e.toString());
-//                    ShowUtils.errorMessage(e.toString());
-//                    System.exit(0);
                 }
             }
         });
@@ -167,7 +163,7 @@ public class ChuanAction {
         if(d!=null){
             ceShi(d.getDing());
         }else{
-            ceShi("3");
+            ceShi("30");
         }
         return "jianCe/managerGrow";
     }

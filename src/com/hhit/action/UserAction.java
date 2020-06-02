@@ -63,9 +63,10 @@ public class UserAction {
     }
 
     @RequestMapping("toUserEidt")
-    public String toUserEidt(String userId,HttpServletRequest request){
+    public String toUserEidt(String userId,String type,HttpServletRequest request){
         ManageUserBean userBean = manageUserService.findUserBeanById(userId);
         request.setAttribute("user",JSONObject.toJSONString(userBean));
+        request.setAttribute("type",type);
         return "user/userEdit";
     }
 

@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="${path}/js/layui/css/layui.css"/>
 <link rel="stylesheet" href="${path}/js/css/index.css">
 <script type="text/javascript" src="${path}/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${path}/js/jquery.jplayer.min.js"></script>
 <script type="text/javascript" src="${path}/js/layui/layui.js"></script>
 <script type='text/javascript' src='${path }/dwr/engine.js'></script>
 <script type='text/javascript' src='${path }/dwr/util.js'></script>
@@ -388,6 +389,8 @@
             if("${status}" == "1"){
                 return ;
             }
+            var pp = '${path}';
+            playSound(pp+'/js/5c88e63ca74e859434.mp3');
             addMsg("1"),narn('log',data);
         }
         function narn (type,data) {naranja()[type]({
@@ -431,6 +434,10 @@
 
 
 		}
+        function playSound(src) {
+            var auto = $("#auto");
+            auto.attr("src",src);
+        }
 	</script>
 </head>
 
@@ -528,12 +535,12 @@
 					<div style = "margin-top: 1.125rem;font-weight: bold;font-size: 1rem;text-align: center;">${realName}</div>
 					<div style = "margin-top: 1.125rem;text-align: center;font-size: 0.625rem;color: #999;">
 						${memo}</div>
-					<div style = "font-size: 0.625rem;color: #999;;height: 3.125rem;border-top: 1px solid #E0E0E0;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;line-height: 3.125rem;">
+					<%--<div style = "font-size: 0.625rem;color: #999;;height: 3.125rem;border-top: 1px solid #E0E0E0;border-bottom: 1px solid #E0E0E0;margin: 0.9375rem 0.9375rem 0rem 0.9375rem;line-height: 3.125rem;">
 						社交：&nbsp;&nbsp;&nbsp;&nbsp;
 						<i class="layui-icon layui-icon-login-qq tubiao"></i> &nbsp;&nbsp;
 						<i class="layui-icon layui-icon-login-wechat tubiao"></i> &nbsp;&nbsp;
 						<i class="layui-icon layui-icon-login-weibo tubiao"></i>
-					</div>
+					</div>--%>
 					<div style = "padding: 1.25rem 3rem 1.25rem 3rem;height: 3.125rem;">
 						<div style = "height: 100%;float: left;color: #999;text-align: center;">文章</br></br><span class="shuzi">${artCount}</span></div>
 						<div style = "height: 100%;float: right;color: #999;text-align: center">关注者</br></br><span class="shuzi">${user.guanZhuCount}</span></div>
@@ -582,7 +589,7 @@
 		</div>
 	</form>
 </div>
-
+<audio  autoplay="autoplay" id="auto" src="" style = "display: none;"></audio>
 </body>
 
 </html>
