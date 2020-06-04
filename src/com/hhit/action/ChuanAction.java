@@ -548,7 +548,7 @@ public class ChuanAction {
             data = dataService.getGrowsChuanById(gid,cids,startTime,endTime);
             json.put("data",data);
         }
-        json.put("data",list);
+//        json.put("data",list);
         return json;
     }
 

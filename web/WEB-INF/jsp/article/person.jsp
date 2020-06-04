@@ -262,6 +262,10 @@
                     $("#demo").html('<iframe id="myIframe" name="mainIframe" frameborder="0" style="width: 100%; height: 600px;" src="${path}/user/toUserEidt.action?type=12&userId='+id+'"></iframe>');
                 })
 
+                $("#jiance").click(function(){
+                    window.location.href = "${path}/chuan/toManagerGrow.action"
+                })
+
                 // 评论
                 $("#myPingLun").click(function(){
                     $("#demo").text("")
@@ -471,15 +475,23 @@
             });
         }
 
-        function showMessage(data){narn('log',data);}
-        function narn (type,data) {naranja()[type]({title: '新消息提示',text: data,timeout: 'keep',buttons: [{text: '已读',click: function (e) {naranja().success({title: '通知',text: '通知已读'})}},{text: '取消',click: function (e) {e.closeNotification();}}]})}
-        function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
 
         function test(){
             window.location.reload();
             // layer.msg("发布成功！");
         }
-        function showMessage(data){addMsg("1"),narn('log',data);}
+        function showMessage(data){
+            if("${status}" == "1"){
+                return ;
+            }
+            var pp = '${path}';
+            playSound(pp+'/js/5c88e63ca74e859434.mp3');
+            addMsg("1"),narn('log',data);
+        }
+        function playSound(src) {
+            var auto = $("#auto");
+            auto.attr("src",src);
+        }
         function narn (type,data) {naranja()[type]({
             title: '新消息提示',
             text: JSON.parse(data).content,timeout: 'keep',
@@ -584,14 +596,14 @@
                 </div>
 
                 <div>
-                    <button type="button" class="layui-btn" style = "width: 100%;height: 2.5rem;">蔬菜种植环境</button>
+                    <button type="button" id="jiance" class="layui-btn" style = "width: 100%;height: 2.5rem;">蔬菜种植环境</button>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
-
+<audio  autoplay="autoplay" id="auto" src="" style = "display: none;"></audio>
 </body>
 
 </html>

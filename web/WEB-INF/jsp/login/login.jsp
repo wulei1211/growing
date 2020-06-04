@@ -19,6 +19,10 @@
 <script type="text/javascript" src="${path}/js/layer/layer.js" ></script>
 <script type="text/javascript" src="${path}/js/layui/lay/modules/layer.js" ></script>
 <link href="${path}/js/css/login.css" rel="stylesheet" type="text/css" />
+    <link href="${path}/css/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" type="text/css">
+    <!-- CSS -->
+    <link href="${path}/css/app.min.1.css" rel="stylesheet" type="text/css">
+
 <script type="text/javascript">
 
 if(window != top){
@@ -73,10 +77,10 @@ function key_down(num){
 </script>
 </head>
 
-<body onkeydown="key_down(event.keyCode);" style = "background-color: #393d49;">
-	<div class="login_box">
-      <div class="login_l_img"><img src="${path}/js/images/login-img.png" /></div>
-      <div class="login">
+<body onkeydown="key_down(event.keyCode);"  class="login-content" data-ng-controller="loginCtrl as lctrl"  >
+<div class="login_box">
+      <%--<div class="login_l_img"><img src="${path}/js/images/login-img.png" /></div>--%>
+      <div class="login" style = "position: absolute;left: 600px;">
           <div class="login_logo"><a href="#"><img src="${path}/js/images/login_logo.png" /></a></div>
           <div class="login_name">
                <p>蔬菜种植环境感知系统</p>
@@ -91,6 +95,6 @@ function key_down(num){
 				      <div class="copyright">GFNF有限公司 版权所有©2018-2019 技术支持电话：13141514402</div>
 	</div>
 
-</body>
 
+</body>
 </html>

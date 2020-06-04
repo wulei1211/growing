@@ -164,7 +164,7 @@
                 flag = 0;
             }
 
-            console.log(chuan_grow)
+            // console.log(chuan_grow)
 
             //点击切换种植园传感器
             $(document).on("click",".yuan_chuan ",function(){

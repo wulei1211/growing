@@ -184,9 +184,7 @@
 				})
 
 				$("#geren").click(function(){
-                    window.open(
-                        "${path}/artical/toPerson.action?userId="+"${user.id}"
-                    );
+                    window.location.href = "${path}/artical/toPerson.action?userId="+"${user.id}";
 				});
 
 
@@ -393,6 +391,10 @@
             playSound(pp+'/js/5c88e63ca74e859434.mp3');
             addMsg("1"),narn('log',data);
         }
+        function playSound(src) {
+            var auto = $("#auto");
+            auto.attr("src",src);
+        }
         function narn (type,data) {naranja()[type]({
 			title: '新消息提示',
 			text: JSON.parse(data).content,timeout: 'keep',
@@ -434,10 +436,7 @@
 
 
 		}
-        function playSound(src) {
-            var auto = $("#auto");
-            auto.attr("src",src);
-        }
+
 	</script>
 </head>
 
@@ -489,8 +488,6 @@
 
 					</div>
 				</div>
-
-
 
 				<div class = "two">
 					<li class="layui-nav-item layui-layout-right">

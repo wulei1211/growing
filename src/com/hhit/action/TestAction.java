@@ -45,13 +45,19 @@ public class TestAction extends TimerTask {
 
     @Override
     public void run() {
-
+        int i = 0;
+        String time = "";
         for (Map.Entry<String, Data> entry : d.entrySet()) {
+            if(i==0){
+                time = entry.getValue().getTime();
+            }
             GrowChuan growChuan = growChuanService.findGrowByCid(entry.getKey());
             if(growChuan != null){
                 entry.getValue().setGid(growChuan.getGrowId());
+                entry.getValue().setTime(time);
                 dataService.addData(entry.getValue());
             }
+            i++;
         }
 
     }

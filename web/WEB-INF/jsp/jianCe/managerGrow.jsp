@@ -28,6 +28,11 @@
     <!-- validation -->
     <script type="text/javascript"
             src="${path}/js/jquery-validation/jquery.validate.js"></script>
+    <link rel="stylesheet" href="${path }/js/css/naranja.min.css">
+    <script type='text/javascript' src='${path }/dwr/engine.js'></script>
+    <script type='text/javascript' src='${path }/dwr/util.js'></script>
+    <script type="text/javascript" src="${path }/dwr/interface/MessagePush.js"></script>
+    <script type="text/javascript" src="${path }/js/naranja.js"></script>
     <style type="text/css">
         html, body {
             width: 100%;
@@ -170,6 +175,13 @@
         $(function(){
 
             iframeResize();
+
+            //dwr
+            dwr.engine.setActiveReverseAjax(true);
+            dwr.engine.setNotifyServerOnPageUnload(true);
+            onPageLoad();
+
+
 
             <%--//导入菜单数据--%>
             <%--var pageList = ${pageList};--%>
@@ -391,6 +403,30 @@
 
             $(".layui-nav-item layui-nav-itemed");
         });
+        function showMessage(data){
+            if("${status}" == "1"){
+                return ;
+            }
+            var pp = '${path}';
+            playSound(pp+'/js/5c88e63ca74e859434.mp3');
+            addMsg("1"),narn('log',data);
+        }
+        function playSound(src) {
+            var auto = $("#auto");
+            auto.attr("src",src);
+        }
+        function narn (type,data) {naranja()[type]({
+            title: '新消息提示',
+            text: JSON.parse(data).content,timeout: 'keep',
+            buttons: [{
+                text: '已读',click: function (e) {
+                    naranja().success({title: '通知',text: '通知已读'})
+                    addMsg("2");
+                    readMsg(JSON.parse(data).id);
+                }},
+                {text: '取消',click: function (e) {e.closeNotification();}}
+            ]})}
+        function onPageLoad(){var userId = "";$.ajax({method:"post",url:"/growing/index/gotoIndex.action",async:false,dataType:"text",success:function (data) {userId = data;}});if(userId!=null && userId!=""){var userThisId = userId;MessagePush.onPageLoad(userThisId);}}
 
         //保存新密码
         function saveNewPass(){
@@ -545,8 +581,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-
-</script>
+<audio  autoplay="autoplay" id="auto" src="" style = "display: none;"></audio>
 </body>
 </html>

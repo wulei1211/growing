@@ -58,8 +58,8 @@
                         var arr = data.chuanList;
                         var chuanStr = "";
                         for(var i = 0;i<arr.length;i++){
-                            chuanId.push(arr[0].id);
-                            chuanStr += '<input type="checkbox" name="cids" value = "'+arr[0].id+'" title="'+arr[0].cname+'" checked>';
+                            chuanId.push(arr[i].id);
+                            chuanStr += '<input type="checkbox" name="cids" value = "'+arr[i].id+'" title="'+arr[i].cname+'" checked>';
                         }
                         $("#chuan").html(chuanStr);
                         form.render();
@@ -75,12 +75,11 @@
                         data:{"gid":d.value},
                         url:"${path}/chuan/getChuanListByGrowId.action",
                         success:function(data){
-                            console.log(data)
                             var arr = data.chuanList;
                             var chuanStr = "";
                             for(var i = 0;i<arr.length;i++){
                                 // chuanId.push(arr[i].id)
-                                chuanStr += '<input type="checkbox" name="cids" value = "'+arr[0].id+'" title="'+arr[0].cname+'">';
+                                chuanStr += '<input type="checkbox" name="cids" value = "'+arr[i].id+'" title="'+arr[i].cname+'" checked>';
                             }
                             $("#chuan").html(chuanStr);
                             form.render();
@@ -97,14 +96,18 @@
                     url:"${path}/chuan/getGrowsChuanById.action",
                     success:function(data){
                         dataList = data.data;
+                        if(dataList.length>0){
+                        var index = dataList[0].cid;
                         for(var i = 0;i<dataList.length;i++){
-                            xList.push(dataList[i].time);
+                            if(dataList[i].cid == index){
+                                xList.push(dataList[i].time);
+                            }
                             if(dataType.indexOf(dataList[i].cid+"号传感器")>-1){
                                 continue;
                             }else{
                                 dataType.push(dataList[i].cid+"号传感器")
                             }
-                        }
+                        }}
                         fourEcharts(dataList,dataType,xList)
                     }
                 });
@@ -157,16 +160,20 @@
                         url:"${path}/chuan/getGrowsChuanById.action",
                         success:function(data){
                             dataList = data.data;
-                            for(var i = 0;i<dataList.length;i++){
-                                xList.push(dataList[i].time);
-                                if(dataType.indexOf(dataList[i].cid+"号传感器")>-1){
-                                    continue;
-                                }else{
-                                    dataType.push(dataList[i].cid+"号传感器")
+                            if(dataList.length>0){
+                                var temp = dataList[0].cid;
+                                for(var i = 0;i<dataList.length;i++){
+                                    if(temp == dataList[i].cid){
+                                        xList.push(dataList[i].time);
+                                    }
+                                    if(dataType.indexOf(dataList[i].cid+"号传感器")>-1){
+                                        continue;
+                                    }else{
+                                        dataType.push(dataList[i].cid+"号传感器")
+                                    }
                                 }
                             }
-                            console.log(dataList)
-                            console.log(dataType)
+
                             fourEcharts(dataList,dataType,xList)
                         }
                     });
@@ -183,7 +190,9 @@
         })
 
         function fourEcharts(dataList,dataType,xList){
-
+            console.log(dataList)
+            console.log(dataType)
+            console.log(xList)
             //    温度
             //    温度
             //    温度
@@ -365,7 +374,7 @@
                         data[item.name]=item.value;
                     }else{
                         //name属性相同的表单，值以英文,拼接
-                        data[item.name]=data[item.name]+','+item.value;
+                        data[item.name]=data[item.name]+';'+item.value;
                     }
                 }
             });
